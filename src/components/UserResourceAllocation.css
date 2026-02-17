@@ -1,0 +1,219 @@
+* {
+  box-sizing: border-box;
+}
+
+.resource-page {
+  padding: 16px;
+  max-width: 1400px;
+  margin: auto;
+}
+
+/* PAGE */
+
+/* ================= KPI CARDS ================= */
+.ra-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.ra-card {
+  padding: 20px;
+  border-radius: 14px;
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
+}
+
+.ra-card small {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.ra-card h3 {
+  margin-top: 8px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* COLORS */
+.purple {
+  background: linear-gradient(135deg, #9d6adf, #7c3aed);
+}
+
+.blue {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+}
+
+@media (max-width: 500px) {
+  .ra-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ================= TABLE CARD ================= */
+.filter-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* HEADER */
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.table-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* ================= TABLE ================= */
+.leads-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.leads-table thead {
+  background: #f1f5f9;
+}
+
+.leads-table th,
+.leads-table td {
+  padding: 14px 12px;
+  text-align: left;
+}
+
+.leads-table th {
+  font-weight: 600;
+  color: #334155;
+}
+
+.leads-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.leads-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.leads-table tbody tr:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* ================= BUTTONS ================= */
+.edit-btn {
+  background: #e0f2fe;
+  border: none;
+  color: #0369a1;
+  padding: 6px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.edit-btn:hover {
+  background: #bae6fd;
+}
+
+/* ================= PAGINATION ================= */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.pagination button.active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 13px;
+  color: #475569;
+  margin-left: 8px;
+}
+
+/* ================= MODAL ================= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px;
+  width: 420px;
+  max-width: 95%;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.modal.small {
+  width: 360px;
+}
+
+.modal h3 {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+.modal p {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.reset {
+  /* margin-top: 14px; */
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  background: #e5e7eb;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.reset:hover {
+  background: #d1d5db;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .leads-table {
+    font-size: 13px;
+  }
+
+  .ra-card h3 {
+    font-size: 22px;
+  }
+}

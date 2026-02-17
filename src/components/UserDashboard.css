@@ -1,0 +1,41 @@
+.user-dashboard {
+  padding: 24px;
+}
+
+.user-dashboard h1 {
+  font-size: 26px;
+  margin-bottom: 6px;
+}
+
+.user-dashboard p {
+  color: #555;
+  margin-bottom: 24px;
+}
+
+/* Cards layout */
+.user-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+/* Card */
+.card {
+  background: #ffffff;
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.card h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #021024;
+}
+
+.card p {
+  font-size: 22px;
+  font-weight: 600;
+  color: #04364a;
+}

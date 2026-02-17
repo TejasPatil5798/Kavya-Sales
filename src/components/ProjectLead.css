@@ -1,0 +1,524 @@
+.projectlead-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* KPI CARDS */
+.pl-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.pl-card {
+  padding: 22px;
+  border-radius: 14px;
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.15);
+}
+
+.pl-card h6 {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.pl-card h3 {
+  font-size: 26px;
+  margin-top: 6px;
+}
+
+/* COLORS */
+.purple {
+  background: #a15ca0;
+}
+
+.pink {
+  background: #de638a;
+}
+
+.blue {
+  background: #124c81;
+}
+
+.lavender {
+  background: #9d8dde;
+}
+
+/* FILTER */
+.filter-bar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.filter-bar button.filter-button {
+  background: #003049;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-card {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.filter-grid select {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.filter-actions button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+}
+
+.filter-actions .reset {
+  background: #e5e7eb;
+  margin-top: 0;
+}
+
+.filter-actions .apply {
+  background: #3f7f6b;
+  color: #fff;
+}
+
+/* CHARTS */
+.pl-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 20px;
+}
+
+.chart-card {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chart-card h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+/* CHART CONTAINERS */
+.chart-container {
+  width: 100%;
+  height: 300px;
+}
+
+.small-chart {
+  width: 100%;
+  max-width: 240px;
+  height: 240px;
+}
+
+.pl-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* BUTTONS */
+.add-lead-btn {
+  background: #2563eb;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.add-lead-btn:hover {
+  background: #1d4ed8;
+}
+
+.leads-list-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 20px 0;
+}
+
+/* TABLE */
+.leads-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.leads-table th {
+  background: #f4f6fb;
+  text-align: left;
+  padding: 10px;
+}
+
+.leads-table td {
+  padding: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.leads-table tr:hover {
+  background: #f9fafb;
+}
+
+.edit-btn {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.delete-btn {
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* ===================== */
+/* 🔹 APPENDED STYLES 🔹 */
+/* ===================== */
+
+/* MODAL BACKDROP */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* MODAL */
+.modal {
+  background: #ffffff;
+  width: 520px;
+  /* max-width: 95%; */
+  padding: 22px;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal.small {
+  width: 360px;
+}
+
+.modal h3 {
+  margin-bottom: 6px;
+}
+
+/* INPUTS & SELECT */
+.modal input,
+.modal select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  font-size: 14px;
+}
+
+.modal input:focus,
+.modal select:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* LABELS */
+.modal label {
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* ERROR TEXT */
+.modal small {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: -4px;
+}
+
+/* MODAL ACTIONS */
+.modal .filter-actions {
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+
+/* ================= ADD / EDIT LEAD FORM – TWO COLUMN ================= */
+
+/* Modal size improvement */
+.modal {
+  max-width: 760px;
+  width: 100%;
+}
+
+/* Two column grid for inputs */
+.modal input,
+.modal select {
+  width: 100%;
+}
+
+/* Create grid without touching JSX */
+.modal {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 18px;
+}
+
+/* Heading should span full width */
+.modal h3 {
+  grid-column: span 2;
+}
+
+/* Labels should span full width */
+.modal label {
+  grid-column: span 2;
+  font-weight: 500;
+}
+
+/* Buttons row full width */
+.modal .filter-actions {
+  grid-column: span 2;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* Validation messages full width */
+.modal small {
+  grid-column: span 2;
+  color: #dc2626;
+  font-size: 12px;
+}
+
+/* ================= MOBILE RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .modal {
+    grid-template-columns: 1fr;
+  }
+
+  .modal h3,
+  .modal label,
+  .modal .filter-actions,
+  .modal small {
+    grid-column: span 1;
+  }
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.add-btn {
+  background: #6c5ce7;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  opacity: 0.9;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: #6c5ce7;
+  color: #fff;
+  border-color: #6c5ce7;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 992px) {
+  .pl-cards {
+    gap: 14px;
+  }
+
+  .pl-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .pl-card h6 {
+    font-size: 13px;
+  }
+
+  .pl-card h3 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 412px) {
+  .pl-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .pl-card {
+    padding: 12px;
+    border-radius: 10px;
+  }
+
+  .pl-card h6 {
+    font-size: 12px;
+  }
+
+  .pl-card h3 {
+    font-size: 18px;
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 412px) {
+  .leads-table td {
+    padding: 6px 6px;
+    font-size: 12px;
+  }
+
+  .leads-table button,
+  .edit-btn,
+  .delete-btn {
+    padding: 3px 6px;
+    font-size: 10px;
+    line-height: 1.2;
+    border-radius: 4px;
+    min-width: unset;
+  }
+
+  .leads-table .more-btn {
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+
+  .leads-table td:last-child {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+
+/* 🔴 POPUP ERROR */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.popup-box {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  width: 350px;
+  max-width: 90%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: popupFade 0.3s ease-in-out;
+}
+
+.popup-box h3 {
+  margin-bottom: 10px;
+  color: #e53935;
+}
+
+.popup-box ul {
+  padding-left: 20px;
+  margin-bottom: 20px;
+}
+
+.popup-box li {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.popup-close {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup-close:hover {
+  background: #c62828;
+}
+
+@keyframes popupFade {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

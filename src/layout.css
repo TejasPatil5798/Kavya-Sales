@@ -1,0 +1,32 @@
+/* =================================================
+   MAIN CONTENT – BASE
+================================================= */
+.main-content {
+  min-height: 100vh;
+  background: #f8fafc;
+  box-sizing: border-box;
+  transition: margin-left 0.3s ease, padding 0.3s ease;
+}
+
+/* =================================================
+   DESKTOP AUTHENTICATED LAYOUT
+   Sidebar pushes content
+================================================= */
+.main-content.auth {
+  margin-left: 260px;     /* Sidebar width */
+  margin-top: 64px;       /* Navbar height */
+  padding: 24px;
+}
+
+/* =================================================
+   MOBILE LAYOUT
+   Sidebar overlays content
+================================================= */
+@media (max-width: 992px) {
+  .main-content.auth {
+    margin-left: 0;       /* 🔥 Prevent content shift */
+    margin-top: 64px;
+    padding: 16px;
+    width: 100%;
+  }
+}

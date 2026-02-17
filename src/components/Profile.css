@@ -1,0 +1,89 @@
+/* Profile Page Container */
+.profile-container {
+  max-width: 100000px;
+  background: #ffffff;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Page Title */
+.profile-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #0b1f32;
+}
+
+/* Header Section */
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Avatar */
+.profile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #0b1f32;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+/* User Info */
+.profile-info h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #0b1f32;
+}
+
+.profile-info p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* Divider */
+.profile-divider {
+  margin: 24px 0;
+  border: none;
+  height: 1px;
+  background: #e5e7eb;
+}
+
+/* Details Grid */
+.profile-details {
+  display: grid;
+  row-gap: 16px;
+}
+
+/* Single Item */
+.profile-item strong {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.profile-item p {
+  margin: 0;
+  font-size: 15px;
+  color: #0b1f32;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .profile-container {
+    padding: 24px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

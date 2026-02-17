@@ -1,0 +1,97 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* KPI GRID */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.kpi-card {
+  color: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.kpi-card h2 {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.kpi-card h3 {
+  margin-top: 8px;
+  font-size: 24px;
+}
+
+/* COLORS (same as admin) */
+.purple { background: #a15ca0; }
+.pink { background: #de638a; }
+.blue { background: #124c81; }
+.lavender { background: #9d8dde; }
+
+/* CHART GRID */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CARD */
+.card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 14px 18px;
+  font-weight: 600;
+  background: #f1f5f9;
+}
+
+.card-body {
+  padding: 18px;
+}
+
+/* TABLE */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.data-table thead {
+  background: #f8fafc;
+}
+
+.data-table tbody tr:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* FULL WIDTH */
+.full-width {
+  width: 100%;
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+}
