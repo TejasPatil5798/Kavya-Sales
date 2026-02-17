@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
+import API from "../api/api";
 import "./ProjectIntake.css";
 
 const ITEMS_PER_PAGE = 10;
@@ -19,17 +20,14 @@ const UserProjectIntake = () => {
   /* ================= FETCH LEADS (READ ONLY) ================= */
   const fetchLeads = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-      const res = await fetch("http://localhost:5000/api/leads/my-leads", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
+      const { data } = await API.get("/leads/my-leads");
       setLeads(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
       setLeads([]);
     }
   };
+
 
   useEffect(() => {
     fetchLeads();

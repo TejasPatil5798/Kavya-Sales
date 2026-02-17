@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import API from "../api/api";
 import "./settings.css";
 
 const Settings = () => {
@@ -34,25 +35,11 @@ const Settings = () => {
 
     try {
       setLoading(true);
-      const token = localStorage.getItem("authToken");
 
-      const res = await fetch(
-        "http://localhost:5000/api/password/change",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            currentPassword: formData.currentPassword,
-            newPassword: formData.newPassword,
-          }),
-        }
-      );
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+      await API.put("/password/change", {
+        currentPassword: formData.currentPassword,
+        newPassword: formData.newPassword,
+      });
 
       alert("✅ Password updated successfully");
 
@@ -62,7 +49,7 @@ const Settings = () => {
         confirmPassword: "",
       });
     } catch (err) {
-      alert(err.message || "Failed to update password");
+      alert(err.response?.data?.message || "Failed to update password");
     } finally {
       setLoading(false);
     }

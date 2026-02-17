@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
+import API from "../api/api"; // ✅ ADDED
 import "./ProjectIntake.css";
+
 
 const ITEMS_PER_PAGE = 10;
 
@@ -41,11 +43,7 @@ const ProjectIntake = () => {
   /* ================= FETCH LEADS ================= */
   const fetchLeads = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-      const res = await fetch("http://localhost:5000/api/leads", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
+      const { data } = await API.get("/leads");
       setLeads(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
@@ -137,8 +135,6 @@ const ProjectIntake = () => {
     if (!validateProject(newProject)) return;
 
     try {
-      const token = localStorage.getItem("authToken");
-
       const payload = {
         clientName: newProject.clientName,
         clientCompany: newProject.clientCompany,
@@ -151,38 +147,24 @@ const ProjectIntake = () => {
         followUpDate: newProject.followUpDate,
       };
 
+      await API.post("/leads", payload);
 
-      const res = await fetch("http://localhost:5000/api/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Add project failed");
-
-      // Reset + close
       setNewProject({
         clientName: "",
         clientCompany: "",
         email: "",
         mobile: "",
         projectType: "",
-        reference: "",   // ✅ RESET IT
+        reference: "",
         budget: "",
         followUpDate: "",
         remarks: "",
       });
 
-
-
       setShowAddProject(false);
-      fetchLeads(); // 🔥 refresh table
+      fetchLeads();
     } catch (err) {
-      alert(err.message || "Failed to add project");
+      alert(err.response?.data?.message || "Failed to add project");
     }
   };
 
@@ -190,44 +172,32 @@ const ProjectIntake = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this project?")) return;
     try {
-      const token = localStorage.getItem("authToken");
-      await fetch(`http://localhost:5000/api/leads/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await API.delete(`/leads/${id}`);
       fetchLeads();
     } catch (err) {
       alert("Delete failed");
     }
   };
 
+
   /* ================= UPDATE ================= */
   const handleUpdate = async () => {
     if (!validateProject(editProject)) return;
 
     try {
-      const token = localStorage.getItem("authToken");
-
       const payload = {
         clientName: editProject.clientName,
         clientCompany: editProject.clientCompany,
         email: editProject.email,
         mobile: editProject.mobile,
         projectType: editProject.projectType,
-        reference: editProject.reference, // ✅ IMPORTANT
+        reference: editProject.reference,
         budget: editProject.budget,
         remarks: editProject.remarks,
         followUpDate: editProject.followUpDate,
       };
 
-      await fetch(`http://localhost:5000/api/leads/${editProject._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
+      await API.put(`/leads/${editProject._id}`, payload);
 
       setShowEditModal(false);
       fetchLeads();
@@ -235,6 +205,7 @@ const ProjectIntake = () => {
       alert("Update failed");
     }
   };
+
 
   return (
     <div className="intake-page">

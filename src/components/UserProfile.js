@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./UserProfile.css";
+import API from "../api/api";
 import { FiUser } from "react-icons/fi";
 
 const UserProfile = () => {
@@ -8,15 +9,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem("authToken");
-
-        const res = await fetch("http://localhost:5000/api/users/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        const data = await res.json();
+        const { data } = await API.get("/users/me");
         setUser(data || {});
       } catch (err) {
         console.error("Failed to load profile", err);
@@ -25,6 +18,7 @@ const UserProfile = () => {
 
     fetchProfile();
   }, []);
+
 
   return (
     <div className="profile-page">

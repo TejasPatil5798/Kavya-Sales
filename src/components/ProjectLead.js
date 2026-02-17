@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-
+import API from "../api/api";   // ✅ ADD THIS
 import "./ProjectLead.css";
 
 const ITEMS_PER_PAGE = 10;
@@ -139,15 +139,7 @@ const ProjectLead = () => {
   const fetchLeads = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("authToken");
-
-      const res = await fetch("http://localhost:5000/api/leads", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await res.json();
+      const { data } = await API.get("/leads");
       setLeads(data || []);
       setCurrentPage(1);
     } catch (err) {
@@ -156,6 +148,7 @@ const ProjectLead = () => {
       setLoading(false);
     }
   };
+
 
   useEffect(() => {
     fetchLeads();
@@ -195,20 +188,13 @@ const ProjectLead = () => {
     if (!window.confirm("Are you sure you want to delete this lead?")) return;
 
     try {
-      const token = localStorage.getItem("authToken");
-
-      await fetch(`http://localhost:5000/api/leads/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      await API.delete(`/leads/${id}`);
       fetchLeads();
     } catch (error) {
       console.error("Delete error:", error);
     }
   };
+
   const getLeadSortDate = (lead) => {
     if (lead.followUpDate) return new Date(lead.followUpDate);
     if (lead.timeline?.startDate) return new Date(lead.timeline.startDate);
@@ -218,52 +204,35 @@ const ProjectLead = () => {
 
   /* ================= SAVE ================= */
   const handleSaveLead = async () => {
-    if (!validateLeadForm()) return; // ⛔ ADDED
+    if (!validateLeadForm()) return;
 
     try {
-      const token = localStorage.getItem("authToken");
+      const payload = {
+        ...leadForm,
+        followUpDate:
+          leadForm.status === "Follow Up"
+            ? leadForm.followUpDate
+            : null,
+        budget: leadForm.budget ? Number(leadForm.budget) : undefined,
+      };
 
-      const url = editLeadId
-        ? `http://localhost:5000/api/leads/${editLeadId}`
-        : "http://localhost:5000/api/leads";
-
-      const method = editLeadId ? "PUT" : "POST";
-
-      const res = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...leadForm,
-          followUpDate:
-            leadForm.status === "Follow Up"
-              ? leadForm.followUpDate
-              : null,
-          budget: leadForm.budget ? Number(leadForm.budget) : undefined,
-        }),
-
-
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        alert(data.message);
-        return;
+      if (editLeadId) {
+        await API.put(`/leads/${editLeadId}`, payload);
+        alert("Lead updated ✅");
+      } else {
+        await API.post("/leads", payload);
+        alert("Lead added ✅");
       }
-
-      alert(editLeadId ? "Lead updated ✅" : "Lead added ✅");
 
       setShowAddLead(false);
       setEditLeadId(null);
       fetchLeads();
     } catch (error) {
       console.error(error);
-      alert("Something went wrong");
+      alert(error.response?.data?.message || "Something went wrong");
     }
   };
+
 
   const totalPages = Math.ceil(leads.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;

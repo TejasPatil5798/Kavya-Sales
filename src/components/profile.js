@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FiUser } from "react-icons/fi";
+import API from "../api/api"; // ⭐ use axios instance
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -7,21 +8,11 @@ const Profile = () => {
 
   const fetchProfile = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-
-      const res = await fetch("http://localhost:5000/api/users/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to load profile");
-
+      const { data } = await API.get("/users/me");
       setUser(data);
     } catch (err) {
       console.error(err);
-      alert("Failed to load profile");
+      alert(err.response?.data?.message || "Failed to load profile");
     } finally {
       setLoading(false);
     }
@@ -48,7 +39,6 @@ const Profile = () => {
     >
       <h2 style={{ marginBottom: "24px" }}>My Profile</h2>
 
-      {/* PROFILE HEADER */}
       <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
         <div
           style={{
@@ -67,7 +57,7 @@ const Profile = () => {
         </div>
 
         <div>
-          <h3 style={{ margin: 0 }}>{user.fullName}</h3>
+          <h3 style={{ margin: 0 }}>{user.fullName || user.name}</h3>
           <p style={{ margin: "4px 0", color: "#64748b" }}>
             {isAdmin ? "System Administrator" : "Employee"}
           </p>
@@ -76,7 +66,6 @@ const Profile = () => {
 
       <hr style={{ margin: "24px 0" }} />
 
-      {/* COMMON FIELDS */}
       <div
         style={{
           display: "grid",
@@ -85,7 +74,6 @@ const Profile = () => {
           rowGap: "16px",
         }}
       >
-
         <div>
           <strong>Name</strong>
           <p>{user.fullName || user.name}</p>
@@ -106,7 +94,6 @@ const Profile = () => {
           <p>{user.role}</p>
         </div>
 
-        {/* ADMIN ONLY FIELDS */}
         {isAdmin && (
           <>
             <div>
@@ -121,7 +108,6 @@ const Profile = () => {
           </>
         )}
 
-        {/* EMPLOYEE ONLY FIELDS */}
         {!isAdmin && (
           <>
             <div>

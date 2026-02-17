@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
+import API from "../api/api";
 import "./dashboard.css";
 
 const Dashboard = () => {
@@ -17,18 +18,7 @@ const Dashboard = () => {
   // ✅ Fetch employee count from registered users (ONLY ADDITION)
   const fetchEmployeeCount = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-
-      const res = await fetch(
-        "http://localhost:5000/api/users/count/employees",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      const data = await res.json();
+      const { data } = await API.get("/users/count/employees");
       setEmployeeCount(data.count || 0);
     } catch (error) {
       console.error("Error fetching employee count", error);
@@ -38,16 +28,7 @@ const Dashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-
-      const res = await fetch(
-        "http://localhost:5000/api/dashboard/summary",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      const data = await res.json();
+      const { data } = await API.get("/dashboard/summary");
 
       setTotalTarget(data.totalTarget || 0);
       setTotalAchieved(data.totalAchieved || 0);
@@ -58,7 +39,6 @@ const Dashboard = () => {
       console.error("Dashboard fetch error", error);
     }
   };
-
 
   useEffect(() => {
     fetchEmployeeCount(); // ✅ ONLY CALL ADDED
@@ -166,33 +146,6 @@ const Dashboard = () => {
             <canvas id="salesChart"></canvas>
           </div>
         </div>
-
-        {/* <div className="card">
-          <div className="card-header">Recent Sales Achieved</div>
-          <div className="card-body">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Employee</th>
-                  <th>Target</th>
-                  <th>Achieved</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Amit</td>
-                  <td>₹50,000</td>
-                  <td>₹45,000</td>
-                </tr>
-                <tr>
-                  <td>Neha</td>
-                  <td>₹60,000</td>
-                  <td>₹58,000</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div> */}
       </div>
 
       {/* TOP PERFORMANCE */}

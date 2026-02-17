@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FiEdit, FiTrash2, FiX } from "react-icons/fi";
+import API from "../api/api"; // adjust path if needed
 import "./Employees.css";
 
 const Employees = () => {
@@ -42,11 +43,7 @@ const Employees = () => {
 
     const fetchEmployees = async () => {
         try {
-            const token = localStorage.getItem("authToken");
-            const res = await fetch("http://localhost:5000/api/users/all", {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            const data = await res.json();
+            const { data } = await API.get("/users/all");
             setEmployees(data);
             setFiltered(data);
         } catch {
@@ -75,11 +72,7 @@ const Employees = () => {
         if (!window.confirm("Delete this user?")) return;
 
         try {
-            const token = localStorage.getItem("authToken");
-            await fetch(`http://localhost:5000/api/users/${id}`, {
-                method: "DELETE",
-                headers: { Authorization: `Bearer ${token}` },
-            });
+            await API.delete(`/users/${id}`);
             setEmployees(employees.filter((e) => e._id !== id));
         } catch {
             alert("Delete failed");
@@ -138,8 +131,6 @@ const Employees = () => {
         if (!validateEdit()) return;
 
         try {
-            const token = localStorage.getItem("authToken");
-
             const payload = {
                 name: editingUser.name,
                 email: editingUser.email,
@@ -149,21 +140,10 @@ const Employees = () => {
                 isActive: editingUser.isActive,
             };
 
-
-            const res = await fetch(
-                `http://localhost:5000/api/users/${editingUser._id}`,
-                {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(payload),
-                }
+            const { data } = await API.put(
+                `/users/${editingUser._id}`,
+                payload
             );
-
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.message);
 
             setEmployees(
                 employees.map((u) =>
@@ -184,29 +164,12 @@ const Employees = () => {
         if (!window.confirm("Are you sure you want to reset this user's password?")) return;
 
         try {
-            const token = localStorage.getItem("authToken"); // ✅ FIXED
-
-            const res = await fetch(
-                `http://localhost:5000/api/users/reset-password/${editingUser._id}`,
-                {
-                    method: "POST",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                alert(data.message || "Failed to reset password");
-                return;
-            }
+            await API.post(`/users/reset-password/${editingUser._id}`);
 
             alert("Password reset successfully!\nNew Password: Welcome@123");
         } catch (error) {
             console.error(error);
-            alert("Something went wrong");
+            alert(error.response?.data?.message || "Something went wrong");
         }
     };
 
@@ -222,35 +185,20 @@ const Employees = () => {
         }
 
         try {
-            const token = localStorage.getItem("authToken");
-
-            const res = await fetch(
-                `http://localhost:5000/api/users/reset-password/${editingUser._id}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({
-                        password: passwordData.password,
-                    }),
-                }
+            await API.post(
+                `/users/reset-password/${editingUser._id}`,
+                { password: passwordData.password }
             );
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                setPasswordError(data.message || "Failed to reset password");
-                return;
-            }
 
             alert("Password updated successfully");
             setShowResetModal(false);
         } catch (err) {
-            setPasswordError("Something went wrong");
+            setPasswordError(
+                err.response?.data?.message || "Something went wrong"
+            );
         }
     };
+
 
     const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;

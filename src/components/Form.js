@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
+import API from "../api/api"; // ⭐ use axios instance
 import "./Form.css";
-
-const API_BASE = "http://localhost:5000";
 
 const Form = () => {
   const [form, setForm] = useState({
@@ -18,7 +17,6 @@ const Form = () => {
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
 
-  // 🔐 Auth check (admin only)
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -74,19 +72,7 @@ const Form = () => {
     };
 
     try {
-      const res = await fetch(`${API_BASE}/api/users/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.message || "Registration failed");
-      }
+      await API.post("/users/create", payload);
 
       setSuccess(true);
       setForm({
@@ -100,11 +86,9 @@ const Form = () => {
         password: "",
       });
 
-      setTimeout(() => {
-        setSuccess(false);
-      }, 3000);
+      setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
-      alert("❌ " + err.message);
+      alert("❌ " + (err.response?.data?.message || "Registration failed"));
     }
   };
 
@@ -153,7 +137,7 @@ const Form = () => {
   );
 };
 
-/* 🔁 Reusable Inputs */
+/* Reusable Inputs */
 const Field = ({ label, error, ...props }) => (
   <div className="field">
     <label>{label}</label>

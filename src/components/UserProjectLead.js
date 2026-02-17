@@ -1,6 +1,5 @@
-
-
 import { useEffect, useState } from "react";
+import API from "../api/api";   // ✅ ADD THIS
 import "./ProjectLead.css";
 
 const ITEMS_PER_PAGE = 10;
@@ -97,15 +96,7 @@ const UserProjectLead = () => {
   const fetchLeads = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("authToken");
-
-      const res = await fetch("http://localhost:5000/api/leads/my-leads", {
-
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const data = await res.json();
-
+      const { data } = await API.get("/leads/my-leads");
       setLeads(data || []);
       setCurrentPage(1);
     } catch (err) {
@@ -121,43 +112,27 @@ const UserProjectLead = () => {
 
   /* ================= SAVE (ADD / EDIT) ================= */
   const handleSaveLead = async () => {
-  if (!validateLeadForm()) return;
+    if (!validateLeadForm()) return;
 
-  try {
-    const token = localStorage.getItem("authToken");
+    try {
+      let response;
 
-    const url = editLeadId
-      ? `http://localhost:5000/api/leads/${editLeadId}`
-      : "http://localhost:5000/api/leads";
+      if (editLeadId) {
+        response = await API.put(`/leads/${editLeadId}`, { ...leadForm });
+      } else {
+        response = await API.post("/leads", { ...leadForm });
+      }
 
-    const method = editLeadId ? "PUT" : "POST";
+      alert("Lead saved successfully ✅");
 
-    const res = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ ...leadForm }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert(data.message || "Failed to save lead");
-      return;
+      setShowAddLead(false);
+      setEditLeadId(null);
+      setErrors({});
+      fetchLeads();
+    } catch (err) {
+      alert("Something went wrong");
     }
-
-    alert("Lead saved successfully ✅");
-
-    setShowAddLead(false);
-    setEditLeadId(null);
-    setErrors({});
-    fetchLeads();
-  } catch (err) {
-    alert("Something went wrong");
-  }
-};
+  };
 
 
   /* ================= EDIT ================= */
@@ -185,12 +160,7 @@ const UserProjectLead = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this lead?")) return;
 
-    const token = localStorage.getItem("authToken");
-
-    await fetch(`http://localhost:5000/api/leads/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await API.delete(`/leads/${id}`);
 
     fetchLeads();
   };
@@ -428,51 +398,51 @@ const UserProjectLead = () => {
               </small>
             )}
 
-           <input
-  placeholder="Client Company"
-  value={leadForm.clientCompany}
-  onChange={(e) => {
-    setLeadForm({ ...leadForm, clientCompany: e.target.value });
-    setErrors({ ...errors, clientCompany: "" });
-  }}
-  className={errors.clientCompany ? "error" : ""}
-/>
-{errors.clientCompany && (
-  <small style={{ color: "red" }}>
-    {errors.clientCompany}
-  </small>
-)}
+            <input
+              placeholder="Client Company"
+              value={leadForm.clientCompany}
+              onChange={(e) => {
+                setLeadForm({ ...leadForm, clientCompany: e.target.value });
+                setErrors({ ...errors, clientCompany: "" });
+              }}
+              className={errors.clientCompany ? "error" : ""}
+            />
+            {errors.clientCompany && (
+              <small style={{ color: "red" }}>
+                {errors.clientCompany}
+              </small>
+            )}
 
-           <input
-  placeholder="User Email"
-  value={leadForm.email}
-  onChange={(e) => {
-    setLeadForm({ ...leadForm, email: e.target.value });
-    setErrors({ ...errors, email: "" });
-  }}
-  className={errors.email ? "error" : ""}
-/>
-{errors.email && (
-  <small style={{ color: "red" }}>
-    {errors.email}
-  </small>
-)}
-<input
-  placeholder="Mobile"
-  maxLength={10}
-  value={leadForm.mobile}
-  onChange={(e) => {
-    const value = e.target.value.replace(/\D/g, "");
-    setLeadForm({ ...leadForm, mobile: value });
-    setErrors({ ...errors, mobile: "" });
-  }}
-  className={errors.mobile ? "error" : ""}
-/>
-{errors.mobile && (
-  <small style={{ color: "red" }}>
-    {errors.mobile}
-  </small>
-)}
+            <input
+              placeholder="User Email"
+              value={leadForm.email}
+              onChange={(e) => {
+                setLeadForm({ ...leadForm, email: e.target.value });
+                setErrors({ ...errors, email: "" });
+              }}
+              className={errors.email ? "error" : ""}
+            />
+            {errors.email && (
+              <small style={{ color: "red" }}>
+                {errors.email}
+              </small>
+            )}
+            <input
+              placeholder="Mobile"
+              maxLength={10}
+              value={leadForm.mobile}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                setLeadForm({ ...leadForm, mobile: value });
+                setErrors({ ...errors, mobile: "" });
+              }}
+              className={errors.mobile ? "error" : ""}
+            />
+            {errors.mobile && (
+              <small style={{ color: "red" }}>
+                {errors.mobile}
+              </small>
+            )}
 
             <input
               placeholder="Project Type"

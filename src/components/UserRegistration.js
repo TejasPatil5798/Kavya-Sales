@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
+import API from "../api/api";
 import "./UserRegistration.css";
-
-const API_BASE = "http://localhost:5000/api";
 
 const COMPANY_EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@kavyainfoweb\.com$/i;
 
@@ -140,17 +139,7 @@ const UserRegistration = () => {
     }
 
     try {
-      const res = await fetch(`${API_BASE}/users/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
+      await API.post("/users/create", payload);
 
       setSuccess(true);
       setErrors({});

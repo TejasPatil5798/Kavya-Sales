@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
+import API from "../api/api";   // ✅ ADD THIS
 import "./ResourceAllocation.css";
-
-const API_URL = "http://localhost:5000/api/allocations";
 
 const ResourceAllocation = () => {
   const barChartRef = useRef(null);
@@ -29,9 +28,8 @@ const ResourceAllocation = () => {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => setAllocations(data))
+    API.get("/allocations")
+      .then((res) => setAllocations(res.data))
       .catch(() => alert("Failed to load allocations"));
   }, []);
 
@@ -88,19 +86,9 @@ const ResourceAllocation = () => {
     if (!validateForm(allocation)) return;
 
     try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(allocation),
-      });
+      const res = await API.post("/allocations", allocation);
+      const saved = res.data;
 
-      if (!res.ok) {
-        const err = await res.json();
-        alert(err.message || "Save failed");
-        return;
-      }
-
-      const saved = await res.json();
       setAllocations([saved, ...allocations]);
 
       setAllocation({
@@ -119,14 +107,12 @@ const ResourceAllocation = () => {
     }
   };
 
-
-
   /* ================= DELETE ================= */
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this allocation?"))
       return;
 
-    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    await API.delete(`/allocations/${id}`);
     setAllocations(allocations.filter((a) => a._id !== id));
   };
 
@@ -444,13 +430,8 @@ const ResourceAllocation = () => {
 
                   if (!validateForm(editItem)) return;
 
-                  const res = await fetch(`${API_URL}/${editItem._id}`, {
-                    method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(editItem),
-                  });
-
-                  const updated = await res.json();
+                  const res = await API.put(`/allocations/${editItem._id}`, editItem);
+                  const updated = res.data;
 
                   setAllocations(
                     allocations.map((a) =>

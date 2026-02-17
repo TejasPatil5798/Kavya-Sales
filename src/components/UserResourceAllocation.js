@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import API from "../api/api";
 import "./UserResourceAllocation.css";
 
 const ITEMS_PER_PAGE = 10;
@@ -13,15 +14,7 @@ const UserResourceAllocation = () => {
   /* ================= FETCH DATA (READ ONLY) ================= */
   const fetchAllocations = async () => {
     try {
-      const token = localStorage.getItem("authToken");
-
-      const res = await fetch("http://localhost:5000/api/allocations", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await res.json();
+      const { data } = await API.get("/allocations");
 
       // ✅ MAP BACKEND FIELDS → EXISTING UI FIELDS (NO UI CHANGE)
       const mappedData = Array.isArray(data)
