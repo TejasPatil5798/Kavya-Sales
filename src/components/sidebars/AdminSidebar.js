@@ -39,7 +39,7 @@ const AdminSidebar = ({
       {/* 📦 SIDEBAR */}
       <aside className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
-          <img src="/images/A1.png" alt="Logo" className="sidebar-logo" />
+          <img src="/Images/A1.png" alt="Logo" className="sidebar-logo" />
         </div>
 
         <nav className="sidebar-menu" onClick={closeSidebar}>
