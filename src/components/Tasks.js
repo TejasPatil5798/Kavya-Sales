@@ -43,8 +43,6 @@ const Tasks = () => {
     }
   };
 
-};
-
 /* ================= FORM VALIDATION ================= */
 const validateForm = () => {
   const nameRegex = /^[A-Za-z\s]+$/;
