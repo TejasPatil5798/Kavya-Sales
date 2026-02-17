@@ -18,22 +18,22 @@ app.set("trust proxy", 1);
 /* ================= CORS ================= */
 const allowedOrigins = [
   "http://localhost:3000",
-  process.env.CLIENT_URL,
+  "https://kavya-sales-frontend-l99o.onrender.com",
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
       if (!origin || allowedOrigins.includes(origin)) {
-        return callback(null, true);
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
       }
-      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 
 
 /* ================= MIDDLEWARE ================= */
