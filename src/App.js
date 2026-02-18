@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 
 /* AUTH */
 import Login from "./components/login";
+import Signup from "./pages/Signup";
 
 /* ADMIN PAGES */
 import Dashboard from "./components/dashboard";
@@ -77,6 +78,7 @@ function App() {
               )
             }
           />
+          <Route path="/signup" element={<Signup />} />
 
           {/* BLOCK UNAUTHENTICATED USERS */}
           {!isAuthenticated && (

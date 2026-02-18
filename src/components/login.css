@@ -35,6 +35,7 @@
 
 /* Button */
 .login-card button {
+  margin-top: 10px;
   width: 100%;
   padding: 12px;
   background: #04364a;
@@ -67,4 +68,19 @@
   cursor: pointer;
   color: #555;
   font-size: 18px;
+}
+
+.signup-btn {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid #555;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.signup-btn:hover {
+  background: #f2f2f2;
 }
