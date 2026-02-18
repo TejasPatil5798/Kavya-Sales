@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #f5f7fb;
+  background: linear-gradient(135deg, #021024, #04364a);
 }
 
 .signup-card {
@@ -46,7 +46,7 @@
 .signup-card button {
   padding: 10px;
   border: none;
-  background: #007bff;
+  background: #04364a;
   color: white;
   border-radius: 6px;
   cursor: pointer;
@@ -60,4 +60,11 @@
   background: transparent !important;
   color: #333 !important;
   border: 1px solid #ccc !important;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: -6px;
+  margin-bottom: 6px;
 }
