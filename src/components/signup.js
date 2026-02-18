@@ -37,8 +37,8 @@ const Signup = () => {
     }
 
     // 3️⃣ Phone validation
-    if (!/^\d+$/.test(formData.phone)) {
-      newErrors.phone = "Phone must contain only numbers";
+    if (!/^\d{10}$/.test(formData.phone)) {
+      newErrors.phone = "Phone number must be exactly 10 digits";
     }
 
     // 4️⃣ Password length
@@ -59,8 +59,10 @@ const Signup = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Phone numbers only
-    if (name === "phone" && !/^\d*$/.test(value)) return;
+    if (name === "phone") {
+      // allow only numbers + max 10 digits
+      if (!/^\d*$/.test(value) || value.length > 10) return;
+    }
 
     setFormData({
       ...formData,
@@ -119,6 +121,7 @@ const Signup = () => {
             placeholder="Phone Number"
             value={formData.phone}
             onChange={handleChange}
+            maxLength={10}
             required
           />
           {errors.phone && <p className="error">{errors.phone}</p>}
@@ -159,9 +162,7 @@ const Signup = () => {
             />
             <span
               className="eye-icon"
-              onClick={() =>
-                setShowConfirmPassword(!showConfirmPassword)
-              }
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             >
               {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
             </span>
