@@ -138,6 +138,8 @@
 .data-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
+   vertical-align: middle;
 }
 
 .data-table th,
