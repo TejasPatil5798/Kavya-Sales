@@ -139,7 +139,6 @@
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-   vertical-align: middle;
 }
 
 .data-table th,
@@ -148,6 +147,7 @@
   text-align: left;
   border-bottom: 1px solid #eee;
   font-size: 14px;
+  vertical-align: middle;
 }
 
 .data-table th {
