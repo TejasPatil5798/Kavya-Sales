@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import "./login.css";
-import API from "../api/api";   // adjust path if needed
+import API from "../api/api"; // adjust path if needed
 
 const Login = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -47,7 +47,7 @@ const Login = ({ onLogin }) => {
           managerName: data.managerName || "-",
           permissions: data.permissions || "View Only",
           accessLevel: role === "admin" ? "Full Access" : "Limited Access",
-        })
+        }),
       );
 
       if (onLogin) onLogin();
@@ -91,6 +91,14 @@ const Login = ({ onLogin }) => {
           </div>
 
           <button type="submit">Login</button>
+
+          <button
+            type="button"
+            className="signup-btn"
+            onClick={() => navigate("/signup")}
+          >
+            Sign Up
+          </button>
         </form>
       </div>
     </div>
