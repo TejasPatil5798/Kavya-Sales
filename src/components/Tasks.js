@@ -84,10 +84,28 @@ const Tasks = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  /* ================= USER EXISTENCE CHECK ================= */
-  const validateUserExists = async () => {
+  /* ================= CREATE TASK ================= */
+  const handleCreateTask = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return; // 🔥 ADD THIS
+
     try {
-      // 🔥 adjust endpoint based on your backend
+      await API.post("/tasks", formData);
+
+      alert("Task created successfully ✅");
+
+      closeModal();
+      fetchTasks();
+    } catch (error) {
+      alert(error.response?.data?.message || "Something went wrong");
+    }
+  };
+
+  /* ================= USER EXISTENCE CHECK (EDIT ONLY) ================= */
+  const validateUserExistsForEdit = async () => {
+    try {
+      // 🔥 Adjust endpoint based on your backend
       const { data } = await API.get(`/users/check?email=${formData.userMail}`);
 
       if (!data.exists) {
@@ -108,35 +126,14 @@ const Tasks = () => {
     }
   };
 
-  /* ================= CREATE TASK ================= */
-  const handleCreateTask = async (e) => {
-    e.preventDefault();
-
-    if (!validateForm()) return;
-
-    const userExists = await validateUserExists();
-    if (!userExists) return;
-
-    try {
-      await API.post("/tasks", formData);
-
-      alert("Task created successfully ✅");
-
-      closeModal();
-      fetchTasks();
-    } catch (error) {
-      alert(error.response?.data?.message || "Something went wrong");
-    }
-  };
-
   /* ================= UPDATE TASK ================= */
   const handleUpdateTask = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    // 🔥 NEW — check user exists while editing too
-    const userExists = await validateUserExists();
+    // 🔥 NEW → check user exists during edit
+    const userExists = await validateUserExistsForEdit();
     if (!userExists) return;
 
     try {
