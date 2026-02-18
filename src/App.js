@@ -7,7 +7,7 @@ import Navbar from "./components/Navbar";
 
 /* AUTH */
 import Login from "./components/login";
-import Signup from "./pages/Signup";
+import Signup from "./components/signup";
 
 /* ADMIN PAGES */
 import Dashboard from "./components/dashboard";
