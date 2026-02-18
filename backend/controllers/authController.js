@@ -26,12 +26,12 @@ exports.login = async (req, res) => {
     // ✅ JWT WITH CORRECT ID FIELD
     const token = jwt.sign(
       {
-        id: user._id,          // 🔥 THIS IS THE KEY FIX
+        id: user._id, // 🔥 THIS IS THE KEY FIX
         role: user.role,
         email: user.email,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }
+      { expiresIn: "1d" },
     );
 
     // ✅ SEND COMPLETE USER DATA
@@ -54,28 +54,24 @@ exports.login = async (req, res) => {
 
 exports.signupUser = async (req, res) => {
   try {
-    const { name, email, phone, password } = req.body;
+    const { name, email, phone, password, role } = req.body;
 
-    // Check existing user
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    // Create user (password auto-hashed by model)
-    const newUser = new User({
+    const user = new User({
       name,
       email,
       phone,
       password,
-      role: "employee", // default role
+      role,
     });
 
-    await newUser.save();
+    await user.save();
 
-    res.status(201).json({
-      message: "Signup successful",
-    });
+    res.status(201).json({ message: "Signup successful" });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
