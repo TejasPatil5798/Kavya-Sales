@@ -104,27 +104,35 @@ const Tasks = () => {
 
   /* ================= USER EXISTENCE CHECK (EDIT ONLY) ================= */
   const validateUserExistsForEdit = async () => {
-    try {
-      // 🔥 Adjust endpoint based on your backend
-      const { data } = await API.get(`/users/check?email=${formData.userMail}`);
+  try {
+    const res = await API.get(
+      `/users/check?email=${formData.userMail}`
+    );
 
-      if (!data.exists) {
-        setErrors((prev) => ({
-          ...prev,
-          userMail: "User does not exist.",
-        }));
-        return false;
-      }
+    console.log("USER CHECK RESPONSE:", res.data); // 🔥 DEBUG
 
-      return true;
-    } catch {
+    // adjust based on backend response
+    if (!res.data.exists) {
       setErrors((prev) => ({
         ...prev,
-        userMail: "Unable to verify user.",
+        userMail: "User does not exist.",
       }));
       return false;
     }
-  };
+
+    return true;
+  } catch (error) {
+    console.log("USER CHECK ERROR:", error.response?.data || error);
+
+    setErrors((prev) => ({
+      ...prev,
+      userMail: error.response?.data?.message || "Unable to verify user.",
+    }));
+
+    return false;
+  }
+};
+
 
   /* ================= UPDATE TASK ================= */
   const handleUpdateTask = async (e) => {
