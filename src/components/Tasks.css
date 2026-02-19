@@ -133,11 +133,10 @@
 
 .table-responsive {
   width: 100%;
-  overflow-x: auto; 
 }
 
 .data-table {
-  min-width: 900px;
+  width: 100%;
   border-collapse: collapse;
 }
 
@@ -149,9 +148,6 @@
   font-size: 14px;
 }
 
-.data-table tr{
-  overflow-x: auto;}
-
 .data-table th {
   background: #f4f6f8;
   font-weight: 600;
@@ -161,11 +157,8 @@
 .note-cell {
   max-width: 120px;
   white-space: nowrap;
-}
-
-.user-mail-cell{
-  max-width: 150px;
-  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .overdue {
