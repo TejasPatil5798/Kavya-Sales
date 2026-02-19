@@ -148,6 +148,9 @@
   font-size: 14px;
 }
 
+.data-table td{
+  overflow-x: auto;}
+
 .data-table th {
   background: #f4f6f8;
   font-weight: 600;
@@ -157,15 +160,11 @@
 .note-cell {
   max-width: 120px;
   white-space: nowrap;
-  overflow-x: auto; /* 🔥 horizontal scroll */
-  overflow-y: hidden;
 }
 
-.user-mail-cell {
-  max-width: 250px;
+.user-mail-cell{
+  max-width: 150px;
   white-space: nowrap;
-  overflow-x: auto; /* 🔥 horizontal scroll */
-  overflow-y: hidden;
 }
 
 .overdue {
