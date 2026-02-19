@@ -97,13 +97,29 @@ exports.deleteUser = async (req, res) => {
 /* =====================
    ADMIN → UPDATE USER
    ===================== */
+/* =====================
+   ADMIN → UPDATE USER
+   ===================== */
 exports.updateUser = async (req, res) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    ).select("-password");
+    const { email } = req.body;
+
+    // 🔥 1️⃣ Check if email already exists for another user
+    if (email) {
+      const existingUser = await User.findOne({ email });
+
+      if (existingUser && existingUser._id.toString() !== req.params.id) {
+        return res.status(400).json({
+          message: "User with this email already exists",
+        });
+      }
+    }
+
+    // 🔥 2️⃣ Proceed with update
+    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    }).select("-password");
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
@@ -115,7 +131,10 @@ exports.updateUser = async (req, res) => {
     });
   } catch (err) {
     console.error("Update error:", err);
-    res.status(500).json({ message: "Failed to update user" });
+
+    res.status(500).json({
+      message: "Failed to update user",
+    });
   }
 };
 
