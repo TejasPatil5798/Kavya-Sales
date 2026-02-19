@@ -133,10 +133,11 @@
 
 .table-responsive {
   width: 100%;
+  overflow-x: auto; 
 }
 
 .data-table {
-  width: 100%;
+  min-width: 900px;
   border-collapse: collapse;
 }
 
