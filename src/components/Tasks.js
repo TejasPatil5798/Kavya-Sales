@@ -320,7 +320,7 @@ const Tasks = () => {
               {paginatedTasks.map((task) => (
                 <tr key={task._id} className={isOverdue(task) ? "overdue" : ""}>
                   <td>{task.client}</td>
-                  <td>{task.userMail}</td>
+                  <td className="user-mail-cell">{task.userMail}</td>
                   <td>{task.taskType}</td>
                   <td>{task.taskDate}</td>
                   <td className="note-cell">{task.note}</td>

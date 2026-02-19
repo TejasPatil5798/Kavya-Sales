@@ -161,6 +161,13 @@
   text-overflow: ellipsis;
 }
 
+.user-mail-cell{
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .overdue {
   background: #ffe6e6;
 }
