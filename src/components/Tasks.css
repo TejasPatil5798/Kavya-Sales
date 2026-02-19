@@ -157,15 +157,15 @@
 .note-cell {
   max-width: 120px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-x: auto; /* 🔥 horizontal scroll */
+  overflow-y: hidden;
 }
 
-.user-mail-cell{
+.user-mail-cell {
   max-width: 250px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow-x: auto; /* 🔥 horizontal scroll */
+  overflow-y: hidden;
 }
 
 .overdue {
