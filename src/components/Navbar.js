@@ -7,6 +7,7 @@ const Navbar = ({ onLogout }) => {
   const [open, setOpen] = useState(false);
   const [displayName, setDisplayName] = useState("User");
   const navigate = useNavigate();
+  const role = localStorage.getItem("role");
 
   // ✅ LOAD USER NAME SAFELY
   useEffect(() => {
@@ -16,12 +17,7 @@ const Navbar = ({ onLogout }) => {
       try {
         const user = JSON.parse(storedUser);
 
-        setDisplayName(
-          user?.name ||
-          user?.fullName ||
-          user?.email ||
-          "User"
-        );
+        setDisplayName(user?.name || user?.fullName || user?.email || "User");
       } catch (error) {
         console.error("Navbar user parse error", error);
         setDisplayName("User");
@@ -61,9 +57,9 @@ const Navbar = ({ onLogout }) => {
 
       {/* RIGHT SIDE */}
       <div className="navbar-right">
-        <button className="icon-btn">
+        {/* <button className="icon-btn">
           <FiBell />
-        </button>
+        </button> */}
 
         <div className="profile-wrapper">
           <div
@@ -81,9 +77,11 @@ const Navbar = ({ onLogout }) => {
                 <FiUser /> My Profile
               </button>
 
-              <button onClick={goToSettings}>
-                <FiSettings /> Settings
-              </button>
+              {role === "admin" && (
+                <button onClick={goToSettings}>
+                  <FiSettings /> Settings
+                </button>
+              )}
 
               <hr />
 
