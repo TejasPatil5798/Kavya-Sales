@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FiEdit, FiTrash2, FiX } from "react-icons/fi";
+import { FiEdit, FiTrash2, FiX, FiEye, FiEyeOff } from "react-icons/fi";
 import API from "../api/api"; // adjust path if needed
 import "./Employees.css";
 
@@ -22,6 +22,8 @@ const Employees = () => {
     password: "",
     confirmPassword: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const ITEMS_PER_PAGE = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -482,26 +484,42 @@ const Employees = () => {
               <FiX onClick={() => setShowResetModal(false)} />
             </div>
 
-            <input
-              type="password"
-              placeholder="New Password"
-              value={passwordData.password}
-              onChange={(e) =>
-                setPasswordData({ ...passwordData, password: e.target.value })
-              }
-            />
+            <div className="password-field">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="New Password"
+                value={passwordData.password}
+                onChange={(e) =>
+                  setPasswordData({ ...passwordData, password: e.target.value })
+                }
+              />
+              <span
+                className="eye-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FiEyeOff /> : <FiEye />}
+              </span>
+            </div>
 
-            <input
-              type="password"
-              placeholder="Confirm Password"
-              value={passwordData.confirmPassword}
-              onChange={(e) =>
-                setPasswordData({
-                  ...passwordData,
-                  confirmPassword: e.target.value,
-                })
-              }
-            />
+            <div className="password-field">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm Password"
+                value={passwordData.confirmPassword}
+                onChange={(e) =>
+                  setPasswordData({
+                    ...passwordData,
+                    confirmPassword: e.target.value,
+                  })
+                }
+              />
+              <span
+                className="eye-icon"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+              </span>
+            </div>
 
             {passwordError && (
               <small className="error-text">{passwordError}</small>

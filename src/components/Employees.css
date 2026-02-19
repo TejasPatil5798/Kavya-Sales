@@ -103,7 +103,9 @@
   padding: 6px;
   border-radius: 6px;
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    background 0.15s ease;
 }
 
 .edit-btn {
@@ -395,7 +397,7 @@
 }
 
 .emp-card.purple {
-  background: linear-gradient(135deg, #7e22ce, #a855f7 );
+  background: linear-gradient(135deg, #7e22ce, #a855f7);
 }
 
 .emp-card.green {
@@ -404,4 +406,28 @@
 
 .emp-card:hover {
   transform: translateY(-4px);
+}
+
+.password-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-field input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 12px;
+  cursor: pointer;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.eye-icon:hover {
+  color: #000;
 }
