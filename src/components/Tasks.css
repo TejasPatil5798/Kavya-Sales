@@ -133,10 +133,13 @@
 
 .table-responsive {
   width: 100%;
+  overflow-x: auto;
+  margin-top: 15px;
 }
 
 .data-table {
   width: 100%;
+  min-width: 900px;
   border-collapse: collapse;
 }
 
@@ -146,12 +149,12 @@
   text-align: left;
   border-bottom: 1px solid #eee;
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .data-table th {
   background: #f4f6f8;
   font-weight: 600;
-  white-space: nowrap;
 }
 
 .note-cell {
