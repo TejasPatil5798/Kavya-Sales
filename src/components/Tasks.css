@@ -148,7 +148,7 @@
   font-size: 14px;
 }
 
-.data-table td{
+.data-table tr{
   overflow-x: auto;}
 
 .data-table th {
