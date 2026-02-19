@@ -365,7 +365,7 @@ const Employees = () => {
             />
 
             {errors.email && (
-              <small className="error-text">{errors.email}</small>
+              <small className="error-text">{err.response?.data?.message || "Update failed"}</small>
             )}
 
             <input
