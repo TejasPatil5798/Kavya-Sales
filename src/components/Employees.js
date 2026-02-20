@@ -494,7 +494,7 @@ const Employees = () => {
                 }
               />
               <span
-                className="eye-icon"
+                className="emp-eye-icon"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <FiEyeOff /> : <FiEye />}
@@ -514,7 +514,7 @@ const Employees = () => {
                 }
               />
               <span
-                className="eye-icon"
+                className="emp-eye-icon"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               >
                 {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
