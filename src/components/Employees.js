@@ -6,12 +6,13 @@ import "./Employees.css";
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [filtered, setFiltered] = useState([]);
+
   const [filters, setFilters] = useState({
     role: "",
     status: "",
     team: "",
   });
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [editingUser, setEditingUser] = useState(null);
   const [errors, setErrors] = useState({}); // ✅ NEW
 
@@ -39,7 +40,7 @@ const Employees = () => {
   useEffect(() => {
     applyFilters();
     setCurrentPage(1);
-  }, [filters, employees]);
+  }, [filters, employees, searchTerm]);
 
   const fetchEmployees = async () => {
     try {
@@ -50,18 +51,36 @@ const Employees = () => {
       alert("Failed to load employees");
     }
   };
-
   const applyFilters = () => {
     let data = [...employees];
 
-    if (filters.role) data = data.filter((e) => e.role === filters.role);
+    // ✅ ROLE FILTER
+    if (filters.role) {
+      data = data.filter((e) => e.role === filters.role);
+    }
 
-    if (filters.status)
+    // ✅ STATUS FILTER
+    if (filters.status) {
       data = data.filter((e) =>
-        filters.status === "active" ? e.isActive : !e.isActive,
+        filters.status === "active" ? e.isActive : !e.isActive
       );
+    }
 
-    if (filters.team) data = data.filter((e) => e.team === filters.team);
+    // ✅ TEAM FILTER
+    if (filters.team) {
+      data = data.filter((e) => e.team === filters.team);
+    }
+
+    // ✅ SEARCH FILTER (NEW)
+    if (searchTerm.trim()) {
+      const lower = searchTerm.toLowerCase();
+      data = data.filter(
+        (e) =>
+          e.name?.toLowerCase().includes(lower) ||
+          e.email?.toLowerCase().includes(lower) ||
+          e.phone?.includes(lower)
+      );
+    }
 
     setFiltered(data);
   };
@@ -201,6 +220,7 @@ const Employees = () => {
     <div className="employees-page fade-in">
       <h2>Employees</h2>
 
+
       {/* DASHBOARD CARDS */}
       <div className="employee-cards">
         <div className="emp-card blue">
@@ -217,6 +237,15 @@ const Employees = () => {
           <h4>Total Users</h4>
           <h2>{totalUsers}</h2>
         </div>
+      </div>
+      {/* SEARCH BAR */}
+      <div className="employee-search">
+        <input
+          type="text"
+          placeholder="Search by Name, Email or Mobile..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
 
       {/* FILTER BAR */}

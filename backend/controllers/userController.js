@@ -77,11 +77,18 @@ exports.resetPassword = async (req, res) => {
 /* =====================
    ADMIN → GET ALL USERS
    ===================== */
+/* =====================
+   ADMIN → GET ALL USERS
+   ===================== */
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
+    const users = await User.find()
+      .sort({ createdAt: -1 })   // ✅ NEWEST FIRST
+      .select("-password");
+
     res.json(users);
-  } catch {
+  } catch (err) {
+    console.error("Fetch users error:", err);
     res.status(500).json({ message: "Failed to fetch users" });
   }
 };
