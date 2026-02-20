@@ -419,7 +419,7 @@
   padding-right: 40px;
 }
 
-/* .emp-eye-icon {
+.emp-eye-icon {
   position: absolute;
   right: 12px;
   cursor: pointer;
@@ -427,7 +427,7 @@
   display: flex;
   align-items: center;
   top: 20px;
-} */
+}
 
 .eye-icon:hover {
   color: #000;
