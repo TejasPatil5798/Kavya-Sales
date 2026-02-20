@@ -155,10 +155,12 @@ const UserRegistration = () => {
       });
       setShowPassword(false);
     } catch (err) {
-      alert(err.message || "Failed to register user");
-      setErrors({ email: message });   // 👈 show below email field
+  const message =
+    err.response?.data?.message || "Failed to register user";
+
+  setErrors({ email: message });  // show error below email field
   setSuccess(false);
-    }
+}
   };
 
   return (
