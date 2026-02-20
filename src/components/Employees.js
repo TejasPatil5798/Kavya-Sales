@@ -239,6 +239,7 @@ const Employees = () => {
         </div>
       </div>
       {/* SEARCH BAR */}
+      <div className="top-controls">
       <div className="employee-search">
         <input
           type="text"
@@ -274,6 +275,8 @@ const Employees = () => {
           <option>Team B</option>
           <option>Team C</option>
         </select>
+      </div>
+
       </div>
 
       {/* TABLE */}

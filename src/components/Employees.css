@@ -448,3 +448,9 @@
 .employee-search input:focus {
   border-color: #4f46e5;
 }
+
+.top-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
