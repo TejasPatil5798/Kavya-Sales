@@ -156,6 +156,8 @@ const UserRegistration = () => {
       setShowPassword(false);
     } catch (err) {
       alert(err.message || "Failed to register user");
+      setErrors({ email: message });   // 👈 show below email field
+  setSuccess(false);
     }
   };
 
