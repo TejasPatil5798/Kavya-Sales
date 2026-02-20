@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 
 /* =====================
    ADMIN → CREATE USER
-   ===================== */
+===================== */
 exports.createUser = async (req, res) => {
   try {
     const {
@@ -17,15 +17,35 @@ exports.createUser = async (req, res) => {
       monthlySalesTarget,
     } = req.body;
 
-    const exists = await User.findOne({ email });
-    if (exists) {
-      return res.status(400).json({ message: "User already exists" });
+    // ✅ Name validation
+    if (!name || !/^[A-Za-z\s]+$/.test(name)) {
+      return res.status(400).json({
+        message: "Name must contain only letters",
+      });
+    }
+
+    // ✅ Email duplicate check
+    const emailExists = await User.findOne({ email });
+    if (emailExists) {
+      return res.status(400).json({
+        message: "Email id already exists",
+      });
+    }
+
+    // ✅ Phone duplicate check
+    if (phone) {
+      const phoneExists = await User.findOne({ phone });
+      if (phoneExists) {
+        return res.status(400).json({
+          message: "Mobile number already exists",
+        });
+      }
     }
 
     const user = await User.create({
       name,
       email,
-      password, // 🔐 will be hashed by schema
+      password,
       role,
       phone,
       team,
@@ -33,7 +53,10 @@ exports.createUser = async (req, res) => {
       monthlySalesTarget,
     });
 
-    res.status(201).json({ message: "User created successfully", user });
+    res.status(201).json({
+      message: "User created successfully",
+      user,
+    });
   } catch (err) {
     console.error("Create user error:", err);
     res.status(500).json({ message: "Server error" });
@@ -42,15 +65,15 @@ exports.createUser = async (req, res) => {
 
 /* =====================
    ADMIN → RESET PASSWORD
-   ===================== */
+===================== */
 exports.resetPassword = async (req, res) => {
   try {
     const { password } = req.body;
 
     if (!password || password.length < 6) {
-      return res
-        .status(400)
-        .json({ message: "Password must be at least 6 characters" });
+      return res.status(400).json({
+        message: "Password must be at least 6 characters",
+      });
     }
 
     const user = await User.findById(req.params.id);
@@ -58,32 +81,23 @@ exports.resetPassword = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // ✅ SET PLAIN PASSWORD
-    // Schema pre-save hook will hash it
     user.password = password;
-
-    await user.save(); // 🔥 THIS MUST WORK
+    await user.save();
 
     res.json({ message: "Password updated successfully" });
   } catch (error) {
-    console.error("🔥 Reset password error:", error.message);
-    res.status(500).json({
-      message: "Server error",
-      error: error.message, // 👈 helps debugging
-    });
+    console.error("Reset password error:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
 /* =====================
    ADMIN → GET ALL USERS
-   ===================== */
-/* =====================
-   ADMIN → GET ALL USERS
-   ===================== */
+===================== */
 exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find()
-      .sort({ createdAt: -1 })   // ✅ NEWEST FIRST
+      .sort({ createdAt: -1 }) // newest first
       .select("-password");
 
     res.json(users);
@@ -95,38 +109,85 @@ exports.getAllUsers = async (req, res) => {
 
 /* =====================
    ADMIN → DELETE USER
-   ===================== */
+===================== */
 exports.deleteUser = async (req, res) => {
-  await User.findByIdAndDelete(req.params.id);
-  res.json({ message: "User deleted" });
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: "User deleted successfully" });
+  } catch (err) {
+    console.error("Delete error:", err);
+    res.status(500).json({ message: "Delete failed" });
+  }
 };
 
 /* =====================
    ADMIN → UPDATE USER
-   ===================== */
-/* =====================
-   ADMIN → UPDATE USER
-   ===================== */
+===================== */
 exports.updateUser = async (req, res) => {
   try {
-    const { email } = req.body;
+    const {
+      name,
+      email,
+      phone,
+      role,
+      team,
+      monthlyCallTarget,
+      monthlySalesTarget,
+      isActive,
+    } = req.body;
 
-    // 🔥 1️⃣ Check if email already exists for another user
+    // ✅ Name validation
+    if (name && !/^[A-Za-z\s]+$/.test(name)) {
+      return res.status(400).json({
+        message: "Name must contain only letters",
+      });
+    }
+
+    // ✅ Email duplicate check
     if (email) {
       const existingUser = await User.findOne({ email });
 
-      if (existingUser && existingUser._id.toString() !== req.params.id) {
+      if (
+        existingUser &&
+        existingUser._id.toString() !== req.params.id
+      ) {
         return res.status(400).json({
-          message: "User with this email already exists",
+          message: "Email id already exists",
         });
       }
     }
 
-    // 🔥 2️⃣ Proceed with update
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    }).select("-password");
+    // ✅ Phone duplicate check
+    if (phone) {
+      const phoneExists = await User.findOne({ phone });
+
+      if (
+        phoneExists &&
+        phoneExists._id.toString() !== req.params.id
+      ) {
+        return res.status(400).json({
+          message: "Mobile number already exists",
+        });
+      }
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        name,
+        email,
+        phone,
+        role,
+        team,
+        monthlyCallTarget,
+        monthlySalesTarget,
+        isActive,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    ).select("-password");
 
     if (!updatedUser) {
       return res.status(404).json({ message: "User not found" });
@@ -138,7 +199,6 @@ exports.updateUser = async (req, res) => {
     });
   } catch (err) {
     console.error("Update error:", err);
-
     res.status(500).json({
       message: "Failed to update user",
     });
@@ -147,10 +207,10 @@ exports.updateUser = async (req, res) => {
 
 /* =====================
    USER → PROFILE
-   ===================== */
+===================== */
 exports.getProfile = async (req, res) => {
   try {
-    const userId = req.user.id || req.user._id; // 🔥 FIX
+    const userId = req.user.id || req.user._id;
 
     const user = await User.findById(userId).select("-password");
 
@@ -167,7 +227,7 @@ exports.getProfile = async (req, res) => {
 
 /* =====================
    CHECK USER BY EMAIL
-   ===================== */
+===================== */
 exports.checkUserByEmail = async (req, res) => {
   try {
     const { email } = req.query;

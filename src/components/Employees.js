@@ -150,9 +150,18 @@ const Employees = () => {
       const payload = {
         name: editingUser.name,
         email: editingUser.email,
-        phone: editingUser.phone, // ✅ ADD THIS
+        phone: editingUser.phone,
         role: editingUser.role,
-        team: editingUser.role === "employee" ? editingUser.team : "",
+        team:
+          editingUser.role === "employee" ? editingUser.team : "",
+        monthlyCallTarget:
+          editingUser.role === "employee"
+            ? editingUser.monthlyCallTarget
+            : null,
+        monthlySalesTarget:
+          editingUser.role === "employee"
+            ? editingUser.monthlySalesTarget
+            : null,
         isActive: editingUser.isActive,
       };
 
@@ -240,42 +249,42 @@ const Employees = () => {
       </div>
       {/* SEARCH BAR */}
       <div className="top-controls">
-      <div className="employee-search">
-        <input
-          type="text"
-          placeholder="Search by Name, Email or Mobile..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+        <div className="employee-search">
+          <input
+            type="text"
+            placeholder="Search by Name, Email or Mobile..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
 
-      {/* FILTER BAR */}
-      <div className="filter-bar">
-        <select
-          onChange={(e) => setFilters({ ...filters, role: e.target.value })}
-        >
-          <option value="">All Roles</option>
-          <option value="admin">Admin</option>
-          <option value="employee">Employee</option>
-        </select>
+        {/* FILTER BAR */}
+        <div className="filter-bar">
+          <select
+            onChange={(e) => setFilters({ ...filters, role: e.target.value })}
+          >
+            <option value="">All Roles</option>
+            <option value="admin">Admin</option>
+            <option value="employee">Employee</option>
+          </select>
 
-        <select
-          onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-        >
-          <option value="">All Status</option>
-          <option value="active">Active</option>
-          <option value="inactive">Inactive</option>
-        </select>
+          <select
+            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+          >
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
 
-        <select
-          onChange={(e) => setFilters({ ...filters, team: e.target.value })}
-        >
-          <option value="">All Teams</option>
-          <option>Team A</option>
-          <option>Team B</option>
-          <option>Team C</option>
-        </select>
-      </div>
+          <select
+            onChange={(e) => setFilters({ ...filters, team: e.target.value })}
+          >
+            <option value="">All Teams</option>
+            <option>Team A</option>
+            <option>Team B</option>
+            <option>Team C</option>
+          </select>
+        </div>
 
       </div>
 
@@ -369,9 +378,10 @@ const Employees = () => {
             <input
               required
               value={editingUser.name}
-              onChange={(e) =>
-                setEditingUser({ ...editingUser, name: e.target.value })
-              }
+              onChange={(e) => {
+                const value = e.target.value.replace(/[^A-Za-z\s]/g, "");
+                setEditingUser({ ...editingUser, name: value });
+              }}
               placeholder="Name"
               className={errors.name ? "error" : ""}
             />
@@ -455,6 +465,31 @@ const Employees = () => {
                 )}
               </>
             )}
+
+            <input
+              type="number"
+              placeholder="Monthly Call Target"
+              value={editingUser.monthlyCallTarget || ""}
+              onChange={(e) =>
+                setEditingUser({
+                  ...editingUser,
+                  monthlyCallTarget: e.target.value,
+                })
+              }
+            />
+
+            <input
+              type="number"
+              placeholder="Monthly Sales Target"
+              value={editingUser.monthlySalesTarget || ""}
+              onChange={(e) =>
+                setEditingUser({
+                  ...editingUser,
+                  monthlySalesTarget: e.target.value,
+                })
+              }
+            />
+
 
             <select
               value={editingUser.isActive}

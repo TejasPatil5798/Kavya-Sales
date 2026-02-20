@@ -6,6 +6,13 @@ const userSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
+      validate: {
+        validator: function (v) {
+          return /^[A-Za-z\s]+$/.test(v);
+        },
+        message: "Name must contain only letters",
+      },
     },
 
     email: {
@@ -27,10 +34,34 @@ const userSchema = new mongoose.Schema(
       default: "employee",
     },
 
-    phone: String,
-    team: String,
-    monthlyCallTarget: Number,
-    monthlySalesTarget: Number,
+    // ✅ UPDATED PHONE FIELD (UNIQUE)
+    phone: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+      validate: {
+        validator: function (v) {
+          return !v || /^[0-9]{10}$/.test(v);
+        },
+        message: "Mobile number must be exactly 10 digits",
+      },
+    },
+
+    team: {
+      type: String,
+      trim: true,
+    },
+
+    monthlyCallTarget: {
+      type: Number,
+      default: 0,
+    },
+
+    monthlySalesTarget: {
+      type: Number,
+      default: 0,
+    },
 
     isActive: {
       type: Boolean,
@@ -40,7 +71,7 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-/* 🔐 HASH PASSWORD (CORRECT WAY) */
+/* 🔐 HASH PASSWORD */
 userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
   this.password = await bcrypt.hash(this.password, 10);
