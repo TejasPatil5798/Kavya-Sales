@@ -416,7 +416,6 @@ const ProjectIntake = () => {
             />
             {errors.email && <small className="error">{errors.email}</small>}
             
-
             <input
               placeholder="Mobile"
               value={newProject.mobile}
