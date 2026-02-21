@@ -28,7 +28,7 @@ const projectSchema = new mongoose.Schema(
       match: [/^[0-9]{10}$/, "Mobile must be 10 digits"],
     },
 
-    projectType: {
+    projectName: {
       type: String,
       required: true,
     },

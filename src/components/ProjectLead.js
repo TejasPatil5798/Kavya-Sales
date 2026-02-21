@@ -34,7 +34,7 @@ const ProjectLead = () => {
     clientCompany: "",
     email: "",
     mobile: "",
-    projectType: "",
+    projectName: "",
     status: "Follow Up",
     followUpDate: "",
     timeline: {
@@ -80,8 +80,8 @@ const ProjectLead = () => {
     }
 
     // ✅ Project Name
-    if (!leadForm.projectType.trim()) {
-      newErrors.projectType = "Project name is required";
+    if (!leadForm.projectName.trim()) {
+      newErrors.projectName = "Project name is required";
     }
 
     // ✅ Status
@@ -158,7 +158,7 @@ const ProjectLead = () => {
       clientCompany: lead.clientCompany || "",
       email: lead.email || "",
       mobile: lead.mobile || "",
-      projectType: lead.projectType || "",
+      projectName: lead.projectName || "",
       status: lead.status || "Follow Up",
       followUpDate: lead.followUpDate ? lead.followUpDate.slice(0, 10) : "",
       timeline: {
@@ -347,7 +347,7 @@ const ProjectLead = () => {
                   <td>{lead.clientCompany}</td>
                   <td>{lead.email}</td>
                   <td>{lead.mobile}</td>
-                  <td>{lead.projectType}</td>
+                  <td>{lead.projectName}</td>
                   <td>{lead.status}</td>
                   <td>
                     {/* ✅ FIXED MORE BUTTON */}
@@ -469,9 +469,9 @@ const ProjectLead = () => {
 
             <input
               placeholder="Project Name"
-              value={leadForm.projectType}
+              value={leadForm.projectName}
               onChange={(e) =>
-                setLeadForm({ ...leadForm, projectType: e.target.value })
+                setLeadForm({ ...leadForm, projectName: e.target.value })
               }
             />
 

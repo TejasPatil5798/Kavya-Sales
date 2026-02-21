@@ -31,7 +31,7 @@ const ProjectIntake = () => {
     clientCompany: "",
     email: "",
     mobile: "",
-    projectType: "",
+    projectName: "",
     reference: "", // ✅ ADD THIS
     budget: "",
     followUpDate: "",
@@ -131,8 +131,8 @@ const ProjectIntake = () => {
     }
 
     // 5️⃣ Project Type
-    if (!project.projectType?.trim()) {
-      e.projectType = "Project type is required";
+    if (!project.projectName?.trim()) {
+      e.projectName = "Project name is required";
     }
 
     // 6️⃣ Budget (numbers only)
@@ -161,7 +161,7 @@ const ProjectIntake = () => {
         clientCompany: newProject.clientCompany,
         email: newProject.email,
         mobile: newProject.mobile,
-        projectType: newProject.projectType,
+        projectName: newProject.projectName,
         reference: newProject.reference,
         budget: newProject.budget,
         remarks: newProject.remarks,
@@ -175,7 +175,7 @@ const ProjectIntake = () => {
         clientCompany: "",
         email: "",
         mobile: "",
-        projectType: "",
+        projectName: "",
         reference: "",
         budget: "",
         followUpDate: "",
@@ -210,7 +210,7 @@ const ProjectIntake = () => {
         clientCompany: editProject.clientCompany,
         email: editProject.email,
         mobile: editProject.mobile,
-        projectType: editProject.projectType,
+        projectName: editProject.projectName,
         reference: editProject.reference,
         budget: editProject.budget,
         remarks: editProject.remarks,
@@ -293,7 +293,7 @@ const ProjectIntake = () => {
                   <td>{p.clientCompany}</td>
                   <td>{p.email}</td>
                   <td>{p.mobile}</td>
-                  <td>{p.projectType}</td>
+                  <td>{p.projectName}</td>
                   <td>
                     <button
                       className="edit-btn"
@@ -415,7 +415,7 @@ const ProjectIntake = () => {
               }
             />
             {errors.email && <small className="error">{errors.email}</small>}
-            
+
             <input
               placeholder="Mobile"
               value={newProject.mobile}
@@ -429,10 +429,10 @@ const ProjectIntake = () => {
             {errors.mobile && <small className="error">{errors.mobile}</small>}
 
             <input
-              placeholder="Project Type"
-              value={newProject.projectType}
+              placeholder="Project Name"
+              value={newProject.projectName}
               onChange={(e) =>
-                setNewProject({ ...newProject, projectType: e.target.value })
+                setNewProject({ ...newProject, projectName: e.target.value })
               }
             />
 
@@ -575,9 +575,9 @@ const ProjectIntake = () => {
 
             <input
               placeholder="Project Type"
-              value={editProject.projectType || ""}
+              value={editProject.projectName || ""}
               onChange={(e) =>
-                setEditProject({ ...editProject, projectType: e.target.value })
+                setEditProject({ ...editProject, projectName: e.target.value })
               }
             />
 

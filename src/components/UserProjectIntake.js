@@ -93,7 +93,7 @@ const UserProjectIntake = () => {
                   <td>{p.clientCompany}</td>
                   <td>{p.email}</td>
                   <td>{p.mobile}</td>
-                  <td>{p.projectType}</td>
+                  <td>{p.projectName}</td>
                   <td>
                     <button
                       className="view-btn"

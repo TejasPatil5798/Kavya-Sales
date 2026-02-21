@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import API from "../api/api";   // ✅ ADD THIS
+import API from "../api/api"; // ✅ ADD THIS
 import "./ProjectLead.css";
 
 const ITEMS_PER_PAGE = 10;
@@ -30,7 +30,7 @@ const UserProjectLead = () => {
     clientCompany: "",
     email: "",
     mobile: "",
-    projectType: "",
+    projectName: "",
     status: "Follow Up",
     followUpDate: "",
     timeline: {
@@ -74,11 +74,11 @@ const UserProjectLead = () => {
       newErrors.mobile = "Mobile must be 10 digits";
     }
 
-    // ✅ Project Type (ONLY ALPHABETS)
-    if (!leadForm.projectType.trim()) {
-      newErrors.projectType = "Project Type is required";
-    } else if (!nameRegex.test(leadForm.projectType.trim())) {
-      newErrors.projectType = "Only alphabets are allowed.";
+    // ✅ Project Name (ONLY ALPHABETS)
+    if (!leadForm.projectName.trim()) {
+      newErrors.projectName = "Project Name is required";
+    } else if (!nameRegex.test(leadForm.projectName.trim())) {
+      newErrors.projectName = "Only alphabets are allowed.";
     }
 
     // ✅ Follow Up
@@ -90,7 +90,6 @@ const UserProjectLead = () => {
 
     return Object.keys(newErrors).length === 0;
   };
-
 
   /* ================= FETCH USER ASSIGNED LEADS ================= */
   const fetchLeads = async () => {
@@ -134,7 +133,6 @@ const UserProjectLead = () => {
     }
   };
 
-
   /* ================= EDIT ================= */
   const handleEdit = (lead) => {
     setEditLeadId(lead._id);
@@ -143,7 +141,7 @@ const UserProjectLead = () => {
       clientCompany: lead.clientCompany || "",
       email: lead.email || "",
       mobile: lead.mobile || "",
-      projectType: lead.projectType || "",
+      projectName: lead.projectName || "",
       status: lead.status || "Follow Up",
       followUpDate: lead.followUpDate?.slice(0, 10) || "",
       timeline: {
@@ -219,7 +217,6 @@ const UserProjectLead = () => {
   }
 `}
       </style>
-
 
       {/* 🔥 INTERNAL RESPONSIVE CSS */}
       <style>
@@ -301,7 +298,7 @@ const UserProjectLead = () => {
                 <th>Company</th>
                 <th> User Email</th>
                 <th>Mobile</th>
-                <th>Project Type</th>
+                <th>Project Name</th>
                 <th>Status</th>
                 <th>More</th>
                 <th>Actions</th>
@@ -314,7 +311,7 @@ const UserProjectLead = () => {
                   <td>{lead.clientCompany}</td>
                   <td>{lead.email}</td>
                   <td>{lead.mobile}</td>
-                  <td>{lead.projectType}</td>
+                  <td>{lead.projectName}</td>
                   <td>{lead.status}</td>
                   <td>
                     <button
@@ -357,7 +354,7 @@ const UserProjectLead = () => {
 
           {Array.from(
             { length: Math.ceil(leads.length / ITEMS_PER_PAGE) },
-            (_, i) => i + 1
+            (_, i) => i + 1,
           ).map((page) => (
             <button
               key={page}
@@ -375,7 +372,6 @@ const UserProjectLead = () => {
             Next
           </button>
         </div>
-
       </div>
 
       {/* ADD / EDIT MODAL – FULL FORM */}
@@ -393,9 +389,7 @@ const UserProjectLead = () => {
               className={errors.clientName ? "error" : ""}
             />
             {errors.clientName && (
-              <small style={{ color: "red" }}>
-                {errors.clientName}
-              </small>
+              <small style={{ color: "red" }}>{errors.clientName}</small>
             )}
 
             <input
@@ -408,9 +402,7 @@ const UserProjectLead = () => {
               className={errors.clientCompany ? "error" : ""}
             />
             {errors.clientCompany && (
-              <small style={{ color: "red" }}>
-                {errors.clientCompany}
-              </small>
+              <small style={{ color: "red" }}>{errors.clientCompany}</small>
             )}
 
             <input
@@ -423,9 +415,7 @@ const UserProjectLead = () => {
               className={errors.email ? "error" : ""}
             />
             {errors.email && (
-              <small style={{ color: "red" }}>
-                {errors.email}
-              </small>
+              <small style={{ color: "red" }}>{errors.email}</small>
             )}
             <input
               placeholder="Mobile"
@@ -439,25 +429,20 @@ const UserProjectLead = () => {
               className={errors.mobile ? "error" : ""}
             />
             {errors.mobile && (
-              <small style={{ color: "red" }}>
-                {errors.mobile}
-              </small>
+              <small style={{ color: "red" }}>{errors.mobile}</small>
             )}
 
             <input
-              placeholder="Project Type"
-              value={leadForm.projectType}
+              placeholder="Project Name"
+              value={leadForm.projectName}
               onChange={(e) =>
-                setLeadForm({ ...leadForm, projectType: e.target.value })
+                setLeadForm({ ...leadForm, projectName: e.target.value })
               }
-              className={errors.projectType ? "error" : ""}
+              className={errors.projectName ? "error" : ""}
             />
-            {errors.projectType && (
-              <small style={{ color: "red" }}>
-                {errors.projectType}
-              </small>
+            {errors.projectName && (
+              <small style={{ color: "red" }}>{errors.projectName}</small>
             )}
-
 
             <select
               value={leadForm.status}
@@ -506,7 +491,6 @@ const UserProjectLead = () => {
               </>
             )}
 
-
             <input
               placeholder="Budget"
               value={leadForm.budget}
@@ -524,7 +508,6 @@ const UserProjectLead = () => {
 
             <div className="filter-actions">
               <button type="button" className="apply" onClick={handleSaveLead}>
-
                 Save
               </button>
               <button
@@ -571,8 +554,12 @@ const UserProjectLead = () => {
               </>
             )}
 
-            <p><b>Budget:</b> {selectedLead.budget || "-"}</p>
-            <p><b>Reference:</b> {selectedLead.reference || "-"}</p>
+            <p>
+              <b>Budget:</b> {selectedLead.budget || "-"}
+            </p>
+            <p>
+              <b>Reference:</b> {selectedLead.reference || "-"}
+            </p>
 
             <button className="reset" onClick={() => setShowMoreModal(false)}>
               Close
@@ -585,4 +572,3 @@ const UserProjectLead = () => {
 };
 
 export default UserProjectLead;
-
