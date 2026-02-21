@@ -230,8 +230,8 @@ const ProjectLead = () => {
       lead.clientName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lead.clientCompany?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lead.mobile?.includes(searchTerm);
-      l.projectName?.toLowerCase().includes(searchTerm.toLowerCase());
+      lead.mobile?.includes(searchTerm) ||
+      lead.projectName?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus = statusFilter ? lead.status === statusFilter : true;
 
