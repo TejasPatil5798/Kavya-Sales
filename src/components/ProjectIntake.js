@@ -57,12 +57,14 @@ const ProjectIntake = () => {
   const projects = leads.filter((l) => {
     if (l.status !== "Follow Up") return false;
 
+    const search = searchTerm.toLowerCase();
+
     const matchesSearch =
-      l.clientName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      l.clientCompany?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      l.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      l.mobile?.includes(searchTerm);
-      l.projectName?.toLowerCase().includes(searchTerm.toLowerCase());
+      l.clientName?.toLowerCase().includes(search) ||
+      l.clientCompany?.toLowerCase().includes(search) ||
+      l.email?.toLowerCase().includes(search) ||
+      l.mobile?.includes(search) ||
+      l.projectName?.toLowerCase().includes(search);
 
     const matchesDate = followUpFilter
       ? l.followUpDate?.slice(0, 10) === followUpFilter
