@@ -104,11 +104,11 @@ const ProjectIntake = () => {
       e.clientCompany = "Minimum 3 characters required";
     }
 
-    // 3️⃣ Email
+    // 3️⃣ Email (Only alphanumeric + must end with @kavyainfoweb.com)
     if (!project.email?.trim()) {
       e.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(project.email)) {
-      e.email = "Invalid email format";
+    } else if (!/^[A-Za-z0-9]+@kavyainfoweb\.com$/.test(project.email)) {
+      e.email = "Email must contain @kavyainfoweb.com";
     }
 
     // 4️⃣ Mobile (exact 10 digits)
@@ -396,7 +396,10 @@ const ProjectIntake = () => {
               placeholder="Email"
               value={newProject.email}
               onChange={(e) =>
-                setNewProject({ ...newProject, email: e.target.value })
+                setNewProject({
+                  ...newProject,
+                  email: e.target.value.replace(/[^A-Za-z0-9@.]/g, ""),
+                })
               }
             />
             {errors.email && <small className="error">{errors.email}</small>}
@@ -537,7 +540,10 @@ const ProjectIntake = () => {
               placeholder="Email"
               value={editProject.email || ""}
               onChange={(e) =>
-                setEditProject({ ...editProject, email: e.target.value })
+                setEditProject({
+                  ...editProject,
+                  email: e.target.value.replace(/[^A-Za-z0-9@.]/g, ""),
+                })
               }
             />
             {errors.email && <small className="error">{errors.email}</small>}
