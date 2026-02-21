@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react"; 
-import API from "../api/api";   // ✅ ADD THIS
+import { useEffect, useRef, useState } from "react";
+import API from "../api/api"; // ✅ ADD THIS
 import "./ProjectLead.css";
 
 const ITEMS_PER_PAGE = 10;
@@ -15,11 +15,11 @@ const STATUS_OPTIONS = [
 ];
 
 const ProjectLead = () => {
-
-
   const [showFilter, setShowFilter] = useState(false);
   const [showAddLead, setShowAddLead] = useState(false);
   const [showMoreModal, setShowMoreModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
 
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,6 @@ const ProjectLead = () => {
     budget: "",
     reference: "",
   });
-
 
   const todayDate = new Date().toISOString().split("T")[0];
 
@@ -109,7 +108,7 @@ const ProjectLead = () => {
         leadForm.timeline.startDate &&
         leadForm.timeline.endDate &&
         new Date(leadForm.timeline.startDate) >
-        new Date(leadForm.timeline.endDate)
+          new Date(leadForm.timeline.endDate)
       ) {
         newErrors.timeline = "End date cannot be before start date";
       }
@@ -133,8 +132,6 @@ const ProjectLead = () => {
     return true;
   };
 
-
-
   /* ================= FETCH LEADS ================= */
   const fetchLeads = async () => {
     try {
@@ -148,7 +145,6 @@ const ProjectLead = () => {
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     fetchLeads();
@@ -164,9 +160,7 @@ const ProjectLead = () => {
       mobile: lead.mobile || "",
       projectType: lead.projectType || "",
       status: lead.status || "Follow Up",
-      followUpDate: lead.followUpDate
-        ? lead.followUpDate.slice(0, 10)
-        : "",
+      followUpDate: lead.followUpDate ? lead.followUpDate.slice(0, 10) : "",
       timeline: {
         startDate: lead.timeline?.startDate
           ? lead.timeline.startDate.slice(0, 10)
@@ -180,7 +174,6 @@ const ProjectLead = () => {
     });
     setErrors({});
     setShowAddLead(true);
-
   };
 
   /* ================= DELETE ================= */
@@ -210,9 +203,7 @@ const ProjectLead = () => {
       const payload = {
         ...leadForm,
         followUpDate:
-          leadForm.status === "Follow Up"
-            ? leadForm.followUpDate
-            : null,
+          leadForm.status === "Follow Up" ? leadForm.followUpDate : null,
         budget: leadForm.budget ? Number(leadForm.budget) : undefined,
       };
 
@@ -233,18 +224,28 @@ const ProjectLead = () => {
     }
   };
 
-
-  const totalPages = Math.ceil(leads.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredLeads.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const sortedLeads = [...leads].sort(
-    (a, b) => getLeadSortDate(a) - getLeadSortDate(b)
+  const filteredLeads = leads.filter((lead) => {
+    const matchesSearch =
+      lead.clientName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.clientCompany?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.mobile?.includes(searchTerm);
+
+    const matchesStatus = statusFilter ? lead.status === statusFilter : true;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  const sortedLeads = [...filteredLeads].sort(
+    (a, b) => getLeadSortDate(a) - getLeadSortDate(b),
   );
 
   const paginatedLeads = sortedLeads.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
-
 
   const hideTimeline =
     leadForm.status === "Not Interested" ||
@@ -279,13 +280,41 @@ const ProjectLead = () => {
         </div>
       </div>
 
-      <div className="filter-bar top-bar">
+      <div
+        className="filter-bar top-bar"
+        style={{ display: "flex", gap: "10px", alignItems: "center" }}
+      >
+        {/* 🔍 SEARCH BOX */}
+        <input
+          type="text"
+          placeholder="Search by name, company, email..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          style={{ padding: "8px", width: "250px" }}
+        />
+
+        {/* 🎯 STATUS FILTER */}
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          style={{ padding: "8px" }}
+        >
+          <option value="">All Status</option>
+          {STATUS_OPTIONS.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>
+
+        {/* ➕ ADD LEAD BUTTON */}
         <button
           className="add-lead-btn"
           onClick={() => {
-            setEditLeadId(null); // ✅ ensure add mode
+            setEditLeadId(null);
             setShowAddLead(true);
           }}
+          style={{ marginLeft: "auto" }}
         >
           + Add Lead
         </button>
@@ -329,7 +358,10 @@ const ProjectLead = () => {
                     </button>
                   </td>
                   <td>
-                    <button className="edit-btn" onClick={() => handleEdit(lead)}>
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(lead)}
+                    >
                       Edit
                     </button>
                     <button
@@ -373,7 +405,6 @@ const ProjectLead = () => {
             </button>
           </div>
         )}
-
       </div>
 
       {/* ADD / EDIT MODAL (UNCHANGED UI) */}
@@ -392,7 +423,9 @@ const ProjectLead = () => {
                 })
               }
             />
-            {errors.clientName && <small className="error">{errors.clientName}</small>}
+            {errors.clientName && (
+              <small className="error">{errors.clientName}</small>
+            )}
 
             <input
               placeholder="Client Company"
@@ -404,8 +437,9 @@ const ProjectLead = () => {
                 })
               }
             />
-            {errors.clientCompany && <small className="error">{errors.clientCompany}</small>}
-
+            {errors.clientCompany && (
+              <small className="error">{errors.clientCompany}</small>
+            )}
 
             <input
               placeholder="User Email"
@@ -415,7 +449,6 @@ const ProjectLead = () => {
               }
             />
             {errors.email && <small className="error">{errors.email}</small>}
-
 
             <input
               placeholder="Mobile"
@@ -429,7 +462,6 @@ const ProjectLead = () => {
               }
             />
             {errors.mobile && <small className="error">{errors.mobile}</small>}
-
 
             <input
               placeholder="Project Name"
@@ -453,7 +485,6 @@ const ProjectLead = () => {
                   {s}
                 </option>
               ))}
-
             </select>
 
             {leadForm.status === "Follow Up" && (
@@ -475,7 +506,6 @@ const ProjectLead = () => {
                 )}
               </>
             )}
-
 
             {leadForm.status !== "Follow Up" && (
               <>
@@ -513,7 +543,6 @@ const ProjectLead = () => {
               </>
             )}
 
-
             <input
               placeholder="Budget"
               value={leadForm.budget}
@@ -525,7 +554,6 @@ const ProjectLead = () => {
               }
             />
             {errors.budget && <small className="error">{errors.budget}</small>}
-
 
             <input
               placeholder="Reference"
@@ -600,7 +628,6 @@ const ProjectLead = () => {
           </div>
         </div>
       )}
-
 
       {!hideTimeline && (
         <>

@@ -235,9 +235,9 @@ const ProjectIntake = () => {
               <tr>
                 <th>Client</th>
                 <th>Company</th>
-                <th>Email</th>
+                <th>User Email</th>
                 <th>Mobile</th>
-                <th>Project</th>
+                <th>Project Name</th>
                 <th>Actions</th>
               </tr>
             </thead>
