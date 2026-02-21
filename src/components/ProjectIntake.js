@@ -415,14 +415,7 @@ const ProjectIntake = () => {
               }
             />
             {errors.email && <small className="error">{errors.email}</small>}
-
-            <select>
-              {leads.map((l) => (
-                <option key={l._id} value={l.email}>
-                  {l.email}
-                </option>
-              ))}
-            </select>
+            
 
             <input
               placeholder="Mobile"
