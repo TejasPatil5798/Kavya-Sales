@@ -231,6 +231,7 @@ const ProjectLead = () => {
       lead.clientCompany?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lead.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       lead.mobile?.includes(searchTerm);
+      l.projectName?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesStatus = statusFilter ? lead.status === statusFilter : true;
 
@@ -291,7 +292,7 @@ const ProjectLead = () => {
         {/* 🔍 SEARCH BOX */}
         <input
           type="text"
-          placeholder="Search by name, company, email..."
+          placeholder="Search client, company, email, project..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           style={{ padding: "8px", width: "250px" }}

@@ -62,6 +62,7 @@ const ProjectIntake = () => {
       l.clientCompany?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       l.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       l.mobile?.includes(searchTerm);
+      l.projectName?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesDate = followUpFilter
       ? l.followUpDate?.slice(0, 10) === followUpFilter
@@ -251,7 +252,7 @@ const ProjectIntake = () => {
           {/* 🔍 SEARCH */}
           <input
             type="text"
-            placeholder="Search client, company, email..."
+            placeholder="Search client, company, email, project..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{ padding: "6px", width: "220px" }}
