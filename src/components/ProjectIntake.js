@@ -86,18 +86,22 @@ const ProjectIntake = () => {
   const validateProject = (project) => {
     const e = {};
 
-    // 1️⃣ Client Name (only characters)
+    // 1️⃣ Client Name (only letters, min 5 chars)
     if (!project.clientName?.trim()) {
       e.clientName = "Client name is required";
     } else if (!/^[A-Za-z\s]+$/.test(project.clientName)) {
       e.clientName = "Only characters allowed";
+    } else if (project.clientName.trim().length < 5) {
+      e.clientName = "Minimum 5 characters required";
     }
 
-    // 2️⃣ Client Company (only characters)
+    // 2️⃣ Client Company (only letters, min 3 chars)
     if (!project.clientCompany?.trim()) {
       e.clientCompany = "Company name is required";
     } else if (!/^[A-Za-z\s]+$/.test(project.clientCompany)) {
       e.clientCompany = "Only characters allowed";
+    } else if (project.clientCompany.trim().length < 3) {
+      e.clientCompany = "Minimum 3 characters required";
     }
 
     // 3️⃣ Email
@@ -361,10 +365,11 @@ const ProjectIntake = () => {
 
             <input
               placeholder="Client Name"
-              value={newProject.clientName}
+              maxLength={50}
+              value={editProject.clientName || ""}
               onChange={(e) =>
-                setNewProject({
-                  ...newProject,
+                setEditProject({
+                  ...editProject,
                   clientName: e.target.value.replace(/[^A-Za-z\s]/g, ""),
                 })
               }
@@ -500,22 +505,33 @@ const ProjectIntake = () => {
 
             <input
               placeholder="Client Name"
+              maxLength={50}
               value={editProject.clientName || ""}
               onChange={(e) =>
-                setEditProject({ ...editProject, clientName: e.target.value })
+                setEditProject({
+                  ...editProject,
+                  clientName: e.target.value.replace(/[^A-Za-z\s]/g, ""),
+                })
               }
             />
+            {errors.clientName && (
+              <small className="error">{errors.clientName}</small>
+            )}
 
             <input
               placeholder="Company"
+              maxLength={50}
               value={editProject.clientCompany || ""}
               onChange={(e) =>
                 setEditProject({
                   ...editProject,
-                  clientCompany: e.target.value,
+                  clientCompany: e.target.value.replace(/[^A-Za-z\s]/g, ""),
                 })
               }
             />
+            {errors.clientCompany && (
+              <small className="error">{errors.clientCompany}</small>
+            )}
 
             <input
               placeholder="Email"
@@ -524,14 +540,20 @@ const ProjectIntake = () => {
                 setEditProject({ ...editProject, email: e.target.value })
               }
             />
+            {errors.email && <small className="error">{errors.email}</small>}
 
             <input
               placeholder="Mobile"
+              maxLength={10}
               value={editProject.mobile || ""}
               onChange={(e) =>
-                setEditProject({ ...editProject, mobile: e.target.value })
+                setEditProject({
+                  ...editProject,
+                  mobile: e.target.value.replace(/\D/g, "").slice(0, 10),
+                })
               }
             />
+            {errors.mobile && <small className="error">{errors.mobile}</small>}
 
             <input
               placeholder="Project Type"
@@ -550,13 +572,17 @@ const ProjectIntake = () => {
             />
 
             <input
-              type="number"
+              type="text"
               placeholder="Budget"
               value={editProject.budget || ""}
               onChange={(e) =>
-                setEditProject({ ...editProject, budget: e.target.value })
+                setEditProject({
+                  ...editProject,
+                  budget: e.target.value.replace(/\D/g, ""),
+                })
               }
             />
+            {errors.budget && <small className="error">{errors.budget}</small>}
 
             <label>Follow Up Date</label>
             <input
@@ -573,6 +599,9 @@ const ProjectIntake = () => {
                 })
               }
             />
+            {errors.followUpDate && (
+              <small className="error">{errors.followUpDate}</small>
+            )}
 
             <div className="buttons">
               <button className="apply" onClick={handleUpdate}>

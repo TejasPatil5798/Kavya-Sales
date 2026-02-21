@@ -22,10 +22,6 @@
   display: block;
 }
 
-.error {
-  border: 1px solid red;
-}
-
 input, select {
   margin-bottom: 6px;
 }
