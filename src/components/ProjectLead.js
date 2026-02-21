@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react"; 
 import API from "../api/api";   // ✅ ADD THIS
 import "./ProjectLead.css";
+// created by tejas and neelesh written by tejas ....
 
 const ITEMS_PER_PAGE = 10;
 
