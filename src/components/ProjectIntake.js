@@ -130,7 +130,7 @@ const ProjectIntake = () => {
       e.mobile = "Mobile must be exactly 10 digits";
     }
 
-    // 5️⃣ Project Type
+    // 5️⃣ Project Name
     if (!project.projectName?.trim()) {
       e.projectName = "Project name is required";
     }
@@ -574,7 +574,7 @@ const ProjectIntake = () => {
             {errors.mobile && <small className="error">{errors.mobile}</small>}
 
             <input
-              placeholder="Project Type"
+              placeholder="Project Name"
               value={editProject.projectName || ""}
               onChange={(e) =>
                 setEditProject({ ...editProject, projectName: e.target.value })
