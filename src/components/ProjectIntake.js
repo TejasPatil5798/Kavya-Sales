@@ -3,7 +3,6 @@ import Chart from "chart.js/auto";
 import API from "../api/api"; // ✅ ADDED
 import "./ProjectIntake.css";
 
-
 const ITEMS_PER_PAGE = 10;
 
 const ProjectIntake = () => {
@@ -23,7 +22,8 @@ const ProjectIntake = () => {
   const [editProject, setEditProject] = useState(null);
 
   const [errors, setErrors] = useState({});
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [followUpFilter, setFollowUpFilter] = useState("");
 
   // ✅ ADD PROJECT STATE
   const [newProject, setNewProject] = useState({
@@ -32,13 +32,11 @@ const ProjectIntake = () => {
     email: "",
     mobile: "",
     projectType: "",
-    reference: "",   // ✅ ADD THIS
+    reference: "", // ✅ ADD THIS
     budget: "",
     followUpDate: "",
     remarks: "",
   });
-
-
 
   /* ================= FETCH LEADS ================= */
   const fetchLeads = async () => {
@@ -56,24 +54,33 @@ const ProjectIntake = () => {
   }, []);
 
   /* ================= FILTER LEAD → PROJECT ================= */
-  const projects = leads.filter(
-    (l) => l.status === "Follow Up"
-  );
+  const projects = leads.filter((l) => {
+    if (l.status !== "Follow Up") return false;
 
+    const matchesSearch =
+      l.clientName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      l.clientCompany?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      l.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      l.mobile?.includes(searchTerm);
 
+    const matchesDate = followUpFilter
+      ? l.followUpDate?.slice(0, 10) === followUpFilter
+      : true;
+
+    return matchesSearch && matchesDate;
+  });
 
   /* ================= PAGINATION ================= */
   const totalPages = Math.ceil(projects.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedProjects = projects.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
 
   useEffect(() => {
     setCurrentPage(1);
   }, [projects.length]);
-
 
   /* ================= VALIDATION ================= */
   const validateProject = (project) => {
@@ -124,11 +131,9 @@ const ProjectIntake = () => {
       e.followUpDate = "Follow up date is required";
     }
 
-
     setErrors(e);
     return Object.keys(e).length === 0;
   };
-
 
   /* ================= ADD PROJECT ================= */
   const handleAddProject = async () => {
@@ -179,7 +184,6 @@ const ProjectIntake = () => {
     }
   };
 
-
   /* ================= UPDATE ================= */
   const handleUpdate = async () => {
     if (!validateProject(editProject)) return;
@@ -206,7 +210,6 @@ const ProjectIntake = () => {
     }
   };
 
-
   return (
     <div className="intake-page">
       {/* KPI */}
@@ -223,9 +226,35 @@ const ProjectIntake = () => {
 
       {/* TABLE */}
       <div className="filter-card">
-        <div className="table-header">
-          <h3>Follow Up List</h3>
-          <button className="add-btn" onClick={() => setShowAddProject(true)}>
+        <div
+          className="table-header"
+          style={{ display: "flex", gap: "10px", alignItems: "center" }}
+        >
+          <h3 style={{ marginRight: "20px" }}>Follow Up List</h3>
+
+          {/* 🔍 SEARCH */}
+          <input
+            type="text"
+            placeholder="Search client, company, email..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ padding: "6px", width: "220px" }}
+          />
+
+          {/* 📅 FOLLOW UP DATE FILTER */}
+          <input
+            type="date"
+            value={followUpFilter}
+            onChange={(e) => setFollowUpFilter(e.target.value)}
+            style={{ padding: "6px" }}
+          />
+
+          {/* ➕ ADD BUTTON */}
+          <button
+            className="add-btn"
+            onClick={() => setShowAddProject(true)}
+            style={{ marginLeft: "auto" }}
+          >
             + Add Project
           </button>
         </div>
@@ -312,9 +341,7 @@ const ProjectIntake = () => {
           {/* Next */}
           <button
             disabled={currentPage === totalPages}
-            onClick={() =>
-              setCurrentPage((p) => Math.min(p + 1, totalPages))
-            }
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
           >
             Next ▶
           </button>
@@ -324,7 +351,6 @@ const ProjectIntake = () => {
             Page {currentPage} of {totalPages || 1}
           </span>
         </div>
-
       </div>
 
       {/* ================= ADD PROJECT MODAL ================= */}
@@ -343,7 +369,9 @@ const ProjectIntake = () => {
                 })
               }
             />
-            {errors.clientName && <small className="error">{errors.clientName}</small>}
+            {errors.clientName && (
+              <small className="error">{errors.clientName}</small>
+            )}
 
             <input
               placeholder="Company Name"
@@ -355,7 +383,9 @@ const ProjectIntake = () => {
                 })
               }
             />
-            {errors.clientCompany && <small className="error">{errors.clientCompany}</small>}
+            {errors.clientCompany && (
+              <small className="error">{errors.clientCompany}</small>
+            )}
 
             <input
               placeholder="Email"
@@ -371,7 +401,8 @@ const ProjectIntake = () => {
               value={newProject.mobile}
               onChange={(e) =>
                 setNewProject({
-                  ...newProject, mobile: e.target.value.replace(/\D/g, "").slice(0, 10)
+                  ...newProject,
+                  mobile: e.target.value.replace(/\D/g, "").slice(0, 10),
                 })
               }
             />
@@ -393,14 +424,14 @@ const ProjectIntake = () => {
               }
             />
 
-
             <input
               type="number"
               placeholder="Budget"
               value={newProject.budget}
               onChange={(e) =>
                 setNewProject({
-                  ...newProject, budget: e.target.value.replace(/\D/g, "")
+                  ...newProject,
+                  budget: e.target.value.replace(/\D/g, ""),
                 })
               }
             />
@@ -479,7 +510,10 @@ const ProjectIntake = () => {
               placeholder="Company"
               value={editProject.clientCompany || ""}
               onChange={(e) =>
-                setEditProject({ ...editProject, clientCompany: e.target.value })
+                setEditProject({
+                  ...editProject,
+                  clientCompany: e.target.value,
+                })
               }
             />
 
@@ -540,19 +574,14 @@ const ProjectIntake = () => {
               }
             />
 
-
             <div className="buttons">
               <button className="apply" onClick={handleUpdate}>
                 Update
               </button>
-              <button
-                className="reset"
-                onClick={() => setShowEditModal(false)}
-              >
+              <button className="reset" onClick={() => setShowEditModal(false)}>
                 Cancel
               </button>
             </div>
-
           </div>
         </div>
       )}
