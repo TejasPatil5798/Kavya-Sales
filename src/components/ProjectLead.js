@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react"; 
 import API from "../api/api";   // ✅ ADD THIS
 import "./ProjectLead.css";
-import "./ProjectLead.css";
-// created by tejas and neelesh written by tejas ....
 
 const ITEMS_PER_PAGE = 10;
 
@@ -82,9 +80,9 @@ const ProjectLead = () => {
       newErrors.mobile = "Mobile must be exactly 10 digits";
     }
 
-    // ✅ Project Type
+    // ✅ Project Name
     if (!leadForm.projectType.trim()) {
-      newErrors.projectType = "Project type is required";
+      newErrors.projectType = "Project name is required";
     }
 
     // ✅ Status
@@ -303,7 +301,7 @@ const ProjectLead = () => {
                 <th>Company</th>
                 <th>User Email</th>
                 <th>Mobile</th>
-                <th>Project Type</th>
+                <th>Project Name</th>
                 <th>Status</th>
                 <th>More</th>
                 <th>Actions</th>
@@ -434,7 +432,7 @@ const ProjectLead = () => {
 
 
             <input
-              placeholder="Project Type"
+              placeholder="Project Name"
               value={leadForm.projectType}
               onChange={(e) =>
                 setLeadForm({ ...leadForm, projectType: e.target.value })
