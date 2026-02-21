@@ -36,7 +36,7 @@ const UserRegistration = () => {
     password: "",
   });
 
-  const [errors, setErrors] = useState({})
+  const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -73,7 +73,6 @@ const UserRegistration = () => {
     } else if (!COMPANY_EMAIL_REGEX.test(form.email)) {
       e.email = "Email must end with @kavyainfoweb.com";
     }
-
 
     // ✅ Phone Validation
     if (!form.phone.trim()) {
@@ -116,7 +115,6 @@ const UserRegistration = () => {
     return true;
   };
 
-
   /* ================= SUBMIT ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -155,12 +153,19 @@ const UserRegistration = () => {
       });
       setShowPassword(false);
     } catch (err) {
-  const message =
-    err.response?.data?.message || "Failed to register user";
+      const message = err.response?.data?.message || "Failed to register user";
 
-  setErrors({ email: message });  // show error below email field
-  setSuccess(false);
-}
+      // Detect whether error is for phone or email
+      if (message.toLowerCase().includes("phone")) {
+        setErrors({ phone: message });
+      } else if (message.toLowerCase().includes("email")) {
+        setErrors({ email: message });
+      } else {
+        alert(message);
+      }
+
+      setSuccess(false);
+    }
   };
 
   return (
@@ -205,7 +210,6 @@ const UserRegistration = () => {
               error={errors.email}
             />
 
-
             <Input
               label="Phone Number"
               name="phone"
@@ -217,8 +221,13 @@ const UserRegistration = () => {
               error={errors.phone}
             />
 
-
-            <Select label="Role" name="role" value={form.role} onChange={handleChange} error={errors.role}>
+            <Select
+              label="Role"
+              name="role"
+              value={form.role}
+              onChange={handleChange}
+              error={errors.role}
+            >
               <option value="">Select Role</option>
               <option value="admin">Admin</option>
               <option value="employee">Employee</option>
@@ -226,15 +235,35 @@ const UserRegistration = () => {
 
             {form.role === "employee" && (
               <>
-                <Select label="Team Allocation" name="team" value={form.team} onChange={handleChange} error={errors.team}>
+                <Select
+                  label="Team Allocation"
+                  name="team"
+                  value={form.team}
+                  onChange={handleChange}
+                  error={errors.team}
+                >
                   <option value="">Select Team</option>
                   <option>Team A</option>
                   <option>Team B</option>
                   <option>Team C</option>
                 </Select>
 
-                <Input label="Monthly Call Target" name="callTarget" type="number" value={form.callTarget} onChange={handleChange} error={errors.callTarget} />
-                <Input label="Monthly Sales Target" name="monthlyTarget" type="number" value={form.monthlyTarget} onChange={handleChange} error={errors.monthlyTarget} />
+                <Input
+                  label="Monthly Call Target"
+                  name="callTarget"
+                  type="number"
+                  value={form.callTarget}
+                  onChange={handleChange}
+                  error={errors.callTarget}
+                />
+                <Input
+                  label="Monthly Sales Target"
+                  name="monthlyTarget"
+                  type="number"
+                  value={form.monthlyTarget}
+                  onChange={handleChange}
+                  error={errors.monthlyTarget}
+                />
               </>
             )}
 
@@ -270,11 +299,12 @@ const UserRegistration = () => {
           </div>
         </form>
 
-        {success && <div className="success-box">✅ User created successfully</div>}
+        {success && (
+          <div className="success-box">✅ User created successfully</div>
+        )}
       </div>
     </div>
   );
 };
 
 export default UserRegistration;
-
