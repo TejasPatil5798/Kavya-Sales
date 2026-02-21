@@ -96,25 +96,27 @@ const Employees = () => {
     }
   };
 
-  const handleRoleChange = (role) => {
-    setErrors({}); // ✅ clear errors on role change
+ const handleRoleChange = (role) => {
+  setErrors({});
 
-    if (role === "admin") {
-      setEditingUser({
-        ...editingUser,
-        role: "admin",
-        team: "",
-        monthlyCallTarget: null,
-        monthlySalesTarget: null,
-      });
-    } else {
-      setEditingUser({
-        ...editingUser,
-        role: "employee",
-        team: editingUser.team || "",
-      });
-    }
-  };
+  if (role === "admin") {
+    setEditingUser({
+      ...editingUser,
+      role: "admin",
+      team: "",
+      monthlyCallTarget: null,
+      monthlySalesTarget: null,
+    });
+  } else {
+    setEditingUser({
+      ...editingUser,
+      role: "employee",
+      team: editingUser.team || "",
+      monthlyCallTarget: editingUser.monthlyCallTarget || "",
+      monthlySalesTarget: editingUser.monthlySalesTarget || "",
+    });
+  }
+};
 
   /* ================= VALIDATION ================= */
   const validateEdit = () => {
@@ -449,7 +451,7 @@ const Employees = () => {
             {editingUser.role === "employee" && (
               <>
                 <select
-                  value={editingUser.team}
+                  value={editingUser.team || ""}
                   onChange={(e) =>
                     setEditingUser({ ...editingUser, team: e.target.value })
                   }
@@ -463,34 +465,34 @@ const Employees = () => {
                 {errors.team && (
                   <small className="error-text">{errors.team}</small>
                 )}
+
+                <input
+                  type="number"
+                  placeholder="Monthly Call Target"
+                  value={editingUser.monthlyCallTarget || ""}
+                  onChange={(e) =>
+                    setEditingUser({
+                      ...editingUser,
+                      monthlyCallTarget: e.target.value,
+                    })
+                  }
+                />
+
+                <input
+                  type="number"
+                  placeholder="Monthly Sales Target"
+                  value={editingUser.monthlySalesTarget || ""}
+                  onChange={(e) =>
+                    setEditingUser({
+                      ...editingUser,
+                      monthlySalesTarget: e.target.value,
+                    })
+                  }
+                />
               </>
             )}
 
-            <input
-              type="number"
-              placeholder="Monthly Call Target"
-              value={editingUser.monthlyCallTarget || ""}
-              onChange={(e) =>
-                setEditingUser({
-                  ...editingUser,
-                  monthlyCallTarget: e.target.value,
-                })
-              }
-            />
-
-            <input
-              type="number"
-              placeholder="Monthly Sales Target"
-              value={editingUser.monthlySalesTarget || ""}
-              onChange={(e) =>
-                setEditingUser({
-                  ...editingUser,
-                  monthlySalesTarget: e.target.value,
-                })
-              }
-            />
-
-
+        
             <select
               value={editingUser.isActive}
               onChange={(e) =>
