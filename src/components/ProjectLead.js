@@ -224,8 +224,7 @@ const ProjectLead = () => {
     }
   };
 
-  const totalPages = Math.ceil(filteredLeads.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  // 🔍 FILTER FIRST
   const filteredLeads = leads.filter((lead) => {
     const matchesSearch =
       lead.clientName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -238,9 +237,14 @@ const ProjectLead = () => {
     return matchesSearch && matchesStatus;
   });
 
+  // 🔄 SORT
   const sortedLeads = [...filteredLeads].sort(
     (a, b) => getLeadSortDate(a) - getLeadSortDate(b),
   );
+
+  // 📄 PAGINATION
+  const totalPages = Math.ceil(filteredLeads.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 
   const paginatedLeads = sortedLeads.slice(
     startIndex,
