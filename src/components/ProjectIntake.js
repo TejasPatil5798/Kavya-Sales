@@ -104,11 +104,23 @@ const ProjectIntake = () => {
       e.clientCompany = "Minimum 3 characters required";
     }
 
-    // 3️⃣ Email (Only alphanumeric + must end with @kavyainfoweb.com)
+    // 3️⃣ Email validation
     if (!project.email?.trim()) {
       e.email = "Email is required";
-    } else if (!/^[A-Za-z0-9]+@kavyainfoweb\.com$/.test(project.email)) {
+    }
+    // Must match company domain
+    else if (!/^[A-Za-z0-9]+@kavyainfoweb\.com$/.test(project.email)) {
       e.email = "Email must contain @kavyainfoweb.com";
+    }
+    // Must exist in registered users (leads list)
+    else {
+      const emailExists = leads.some(
+        (l) => l.email?.toLowerCase() === project.email.toLowerCase(),
+      );
+
+      if (!emailExists) {
+        e.email = "Only registered users allowed";
+      }
     }
 
     // 4️⃣ Mobile (exact 10 digits)
@@ -403,6 +415,14 @@ const ProjectIntake = () => {
               }
             />
             {errors.email && <small className="error">{errors.email}</small>}
+
+            <select>
+              {leads.map((l) => (
+                <option key={l._id} value={l.email}>
+                  {l.email}
+                </option>
+              ))}
+            </select>
 
             <input
               placeholder="Mobile"
