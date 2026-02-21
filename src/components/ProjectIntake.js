@@ -366,10 +366,10 @@ const ProjectIntake = () => {
             <input
               placeholder="Client Name"
               maxLength={50}
-              value={editProject.clientName || ""}
+              value={newProject.clientName}
               onChange={(e) =>
-                setEditProject({
-                  ...editProject,
+                setNewProject({
+                  ...newProject,
                   clientName: e.target.value.replace(/[^A-Za-z\s]/g, ""),
                 })
               }
