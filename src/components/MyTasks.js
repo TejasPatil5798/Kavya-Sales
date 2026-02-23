@@ -170,7 +170,7 @@ const MyTasks = () => {
     new Date(task.taskDate) < new Date() &&
     task.status !== "Completed";
 
-  if (loading) return <p style={{ padding: 20 }}>Loading tasks...</p>;/* ================= SEARCH + FILTER ================= */
+  /* ================= SEARCH + FILTER ================= */
   const filteredTasks = tasks.filter((task) => {
     const matchesStatus =
       statusFilter === "All" || task.status === statusFilter;
@@ -204,6 +204,8 @@ const MyTasks = () => {
   const pendingTasks = tasks.filter(t => t.status === "Pending").length;
   const inProgressTasks = tasks.filter(t => t.status === "In Progress").length;
   const completedTasks = tasks.filter(t => t.status === "Completed").length;
+
+  if (loading) return <p style={{ padding: 20 }}>Loading tasks...</p>;
 
   return (
     <div className="my-tasks">
