@@ -344,6 +344,27 @@ input, select {
 .view-modal-actions button:hover {
   background: #1e40af;
 }
+.allocation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+}
+
+.error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
 
 /* ANIMATION */
 @keyframes scaleIn {

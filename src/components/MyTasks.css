@@ -199,7 +199,7 @@
 
 /* OVERDUE ROW */
 .tasks-table tr.overdue {
-    background-color: #fff3f3;
+    background-color: transparent;
 }
 
 /* STATUS SELECT */

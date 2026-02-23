@@ -24,6 +24,8 @@ const UserProjectLead = () => {
   const [selectedLead, setSelectedLead] = useState(null);
   const [editLeadId, setEditLeadId] = useState(null);
   const [errors, setErrors] = useState({});
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   const [leadForm, setLeadForm] = useState({
     clientName: "",
@@ -113,22 +115,24 @@ const UserProjectLead = () => {
   const handleSaveLead = async () => {
     if (!validateLeadForm()) return;
 
+    if (!user || !user.id) {
+      alert("User not found. Please login again.");
+      return;
+    }
+
     try {
-      let response;
-
       if (editLeadId) {
-        response = await API.put(`/leads/${editLeadId}`, { ...leadForm });
+        await API.put(`/leads/${editLeadId}`, leadForm);
       } else {
-        response = await API.post("/leads", { ...leadForm });
+        await API.post("/leads", leadForm);
       }
-
-      alert("Lead saved successfully ✅");
 
       setShowAddLead(false);
       setEditLeadId(null);
       setErrors({});
       fetchLeads();
     } catch (err) {
+      console.error(err.response?.data || err);
       alert("Something went wrong");
     }
   };
@@ -139,7 +143,7 @@ const UserProjectLead = () => {
     setLeadForm({
       clientName: lead.clientName || "",
       clientCompany: lead.clientCompany || "",
-      email: lead.email || "",
+      email: user?.email || "",
       mobile: lead.mobile || "",
       projectName: lead.projectName || "",
       status: lead.status || "Follow Up",
@@ -164,8 +168,25 @@ const UserProjectLead = () => {
   };
 
   /* ================= PAGINATION ================= */
+  /* ================= SEARCH + FILTER ================= */
+  const filteredLeads = leads.filter((lead) => {
+    const matchesSearch =
+      lead.clientName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.clientCompany?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.projectName?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "All" || lead.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  /* ================= PAGINATION ================= */
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedLeads = leads.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const paginatedLeads = filteredLeads.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   return (
     <div className="projectlead-page">
@@ -275,16 +296,66 @@ const UserProjectLead = () => {
           <h3>—</h3>
         </div>
       </div>
-      <div className="filter-bar top-bar">
+      <div className="filter-bar top-bar" style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+
+        <input
+          type="text"
+          placeholder="Search by name, company, project..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
+          style={{
+            padding: "8px",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+            minWidth: "250px"
+          }}
+        />
+
+        <select
+          value={statusFilter}
+          onChange={(e) => {
+            setStatusFilter(e.target.value);
+            setCurrentPage(1);
+          }}
+          style={{
+            padding: "8px",
+            borderRadius: "6px",
+            border: "1px solid #ccc"
+          }}
+        >
+          <option value="All">All Status</option>
+          {STATUS_OPTIONS.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>
+
         <button
           className="add-lead-btn"
           onClick={() => {
             setEditLeadId(null);
+            setLeadForm({
+              clientName: "",
+              clientCompany: "",
+              email: user?.email || "",
+              mobile: "",
+              projectName: "",
+              status: "Follow Up",
+              followUpDate: "",
+              timeline: { startDate: "", endDate: "" },
+              budget: "",
+              reference: "",
+            });
             setShowAddLead(true);
           }}
         >
           + Add Lead
         </button>
+
       </div>
 
       <div className="filter-card">
@@ -353,7 +424,7 @@ const UserProjectLead = () => {
           </button>
 
           {Array.from(
-            { length: Math.ceil(leads.length / ITEMS_PER_PAGE) },
+            { length: Math.ceil(filteredLeads.length / ITEMS_PER_PAGE) },
             (_, i) => i + 1,
           ).map((page) => (
             <button
@@ -408,11 +479,8 @@ const UserProjectLead = () => {
             <input
               placeholder="User Email"
               value={leadForm.email}
-              onChange={(e) => {
-                setLeadForm({ ...leadForm, email: e.target.value });
-                setErrors({ ...errors, email: "" });
-              }}
-              className={errors.email ? "error" : ""}
+              disabled   // ✅ makes it non-editable
+              className="readonly-input"
             />
             {errors.email && (
               <small style={{ color: "red" }}>{errors.email}</small>
@@ -446,14 +514,46 @@ const UserProjectLead = () => {
 
             <select
               value={leadForm.status}
-              onChange={(e) =>
-                setLeadForm({ ...leadForm, status: e.target.value })
-              }
+              onChange={(e) => {
+                const newStatus = e.target.value;
+
+                setLeadForm({
+                  ...leadForm,
+                  status: newStatus,
+                  followUpDate: "",
+                  timeline: {
+                    startDate: "",
+                    endDate: "",
+                  },
+                });
+              }}
             >
+
               {STATUS_OPTIONS.map((s) => (
                 <option key={s}>{s}</option>
               ))}
             </select>
+            {leadForm.status === "Follow Up" && (
+              <>
+                <label>Follow Up Date</label>
+                <input
+                  type="date"
+                  min={todayDate}
+                  value={leadForm.followUpDate}
+                  onChange={(e) =>
+                    setLeadForm({
+                      ...leadForm,
+                      followUpDate: e.target.value,
+                    })
+                  }
+                />
+                {errors.followUpDate && (
+                  <small style={{ color: "red" }}>
+                    {errors.followUpDate}
+                  </small>
+                )}
+              </>
+            )}
 
             {leadForm.status !== "Follow Up" && (
               <>

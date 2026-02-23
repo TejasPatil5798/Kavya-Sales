@@ -10,6 +10,11 @@ const MyTasks = () => {
   const [showModal, setShowModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [editTaskId, setEditTaskId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const ITEMS_PER_PAGE = 10;
 
   const [formData, setFormData] = useState({
     client: "",
@@ -165,13 +170,42 @@ const MyTasks = () => {
     new Date(task.taskDate) < new Date() &&
     task.status !== "Completed";
 
-  if (loading) return <p style={{ padding: 20 }}>Loading tasks...</p>;
+  /* ================= SEARCH + FILTER ================= */
+  const filteredTasks = tasks.filter((task) => {
+    const matchesStatus =
+      statusFilter === "All" || task.status === statusFilter;
 
+    const text = `
+    ${task.client || ""}
+    ${task.userMail || ""}
+    ${task.taskType || ""}
+    ${task.note || ""}
+  `.toLowerCase();
+
+    const matchesSearch = text.includes(searchTerm.toLowerCase());
+
+    return matchesStatus && matchesSearch;
+  });
+
+
+  /* ================= PAGINATION ================= */
+  const totalPages = Math.ceil(filteredTasks.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const paginatedTasks = filteredTasks.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredTasks.length]);
   /* COUNTS */
-  const totalTasks = tasks.length;
+  const totalTasks = filteredTasks.length;
   const pendingTasks = tasks.filter(t => t.status === "Pending").length;
   const inProgressTasks = tasks.filter(t => t.status === "In Progress").length;
   const completedTasks = tasks.filter(t => t.status === "Completed").length;
+
+  if (loading) return <p style={{ padding: 20 }}>Loading tasks...</p>;
 
   return (
     <div className="my-tasks">
@@ -185,8 +219,52 @@ const MyTasks = () => {
         <div className="task-card completed"><p>Completed</p><h3>{completedTasks}</h3></div>
       </div>
 
-      {/* CREATE TASK BUTTON */}
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "10px",
+          marginBottom: "15px",
+        }}
+      >
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <input
+            type="text"
+            placeholder="Search client, type, mail..."
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+              setCurrentPage(1);
+            }}
+            style={{
+              padding: "8px",
+              borderRadius: "6px",
+              border: "1px solid #ccc",
+              minWidth: "220px",
+            }}
+          />
+
+          <select
+            value={statusFilter}
+            onChange={(e) => {
+              setStatusFilter(e.target.value);
+              setCurrentPage(1);
+            }}
+            style={{
+              padding: "8px",
+              borderRadius: "6px",
+              border: "1px solid #ccc",
+            }}
+          >
+            <option value="All">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+
         <button
           className="primary-btn"
           onClick={() => setShowModal(true)}
@@ -212,7 +290,7 @@ const MyTasks = () => {
               </tr>
             </thead>
             <tbody>
-              {tasks.map(task => (
+              {paginatedTasks.map(task => (
                 <tr key={task._id} className={isOverdue(task) ? "overdue" : ""}>
                   <td>{task.client}</td>
                   <td>{task.userMail}</td>
@@ -240,6 +318,40 @@ const MyTasks = () => {
               ))}
             </tbody>
           </table>
+          <div className="pagination">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            >
+              ◀ Prev
+            </button>
+
+            {Array.from({ length: totalPages }).map((_, i) => {
+              const page = i + 1;
+              return (
+                <button
+                  key={page}
+                  className={currentPage === page ? "active" : ""}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              );
+            })}
+
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() =>
+                setCurrentPage((p) => Math.min(p + 1, totalPages))
+              }
+            >
+              Next ▶
+            </button>
+
+            <span style={{ marginLeft: "10px" }}>
+              Page {currentPage} of {totalPages || 1}
+            </span>
+          </div>
         </div>
       )}
 

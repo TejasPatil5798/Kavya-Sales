@@ -10,6 +10,8 @@ const UserResourceAllocation = () => {
 
   const [showViewModal, setShowViewModal] = useState(false);
   const [selectedAllocation, setSelectedAllocation] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   /* ================= FETCH DATA (READ ONLY) ================= */
   const fetchAllocations = async () => {
@@ -41,17 +43,32 @@ const UserResourceAllocation = () => {
     fetchAllocations();
   }, []);
 
+  /* ================= SEARCH + FILTER ================= */
+  const filteredAllocations = allocations.filter((item) => {
+    const matchesStatus =
+      statusFilter === "All" || item.status === statusFilter;
+
+    const text = `
+    ${item.employeeName || ""}
+    ${item.projectName || ""}
+    ${item.role || ""}
+  `.toLowerCase();
+
+    const matchesSearch = text.includes(searchTerm.toLowerCase());
+
+    return matchesStatus && matchesSearch;
+  });
   /* ================= PAGINATION ================= */
-  const totalPages = Math.ceil(allocations.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredAllocations.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedAllocations = allocations.slice(
+  const paginatedAllocations = filteredAllocations.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [allocations.length]);
+  }, [filteredAllocations.length]);
 
   return (
     <div className="resource-page">
@@ -76,9 +93,52 @@ const UserResourceAllocation = () => {
 
       {/* TABLE */}
       <div className="filter-card">
-        <div className="table-header">
+        <div
+          className="table-header"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "10px",
+          }}
+        >
           <h3>Resource Allocation List</h3>
-          {/* ❌ NO ADD BUTTON FOR USER */}
+
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            <input
+              type="text"
+              placeholder="Search employee, project, role..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              style={{
+                padding: "8px",
+                borderRadius: "6px",
+                border: "1px solid #ccc",
+                minWidth: "250px",
+              }}
+            />
+
+            <select
+              value={statusFilter}
+              onChange={(e) => {
+                setStatusFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              style={{
+                padding: "8px",
+                borderRadius: "6px",
+                border: "1px solid #ccc",
+              }}
+            >
+              <option value="All">All Status</option>
+              <option value="Active">Active</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
         </div>
 
 
