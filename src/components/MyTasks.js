@@ -32,7 +32,11 @@ const MyTasks = () => {
   const fetchTasks = async () => {
     try {
       const res = await API.get("/tasks");
-      setTasks(res.data);
+
+      const user = JSON.parse(localStorage.getItem("user"));
+      const userTasks = res.data.filter((task) => task.userMail === user.email);
+
+      setTasks(userTasks);
     } catch (err) {
       console.error("Failed to load tasks", err);
     } finally {
@@ -79,7 +83,6 @@ const MyTasks = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-
   const handleCreateTask = async (e) => {
     e.preventDefault();
 
@@ -93,7 +96,6 @@ const MyTasks = () => {
       alert("Failed to create task");
     }
   };
-
 
   /* ================= UPDATE TASK ================= */
   const handleUpdateTask = async (e) => {
@@ -110,7 +112,6 @@ const MyTasks = () => {
     }
   };
 
-
   /* ================= STATUS UPDATE ================= */
   const updateStatus = async (taskId, status) => {
     try {
@@ -121,8 +122,6 @@ const MyTasks = () => {
       alert("Failed to update status");
     }
   };
-
-
 
   /* ================= EDIT ================= */
   const handleEdit = (task) => {
@@ -167,8 +166,7 @@ const MyTasks = () => {
   };
 
   const isOverdue = (task) =>
-    new Date(task.taskDate) < new Date() &&
-    task.status !== "Completed";
+    new Date(task.taskDate) < new Date() && task.status !== "Completed";
 
   /* ================= SEARCH + FILTER ================= */
   const filteredTasks = tasks.filter((task) => {
@@ -187,22 +185,29 @@ const MyTasks = () => {
     return matchesStatus && matchesSearch;
   });
 
-
   /* ================= PAGINATION ================= */
   const totalPages = Math.ceil(filteredTasks.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedTasks = filteredTasks.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
 
   useEffect(() => {
     setCurrentPage(1);
   }, [filteredTasks.length]);
+
   /* COUNTS */
-  const pendingTasks = filteredTasks.filter(t => t.status === "Pending").length;
-  const inProgressTasks = filteredTasks.filter(t => t.status === "In Progress").length;
-  const completedTasks = filteredTasks.filter(t => t.status === "Completed").length;
+  const totalTasks = filteredTasks.length;
+  const pendingTasks = filteredTasks.filter(
+    (t) => t.status === "Pending",
+  ).length;
+  const inProgressTasks = filteredTasks.filter(
+    (t) => t.status === "In Progress",
+  ).length;
+  const completedTasks = filteredTasks.filter(
+    (t) => t.status === "Completed",
+  ).length;
 
   if (loading) return <p style={{ padding: 20 }}>Loading tasks...</p>;
 
@@ -212,10 +217,22 @@ const MyTasks = () => {
 
       {/* CARDS */}
       <div className="task-cards">
-        <div className="task-card total"><p>Total Tasks</p><h3>{totalTasks}</h3></div>
-        <div className="task-card pending"><p>Pending</p><h3>{pendingTasks}</h3></div>
-        <div className="task-card progress"><p>In Progress</p><h3>{inProgressTasks}</h3></div>
-        <div className="task-card completed"><p>Completed</p><h3>{completedTasks}</h3></div>
+        <div className="task-card total">
+          <p>Total Tasks</p>
+          <h3>{totalTasks}</h3>
+        </div>
+        <div className="task-card pending">
+          <p>Pending</p>
+          <h3>{pendingTasks}</h3>
+        </div>
+        <div className="task-card progress">
+          <p>In Progress</p>
+          <h3>{inProgressTasks}</h3>
+        </div>
+        <div className="task-card completed">
+          <p>Completed</p>
+          <h3>{completedTasks}</h3>
+        </div>
       </div>
 
       <div
@@ -264,10 +281,7 @@ const MyTasks = () => {
           </select>
         </div>
 
-        <button
-          className="primary-btn"
-          onClick={() => setShowModal(true)}
-        >
+        <button className="primary-btn" onClick={() => setShowModal(true)}>
           + Create Task
         </button>
       </div>
@@ -289,7 +303,7 @@ const MyTasks = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedTasks.map(task => (
+              {paginatedTasks.map((task) => (
                 <tr key={task._id} className={isOverdue(task) ? "overdue" : ""}>
                   <td>{task.client}</td>
                   <td>{task.userMail}</td>
@@ -300,7 +314,7 @@ const MyTasks = () => {
                     <select
                       className="status-select"
                       value={task.status}
-                      onChange={e => updateStatus(task._id, e.target.value)}
+                      onChange={(e) => updateStatus(task._id, e.target.value)}
                     >
                       <option>Pending</option>
                       <option>In Progress</option>
@@ -308,8 +322,17 @@ const MyTasks = () => {
                     </select>
                   </td>
                   <td>
-                    <button className="edit-btn" onClick={() => handleEdit(task)}>Edit</button>
-                    <button className="delete-btn" onClick={() => handleDelete(task._id)} style={{ marginLeft: 6 }}>
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(task)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(task._id)}
+                      style={{ marginLeft: 6 }}
+                    >
                       Delete
                     </button>
                   </td>
@@ -339,10 +362,8 @@ const MyTasks = () => {
             })}
 
             <button
-              disabled={currentPage === totalPages}
-              onClick={() =>
-                setCurrentPage((p) => Math.min(p + 1, totalPages))
-              }
+              disabled={currentPage >= totalPages}
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
             >
               Next ▶
             </button>
@@ -374,7 +395,9 @@ const MyTasks = () => {
                   }
                 }}
               />
-              {errors.client && <small style={{ color: "red" }}>{errors.client}</small>}
+              {errors.client && (
+                <small style={{ color: "red" }}>{errors.client}</small>
+              )}
 
               <input
                 placeholder="Task Type"
@@ -386,11 +409,8 @@ const MyTasks = () => {
                 className={errors.taskType ? "error" : ""}
               />
               {errors.taskType && (
-                <small style={{ color: "red" }}>
-                  {errors.taskType}
-                </small>
+                <small style={{ color: "red" }}>{errors.taskType}</small>
               )}
-
 
               <input
                 type="date"
@@ -408,18 +428,23 @@ const MyTasks = () => {
                 <small style={{ color: "red" }}>{errors.taskDate}</small>
               )}
 
-
               <textarea
                 placeholder="Note"
                 value={formData.note}
-                onChange={e => setFormData({ ...formData, note: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, note: e.target.value })
+                }
               />
 
               <div className="modal-actions">
                 <button type="submit" className="primary-btn">
                   {isEdit ? "Update" : "Create"}
                 </button>
-                <button type="button" className="secondary-btn" onClick={closeModal}>
+                <button
+                  type="button"
+                  className="secondary-btn"
+                  onClick={closeModal}
+                >
                   Cancel
                 </button>
               </div>

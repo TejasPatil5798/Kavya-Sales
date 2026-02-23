@@ -37,15 +37,15 @@ const UserDashboard = () => {
 
   /* CREATE CHART */
   useEffect(() => {
+    if (chartInstance.current) {
+      chartInstance.current.destroy();
+    }
+
     if (!tasks.length) return;
 
     const completed = tasks.filter((t) => t.status === "Completed").length;
     const pending = tasks.filter((t) => t.status === "Pending").length;
     const inProgress = tasks.filter((t) => t.status === "In Progress").length;
-
-    if (chartInstance.current) {
-      chartInstance.current.destroy();
-    }
 
     chartInstance.current = new Chart(chartRef.current, {
       type: "doughnut",
