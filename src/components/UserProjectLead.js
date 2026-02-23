@@ -456,10 +456,41 @@ const UserProjectLead = () => {
 
             <select
               value={leadForm.status}
-              onChange={(e) =>
-                setLeadForm({ ...leadForm, status: e.target.value })
-              }
+              onChange={(e) => {
+                const newStatus = e.target.value;
+
+                setLeadForm({
+                  ...leadForm,
+                  status: newStatus,
+                  followUpDate: "",
+                  timeline: {
+                    startDate: "",
+                    endDate: "",
+                  },
+                });
+              }}
             >
+              {leadForm.status === "Follow Up" && (
+                <>
+                  <label>Follow Up Date</label>
+                  <input
+                    type="date"
+                    min={todayDate}
+                    value={leadForm.followUpDate}
+                    onChange={(e) =>
+                      setLeadForm({
+                        ...leadForm,
+                        followUpDate: e.target.value,
+                      })
+                    }
+                  />
+                  {errors.followUpDate && (
+                    <small style={{ color: "red" }}>
+                      {errors.followUpDate}
+                    </small>
+                  )}
+                </>
+              )}
               {STATUS_OPTIONS.map((s) => (
                 <option key={s}>{s}</option>
               ))}
