@@ -14,7 +14,8 @@ const UserDashboard = () => {
       const res = await API.get("/tasks");
 
       // Get logged in user from localStorage
-      const user = JSON.parse(localStorage.getItem("user"));
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      if (!user?.email) return;
 
       // Only this user's tasks
       const userTasks = res.data.filter((task) => task.userMail === user.email);
@@ -27,12 +28,16 @@ const UserDashboard = () => {
 
   useEffect(() => {
     fetchTasks();
+  }, []);
 
-    const interval = setInterval(() => {
+  useEffect(() => {
+    const handleFocus = () => {
       fetchTasks();
-    }, 5000); // refresh every 5 seconds
+    };
 
-    return () => clearInterval(interval);
+    window.addEventListener("focus", handleFocus);
+
+    return () => window.removeEventListener("focus", handleFocus);
   }, []);
 
   /* CREATE CHART */
