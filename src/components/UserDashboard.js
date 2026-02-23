@@ -3,6 +3,8 @@ import Chart from "chart.js/auto";
 import API from "../api/api";
 import "./UserDashboard.css";
 
+console.log("Dashboard tasks:", tasks);
+
 const UserDashboard = () => {
   const [tasks, setTasks] = useState([]);
   const chartRef = useRef(null);
@@ -20,15 +22,21 @@ const UserDashboard = () => {
 
   useEffect(() => {
     fetchTasks();
+
+    const interval = setInterval(() => {
+      fetchTasks();
+    }, 5000); // refresh every 5 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   /* CREATE CHART */
   useEffect(() => {
     if (!tasks.length) return;
 
-    const completed = tasks.filter(t => t.status === "Completed").length;
-    const pending = tasks.filter(t => t.status === "Pending").length;
-    const inProgress = tasks.filter(t => t.status === "In Progress").length;
+    const completed = tasks.filter((t) => t.status === "Completed").length;
+    const pending = tasks.filter((t) => t.status === "Pending").length;
+    const inProgress = tasks.filter((t) => t.status === "In Progress").length;
 
     if (chartInstance.current) {
       chartInstance.current.destroy();
@@ -41,11 +49,7 @@ const UserDashboard = () => {
         datasets: [
           {
             data: [completed, pending, inProgress],
-            backgroundColor: [
-              "#4CAF50",
-              "#FF9800",
-              "#2196F3"
-            ],
+            backgroundColor: ["#4CAF50", "#FF9800", "#2196F3"],
           },
         ],
       },
@@ -64,7 +68,7 @@ const UserDashboard = () => {
 
         <div className="card">
           <h3>Completed Tasks</h3>
-          <p>{tasks.filter(t => t.status === "Completed").length}</p>
+          <p>{tasks.filter((t) => t.status === "Completed").length}</p>
         </div>
 
         <div className="card">

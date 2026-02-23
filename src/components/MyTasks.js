@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import API from "../api/api";
 import "./MyTasks.css";
 
+console.log("MyTasks tasks:", tasks);
+
 const MyTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
