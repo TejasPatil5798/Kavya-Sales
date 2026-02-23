@@ -143,16 +143,18 @@ const ResourceAllocation = () => {
       <form className="allocation-form" onSubmit={handleSubmit}>
         <h4>Resource Allocation</h4>
 
-        <input
-          name="project_name"
-          placeholder="Project name"
-          value={allocation.project_name}
-          onChange={handleChange}
-        />
-        {errors.project_name && (
-          <small className="error-text">{errors.project_name}</small>
-        )}
-
+        <div className="form-group">
+          <input
+            name="project_name"
+            placeholder="Project name"
+            value={allocation.project_name}
+            onChange={handleChange}
+          />
+          {errors.project_name && (
+            <small className="error-text">{errors.project_name}</small>
+          )}
+        </div>
+           <div className="form-group">
         <input
           type="number"
           name="project_id"
@@ -163,7 +165,8 @@ const ResourceAllocation = () => {
         {errors.project_id && (
           <small className="error-text">{errors.project_id}</small>
         )}
-
+        </div>
+        <div className="form-group">
         <select
           name="it_team"
           value={allocation.it_team}
@@ -186,18 +189,22 @@ const ResourceAllocation = () => {
         {errors.it_team && (
           <small className="error-text">{errors.it_team}</small>
         )}
+          </div>
 
+         <div className="form-group"> 
         <input
           name="tl_name"
           placeholder="Team Lead name"
           value={allocation.tl_name}
           onChange={handleChange}
-          required
+
         />
         {errors.tl_name && (
           <small className="error-text">{errors.tl_name}</small>
         )}
+         </div>
 
+         <div className="form-group"> 
         <input
           type="date"
           name="start_date"
@@ -207,7 +214,9 @@ const ResourceAllocation = () => {
         {errors.start_date && (
           <small className="error-text">{errors.start_date}</small>
         )}
+        </div>
 
+        <div className="form-group"> 
         <input
           type="date"
           name="end_date"
@@ -218,6 +227,7 @@ const ResourceAllocation = () => {
         {errors.end_date && (
           <small className="error-text">{errors.end_date}</small>
         )}
+        </div>
 
         <button type="submit" className="save-btn">
           Save Allocation
