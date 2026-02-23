@@ -60,9 +60,9 @@ const UserProjectIntake = () => {
     startIndex + ITEMS_PER_PAGE
   );
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [projects.length]);
+ useEffect(() => {
+  setCurrentPage(1);
+}, [filteredProjects.length]);
 
   return (
     <div className="intake-page">
