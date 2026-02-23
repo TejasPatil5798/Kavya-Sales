@@ -3,8 +3,6 @@ import Chart from "chart.js/auto";
 import API from "../api/api";
 import "./UserDashboard.css";
 
-console.log("Dashboard tasks:", tasks);
-
 const UserDashboard = () => {
   const [tasks, setTasks] = useState([]);
   const chartRef = useRef(null);
@@ -14,7 +12,14 @@ const UserDashboard = () => {
   const fetchTasks = async () => {
     try {
       const res = await API.get("/tasks");
-      setTasks(res.data);
+
+      // Get logged in user from localStorage
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      // Only this user's tasks
+      const userTasks = res.data.filter((task) => task.userMail === user.email);
+
+      setTasks(userTasks);
     } catch (err) {
       console.error("Failed to load tasks", err);
     }

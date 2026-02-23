@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import API from "../api/api";
 import "./MyTasks.css";
 
-console.log("MyTasks tasks:", tasks);
-
 const MyTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -202,10 +200,9 @@ const MyTasks = () => {
     setCurrentPage(1);
   }, [filteredTasks.length]);
   /* COUNTS */
-  const totalTasks = filteredTasks.length;
-  const pendingTasks = tasks.filter(t => t.status === "Pending").length;
-  const inProgressTasks = tasks.filter(t => t.status === "In Progress").length;
-  const completedTasks = tasks.filter(t => t.status === "Completed").length;
+  const pendingTasks = filteredTasks.filter(t => t.status === "Pending").length;
+  const inProgressTasks = filteredTasks.filter(t => t.status === "In Progress").length;
+  const completedTasks = filteredTasks.filter(t => t.status === "Completed").length;
 
   if (loading) return <p style={{ padding: 20 }}>Loading tasks...</p>;
 
