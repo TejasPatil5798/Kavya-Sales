@@ -24,6 +24,8 @@ const UserProjectLead = () => {
   const [selectedLead, setSelectedLead] = useState(null);
   const [editLeadId, setEditLeadId] = useState(null);
   const [errors, setErrors] = useState({});
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   const [leadForm, setLeadForm] = useState({
     clientName: "",
@@ -110,30 +112,30 @@ const UserProjectLead = () => {
   }, []);
 
   /* ================= SAVE (ADD / EDIT) ================= */
- const handleSaveLead = async () => {
-  if (!validateLeadForm()) return;
+  const handleSaveLead = async () => {
+    if (!validateLeadForm()) return;
 
-  if (!user || !user.id) {
-    alert("User not found. Please login again.");
-    return;
-  }
-
-  try {
-    if (editLeadId) {
-      await API.put(`/leads/${editLeadId}`, leadForm);
-    } else {
-      await API.post("/leads", leadForm);
+    if (!user || !user.id) {
+      alert("User not found. Please login again.");
+      return;
     }
 
-    setShowAddLead(false);
-    setEditLeadId(null);
-    setErrors({});
-    fetchLeads();
-  } catch (err) {
-    console.error(err.response?.data || err);
-    alert("Something went wrong");
-  }
-};
+    try {
+      if (editLeadId) {
+        await API.put(`/leads/${editLeadId}`, leadForm);
+      } else {
+        await API.post("/leads", leadForm);
+      }
+
+      setShowAddLead(false);
+      setEditLeadId(null);
+      setErrors({});
+      fetchLeads();
+    } catch (err) {
+      console.error(err.response?.data || err);
+      alert("Something went wrong");
+    }
+  };
 
   /* ================= EDIT ================= */
   const handleEdit = (lead) => {
@@ -166,8 +168,25 @@ const UserProjectLead = () => {
   };
 
   /* ================= PAGINATION ================= */
+  /* ================= SEARCH + FILTER ================= */
+  const filteredLeads = leads.filter((lead) => {
+    const matchesSearch =
+      lead.clientName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.clientCompany?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.projectName?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === "All" || lead.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  /* ================= PAGINATION ================= */
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedLeads = leads.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  const paginatedLeads = filteredLeads.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
 
   return (
     <div className="projectlead-page">
@@ -277,33 +296,66 @@ const UserProjectLead = () => {
           <h3>—</h3>
         </div>
       </div>
-      <div className="filter-bar top-bar">
+      <div className="filter-bar top-bar" style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+
+        <input
+          type="text"
+          placeholder="Search by name, company, project..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            setCurrentPage(1);
+          }}
+          style={{
+            padding: "8px",
+            borderRadius: "6px",
+            border: "1px solid #ccc",
+            minWidth: "250px"
+          }}
+        />
+
+        <select
+          value={statusFilter}
+          onChange={(e) => {
+            setStatusFilter(e.target.value);
+            setCurrentPage(1);
+          }}
+          style={{
+            padding: "8px",
+            borderRadius: "6px",
+            border: "1px solid #ccc"
+          }}
+        >
+          <option value="All">All Status</option>
+          {STATUS_OPTIONS.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>
+
         <button
           className="add-lead-btn"
           onClick={() => {
             setEditLeadId(null);
-
             setLeadForm({
               clientName: "",
               clientCompany: "",
-              email: user?.email || "",   // ✅ autofill here
+              email: user?.email || "",
               mobile: "",
               projectName: "",
               status: "Follow Up",
               followUpDate: "",
-              timeline: {
-                startDate: "",
-                endDate: "",
-              },
+              timeline: { startDate: "", endDate: "" },
               budget: "",
               reference: "",
             });
-
             setShowAddLead(true);
           }}
         >
           + Add Lead
         </button>
+
       </div>
 
       <div className="filter-card">
@@ -372,7 +424,7 @@ const UserProjectLead = () => {
           </button>
 
           {Array.from(
-            { length: Math.ceil(leads.length / ITEMS_PER_PAGE) },
+            { length: Math.ceil(filteredLeads.length / ITEMS_PER_PAGE) },
             (_, i) => i + 1,
           ).map((page) => (
             <button
