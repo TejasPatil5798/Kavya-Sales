@@ -113,25 +113,34 @@ const UserProjectLead = () => {
   const handleSaveLead = async () => {
     if (!validateLeadForm()) return;
 
+    if (!user || !user._id) {
+      alert("User not found. Please login again.");
+      return;
+    }
+
     try {
       let response;
 
       if (editLeadId) {
-        response = await API.put(`/leads/${editLeadId}`, { ...leadForm });
+        response = await API.put(`/leads/${editLeadId}`, {
+          ...leadForm,
+        });
       } else {
-        response = await API.post("/leads", { ...leadForm });
+        response = await API.post("/leads", {
+          ...leadForm,
+          assignedUser: user._id,
+          createdBy: user._id,
+        });
       }
-
-      alert("Lead saved successfully ✅");
 
       setShowAddLead(false);
       setEditLeadId(null);
       setErrors({});
       fetchLeads();
     } catch (err) {
+      console.error(err.response?.data || err);
       alert("Something went wrong");
     }
-    console.log("Edit Lead ID:", editLeadId);
   };
 
   /* ================= EDIT ================= */
