@@ -131,6 +131,7 @@ const UserProjectLead = () => {
     } catch (err) {
       alert("Something went wrong");
     }
+    console.log("Edit Lead ID:", editLeadId);
   };
 
   /* ================= EDIT ================= */
