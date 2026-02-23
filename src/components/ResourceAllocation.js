@@ -26,6 +26,7 @@ const ResourceAllocation = () => {
   const ITEMS_PER_PAGE = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [errors, setErrors] = useState({});
+  const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
     API.get("/allocations")
@@ -38,12 +39,6 @@ const ResourceAllocation = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "end_date" && allocation.start_date) {
-      if (new Date(value) < new Date(allocation.start_date)) {
-        alert("End date cannot be before start date");
-        return;
-      }
-    }
 
     setAllocation({ ...allocation, [name]: value });
   };
@@ -125,6 +120,15 @@ const ResourceAllocation = () => {
     startIndex + ITEMS_PER_PAGE
   );
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <div className="resource-page">
       {/* KPI */}
@@ -154,79 +158,81 @@ const ResourceAllocation = () => {
             <small className="error-text">{errors.project_name}</small>
           )}
         </div>
-           <div className="form-group">
-        <input
-          type="number"
-          name="project_id"
-          placeholder="Project ID"
-          value={allocation.project_id}
-          onChange={handleChange}
-        />
-        {errors.project_id && (
-          <small className="error-text">{errors.project_id}</small>
-        )}
+        <div className="form-group">
+          <input
+            type="number"
+            name="project_id"
+            placeholder="Project ID"
+            value={allocation.project_id}
+            onChange={handleChange}
+          />
+          {errors.project_id && (
+            <small className="error-text">{errors.project_id}</small>
+          )}
         </div>
         <div className="form-group">
-        <select
-          name="it_team"
-          value={allocation.it_team}
-          onChange={handleChange}
-        >
+          <select
+            name="it_team"
+            value={allocation.it_team}
+            onChange={handleChange}
+          >
 
 
-          <option value="">Select IT Team</option>
-          <option>Team 1</option>
-          <option>Team 2</option>
-          <option>Team 3</option>
-          <option>Team 4</option>
-          <option>Team 5</option>
-          <option>Team 6</option>
-          <option>Team 7</option>
-          <option>Team 8</option>
-          <option>Team 9</option>
-          <option>Team 10</option>
-        </select>
-        {errors.it_team && (
-          <small className="error-text">{errors.it_team}</small>
-        )}
-          </div>
-
-         <div className="form-group"> 
-        <input
-          name="tl_name"
-          placeholder="Team Lead name"
-          value={allocation.tl_name}
-          onChange={handleChange}
-
-        />
-        {errors.tl_name && (
-          <small className="error-text">{errors.tl_name}</small>
-        )}
-         </div>
-
-         <div className="form-group"> 
-        <input
-          type="date"
-          name="start_date"
-          value={allocation.start_date}
-          onChange={handleChange}
-        />
-        {errors.start_date && (
-          <small className="error-text">{errors.start_date}</small>
-        )}
+            <option value="">Select IT Team</option>
+            <option>Team 1</option>
+            <option>Team 2</option>
+            <option>Team 3</option>
+            <option>Team 4</option>
+            <option>Team 5</option>
+            <option>Team 6</option>
+            <option>Team 7</option>
+            <option>Team 8</option>
+            <option>Team 9</option>
+            <option>Team 10</option>
+          </select>
+          {errors.it_team && (
+            <small className="error-text">{errors.it_team}</small>
+          )}
         </div>
 
-        <div className="form-group"> 
-        <input
-          type="date"
-          name="end_date"
-          value={allocation.end_date}
-          onChange={handleChange}
-          min={allocation.start_date}
-        />
-        {errors.end_date && (
-          <small className="error-text">{errors.end_date}</small>
-        )}
+        <div className="form-group">
+          <input
+            name="tl_name"
+            placeholder="Team Lead name"
+            value={allocation.tl_name}
+            onChange={handleChange}
+
+          />
+          {errors.tl_name && (
+            <small className="error-text">{errors.tl_name}</small>
+          )}
+        </div>
+
+        <div className="form-group">
+          <input
+            type="date"
+            name="start_date"
+            value={allocation.start_date}
+            onChange={handleChange}
+            min={today}
+
+          />
+          {errors.start_date && (
+            <small className="error-text">{errors.start_date}</small>
+          )}
+        </div>
+
+        <div className="form-group">
+          <input
+            type="date"
+            name="end_date"
+            value={allocation.end_date}
+            onChange={handleChange}
+            min={allocation.start_date || today}
+          />
+          {errors.end_date && (
+            <small className="error-text">{errors.end_date}</small>
+          )}
         </div>
 
         <button type="submit" className="save-btn">
@@ -257,8 +263,8 @@ const ResourceAllocation = () => {
                   <td>{item.project_id}</td>
                   <td>{item.it_team}</td>
                   <td>{item.tl_name}</td>
-                  <td>{item.start_date}</td>
-                  <td>{item.end_date}</td>
+                  <td>{formatDate(item.start_date)}</td>
+                  <td>{formatDate(item.end_date)}</td>
                   <td>
                     <button onClick={() => setViewItem(item)}>View</button>
                     <button
@@ -330,11 +336,11 @@ const ResourceAllocation = () => {
             </div>
             <div className="view-row">
               <span>Start Date</span>
-              <p>{viewItem.start_date}</p>
+              <p>{formatDate(viewItem.start_date)}</p>
             </div>
             <div className="view-row">
               <span>End Date</span>
-              <p>{viewItem.end_date}</p>
+              <p>{formatDate(viewItem.end_date)}</p>
             </div>
 
             <div className="view-modal-actions">
@@ -412,10 +418,10 @@ const ResourceAllocation = () => {
             <input
               type="date"
               value={editItem.start_date}
+              min={today}
               onChange={(e) =>
                 setEditItem({ ...editItem, start_date: e.target.value })
               }
-              className={errors.start_date ? "error" : ""}
             />
             {errors.start_date && (
               <small className="error-text">{errors.start_date}</small>
@@ -424,11 +430,10 @@ const ResourceAllocation = () => {
             <input
               type="date"
               value={editItem.end_date}
+              min={editItem.start_date || today}
               onChange={(e) =>
                 setEditItem({ ...editItem, end_date: e.target.value })
               }
-              min={editItem.start_date}
-              className={errors.end_date ? "error" : ""}
             />
             {errors.end_date && (
               <small className="error-text">{errors.end_date}</small>
