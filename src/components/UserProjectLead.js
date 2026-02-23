@@ -149,7 +149,7 @@ const UserProjectLead = () => {
     setLeadForm({
       clientName: lead.clientName || "",
       clientCompany: lead.clientCompany || "",
-      email: lead.email || "",
+      email: user?.email || "",
       mobile: lead.mobile || "",
       projectName: lead.projectName || "",
       status: lead.status || "Follow Up",
@@ -290,6 +290,23 @@ const UserProjectLead = () => {
           className="add-lead-btn"
           onClick={() => {
             setEditLeadId(null);
+
+            setLeadForm({
+              clientName: "",
+              clientCompany: "",
+              email: user?.email || "",   // ✅ autofill here
+              mobile: "",
+              projectName: "",
+              status: "Follow Up",
+              followUpDate: "",
+              timeline: {
+                startDate: "",
+                endDate: "",
+              },
+              budget: "",
+              reference: "",
+            });
+
             setShowAddLead(true);
           }}
         >
@@ -418,11 +435,8 @@ const UserProjectLead = () => {
             <input
               placeholder="User Email"
               value={leadForm.email}
-              onChange={(e) => {
-                setLeadForm({ ...leadForm, email: e.target.value });
-                setErrors({ ...errors, email: "" });
-              }}
-              className={errors.email ? "error" : ""}
+              disabled   // ✅ makes it non-editable
+              className="readonly-input"
             />
             {errors.email && (
               <small style={{ color: "red" }}>{errors.email}</small>
@@ -470,32 +484,32 @@ const UserProjectLead = () => {
                 });
               }}
             >
-              
+
               {STATUS_OPTIONS.map((s) => (
                 <option key={s}>{s}</option>
               ))}
             </select>
             {leadForm.status === "Follow Up" && (
-                <>
-                  <label>Follow Up Date</label>
-                  <input
-                    type="date"
-                    min={todayDate}
-                    value={leadForm.followUpDate}
-                    onChange={(e) =>
-                      setLeadForm({
-                        ...leadForm,
-                        followUpDate: e.target.value,
-                      })
-                    }
-                  />
-                  {errors.followUpDate && (
-                    <small style={{ color: "red" }}>
-                      {errors.followUpDate}
-                    </small>
-                  )}
-                </>
-              )}
+              <>
+                <label>Follow Up Date</label>
+                <input
+                  type="date"
+                  min={todayDate}
+                  value={leadForm.followUpDate}
+                  onChange={(e) =>
+                    setLeadForm({
+                      ...leadForm,
+                      followUpDate: e.target.value,
+                    })
+                  }
+                />
+                {errors.followUpDate && (
+                  <small style={{ color: "red" }}>
+                    {errors.followUpDate}
+                  </small>
+                )}
+              </>
+            )}
 
             {leadForm.status !== "Follow Up" && (
               <>
