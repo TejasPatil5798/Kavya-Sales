@@ -164,7 +164,7 @@
 }
 
 .overdue {
-  background: #ffe6e6;
+  background: transparent;
 }
 
 .status-select {
