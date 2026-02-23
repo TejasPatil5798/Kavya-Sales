@@ -470,7 +470,12 @@ const UserProjectLead = () => {
                 });
               }}
             >
-              {leadForm.status === "Follow Up" && (
+              
+              {STATUS_OPTIONS.map((s) => (
+                <option key={s}>{s}</option>
+              ))}
+            </select>
+            {leadForm.status === "Follow Up" && (
                 <>
                   <label>Follow Up Date</label>
                   <input
@@ -491,10 +496,6 @@ const UserProjectLead = () => {
                   )}
                 </>
               )}
-              {STATUS_OPTIONS.map((s) => (
-                <option key={s}>{s}</option>
-              ))}
-            </select>
 
             {leadForm.status !== "Follow Up" && (
               <>
