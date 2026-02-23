@@ -16,6 +16,8 @@ const UserProjectIntake = () => {
 
   const [showViewModal, setShowViewModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("All");
 
   /* ================= FETCH LEADS (READ ONLY) ================= */
   const fetchLeads = async () => {
@@ -33,17 +35,27 @@ const UserProjectIntake = () => {
     fetchLeads();
   }, []);
 
-  /* ================= FILTER LEAD → PROJECT ================= */
-  const projects = leads.filter(
-    (l) => l.status === "Follow Up"
-  );
 
+
+  /* ================= SEARCH + STATUS FILTER ================= */
+  const filteredProjects = leads.filter((lead) => {
+    const matchesStatus =
+      statusFilter === "All" || lead.status === statusFilter;
+
+    const matchesSearch =
+      lead.clientName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.clientCompany?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.projectName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.email?.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return matchesStatus && matchesSearch;
+  });
 
 
   /* ================= PAGINATION ================= */
-  const totalPages = Math.ceil(projects.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedProjects = projects.slice(
+  const paginatedProjects = filteredProjects.slice(
     startIndex,
     startIndex + ITEMS_PER_PAGE
   );
@@ -58,20 +70,59 @@ const UserProjectIntake = () => {
       <div className="intake-cards">
         <div className="intake-card purple">
           <small>Total Projects</small>
-          <h3>{projects.length}</h3>
+          <h3>{filteredProjects.length}</h3>
         </div>
 
         <div className="intake-card pink">
           <small>Active Projects</small>
-          <h3>{projects.length}</h3>
+          <h3>{filteredProjects.length}</h3>
         </div>
       </div>
 
       {/* TABLE */}
       <div className="filter-card">
-        <div className="table-header">
+        <div className="table-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
           <h3>Project List</h3>
-          {/* ❌ NO ADD BUTTON FOR USER */}
+
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+            <input
+              type="text"
+              placeholder="Search client, company, project..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              style={{
+                padding: "8px",
+                borderRadius: "6px",
+                border: "1px solid #ccc",
+                minWidth: "250px"
+              }}
+            />
+
+            <select
+              value={statusFilter}
+              onChange={(e) => {
+                setStatusFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              style={{
+                padding: "8px",
+                borderRadius: "6px",
+                border: "1px solid #ccc"
+              }}
+            >
+              <option value="All">All Status</option>
+              <option value="Follow Up">Follow Up</option>
+              <option value="Interested">Interested</option>
+              <option value="Not Interested">Not Interested</option>
+              <option value="Open">Open</option>
+              <option value="Closed">Closed</option>
+              <option value="Pending">Pending</option>
+              <option value="Done">Done</option>
+            </select>
+          </div>
         </div>
 
         <div className="table-scroll">
