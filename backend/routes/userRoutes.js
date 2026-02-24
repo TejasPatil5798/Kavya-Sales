@@ -51,8 +51,6 @@ router.get("/all", authMiddleware, roleMiddleware("admin"), getAllUsers);
 
 router.delete("/:id", authMiddleware, roleMiddleware("admin"), deleteUser);
 
-router.put("/:id", authMiddleware, roleMiddleware("admin"), updateUser);
-
 /* =====================
    USER ROUTES
    ===================== */
@@ -64,5 +62,7 @@ router.put(
   upload.single("profileImage"),
   uploadProfilePicture,
 );
+
+router.put("/:id", authMiddleware, roleMiddleware("admin"), updateUser);
 
 module.exports = router;
