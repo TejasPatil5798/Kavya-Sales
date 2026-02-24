@@ -104,7 +104,11 @@
 }
 
 .leads-table thead {
-  background: #f1f5f9;
+  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
+}
+
+.leads-table thead:hover {
+  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
 }
 
 .leads-table th,
