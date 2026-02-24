@@ -118,22 +118,22 @@ const Dashboard = () => {
     <div className="dashboard">
       {/* KPI CARDS */}
       <div className="kpi-grid">
-        <div className="kpi-card">
+        <div className="kpi-card glass-card gradient-blue">
           <h2>Employee Count</h2>
           <h3>{employeeCount}</h3>
         </div>
 
-        <div className="kpi-card">
+        <div className="kpi-card glass-card gradient-purple">
           <h2>Meet Target (%)</h2>
           <h3>{achievementPercent}%</h3>
         </div>
 
-        <div className="kpi-card">
+        <div className="kpi-card glass-card gradient-pink">
           <h2>Sales Target</h2>
           <h3>₹{totalTarget.toLocaleString()}</h3>
         </div>
 
-        <div className="kpi-card">
+        <div className="kpi-card glass-card gradient-orange">
           <h2>Sales Achieved</h2>
           <h3>₹{totalAchieved.toLocaleString()}</h3>
         </div>
