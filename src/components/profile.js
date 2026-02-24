@@ -76,10 +76,7 @@ const Profile = () => {
           <label htmlFor="profileUpload" style={{ cursor: "pointer" }}>
             {preview || user.profileImage ? (
               <img
-                src={
-                  preview ||
-                  `${process.env.REACT_APP_API_URL}${user.profileImage}`
-                }
+                src={preview || user.profileImage}
                 alt="Profile"
                 style={{
                   width: "90px",

@@ -233,11 +233,12 @@ exports.uploadProfilePicture = async (req, res) => {
       });
     }
 
-    const imagePath = `/uploads/${req.file.filename}`;
+    // Cloudinary gives full URL
+    const imageUrl = req.file.path;
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { profileImage: imagePath },
+      { profileImage: imageUrl },
       { new: true },
     ).select("-password");
 
@@ -246,8 +247,10 @@ exports.uploadProfilePicture = async (req, res) => {
       user: updatedUser,
     });
   } catch (err) {
-    console.error("Upload error:", err);
-    res.status(500).json({ message: "Upload failed" });
+    console.error("Cloudinary upload error:", err);
+    res.status(500).json({
+      message: "Image upload failed",
+    });
   }
 };
 
