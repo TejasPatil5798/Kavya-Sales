@@ -73,9 +73,6 @@ const UserResourceAllocation = () => {
     }
   }, [currentPage, totalPages]);
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [filteredAllocations.length]);
 
   return (
     <div className="resource-page">
@@ -193,7 +190,7 @@ const UserResourceAllocation = () => {
         </div>
 
         {/* PAGINATION */}
-        {filteredAllocations.length > 0 && (
+        {totalPages > 1 && (
           <div className="pagination">
             <button
               disabled={currentPage === 1 || totalPages === 0}
