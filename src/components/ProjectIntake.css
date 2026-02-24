@@ -115,10 +115,6 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-.leads-table tbody tr:hover {
-  background: #f9fafb;
-}
-
 /* ================= ACTION BUTTONS ================= */
 .edit-btn {
   background: #2563eb;
