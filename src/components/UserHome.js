@@ -168,22 +168,22 @@ const UserHome = () => {
   return (
     <div className="dashboard">
       <div className="kpi-grid">
-        <div className="kpi-card pink">
+        <div className="kpi-card glass-card gradient-blue">
           <h2>Completed Tasks</h2>
           <h3>{completedTasks}</h3>
         </div>
 
-        <div className="kpi-card blue">
+        <div className="kpi-card glass-card gradient-purple">
           <h2>Pending Tasks</h2>
           <h3>{pendingTasks}</h3>
         </div>
 
-        <div className="kpi-card lavender">
+        <div className="kpi-card glass-card gradient-pink">
           <h2>Performance Score</h2>
           <h3>{performanceScore}%</h3>
         </div>
 
-        <div className="kpi-card purple">
+        <div className="kpi-card glass-card gradient-orange">
           <h2>Follow-Up</h2>
           <h3>{totalFollowUps}</h3>
         </div>

@@ -70,18 +70,19 @@ const UserDashboard = () => {
     <div className="user-dashboard">
       <h1>Welcome User</h1>
 
-      <div className="user-cards">
+      <div className="kpi-card glass-card gradient-blue">
         <div className="card">
           <h3>Total Tasks</h3>
           <p>{tasks.length}</p>
         </div>
 
-        <div className="card">
+        <div className="kpi-card glass-card gradient-purple">
           <h3>Completed Tasks</h3>
           <p>{tasks.filter((t) => t.status === "Completed").length}</p>
         </div>
 
-        <div className="card">
+        <div className="kpi-card glass-card gradient-orange">
+
           <h3>Status</h3>
           <p>Active</p>
         </div>

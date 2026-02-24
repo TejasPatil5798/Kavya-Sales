@@ -87,9 +87,6 @@
   font-size: 14px;
 }
 
-.data-table thead {
-  background: #f8fafc;
-}
 
 .data-table tbody tr:not(:last-child) {
   border-bottom: 1px solid #e5e7eb;
