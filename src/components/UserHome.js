@@ -7,6 +7,7 @@ const UserHome = () => {
   const activityChartRef = useRef(null);
   const performanceChartRef = useRef(null);
   const [tasks, setTasks] = useState([]);
+  const [leads, setLeads] = useState([]);
 
   /* ================= FETCH USER TASKS ================= */
   useEffect(() => {
@@ -29,6 +30,21 @@ const UserHome = () => {
     fetchTasks();
   }, []);
 
+  /* ================= FETCH USER LEADS ================= */
+  useEffect(() => {
+    const fetchLeads = async () => {
+      try {
+        const { data } = await API.get("/leads/my-leads");
+        setLeads(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to load leads", err);
+        setLeads([]);
+      }
+    };
+
+    fetchLeads();
+  }, []);
+
   /* ================= CALCULATIONS ================= */
   const totalTasks = tasks.length;
 
@@ -38,6 +54,12 @@ const UserHome = () => {
 
   const performanceScore =
     totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+
+  /* ================= FOLLOW UPS ================= */
+
+  const totalFollowUps = leads.filter(
+    (lead) => lead.status === "Follow Up",
+  ).length;
 
   /* ================= DAY WISE COMPLETED ================= */
 
@@ -145,6 +167,11 @@ const UserHome = () => {
         <div className="kpi-card lavender">
           <h2>Performance Score</h2>
           <h3>{performanceScore}%</h3>
+        </div>
+
+        <div className="kpi-card purple">
+          <h2>Follow-Up</h2>
+          <h3>{totalFollowUps}</h3>
         </div>
       </div>
 
