@@ -312,7 +312,7 @@ const UserProjectLead = () => {
           <h3>—</h3>
         </div>
 
-        <div className="kpi-card glass-card gradient-orange">
+        <div className="kpi-card glass-card gradient-green">
           <h6>Avg Deal</h6>
           <h3>—</h3>
         </div>

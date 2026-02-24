@@ -85,6 +85,11 @@
   background: linear-gradient(135deg, #00b3a4, #4dded2);
 }
 
+.gradient-green {
+  background: linear-gradient(135deg, #2ddf3f, #55ff4f);
+}
+
+
 .card {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
