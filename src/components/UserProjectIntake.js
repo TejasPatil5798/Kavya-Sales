@@ -60,6 +60,12 @@ const UserProjectIntake = () => {
     setCurrentPage(1);
   }, [filteredProjects.length]);
 
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [currentPage, totalPages]);
+
   return (
     <div className="intake-page">
       {/* KPI */}
@@ -176,38 +182,40 @@ const UserProjectIntake = () => {
         </div>
 
         {/* PAGINATION */}
-        <div className="pagination">
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-          >
-            ◀ Prev
-          </button>
+        {totalPages > 1 && (
+          <div className="pagination">
+            <button
+              disabled={currentPage === 1 || totalPages === 0}
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            >
+              ◀ Prev
+            </button>
 
-          {Array.from({ length: totalPages }).map((_, i) => {
-            const page = i + 1;
-            return (
-              <button
-                key={page}
-                className={currentPage === page ? "active" : ""}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
-            );
-          })}
+            {Array.from({ length: totalPages }).map((_, i) => {
+              const page = i + 1;
+              return (
+                <button
+                  key={page}
+                  className={currentPage === page ? "active" : ""}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              );
+            })}
 
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-          >
-            Next ▶
-          </button>
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            >
+              Next ▶
+            </button>
 
-          <span className="page-info">
-            Page {currentPage} of {totalPages || 1}
-          </span>
-        </div>
+            <span className="page-info">
+              Page {currentPage} of {totalPages || 1}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* VIEW MODAL */}
