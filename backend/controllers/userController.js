@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const path = require("path");
 
 /* =====================
    ADMIN → CREATE USER
@@ -147,10 +148,7 @@ exports.updateUser = async (req, res) => {
     if (email) {
       const existingUser = await User.findOne({ email });
 
-      if (
-        existingUser &&
-        existingUser._id.toString() !== req.params.id
-      ) {
+      if (existingUser && existingUser._id.toString() !== req.params.id) {
         return res.status(400).json({
           message: "Email id already exists",
         });
@@ -161,10 +159,7 @@ exports.updateUser = async (req, res) => {
     if (phone) {
       const phoneExists = await User.findOne({ phone });
 
-      if (
-        phoneExists &&
-        phoneExists._id.toString() !== req.params.id
-      ) {
+      if (phoneExists && phoneExists._id.toString() !== req.params.id) {
         return res.status(400).json({
           message: "Mobile number already exists",
         });
@@ -186,7 +181,7 @@ exports.updateUser = async (req, res) => {
       {
         new: true,
         runValidators: true,
-      }
+      },
     ).select("-password");
 
     if (!updatedUser) {
@@ -222,6 +217,37 @@ exports.getProfile = async (req, res) => {
   } catch (err) {
     console.error("Profile error:", err);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+/* =====================
+   USER → UPLOAD PROFILE PICTURE
+===================== */
+exports.uploadProfilePicture = async (req, res) => {
+  try {
+    const userId = req.user.id || req.user._id;
+
+    if (!req.file) {
+      return res.status(400).json({
+        message: "No image uploaded",
+      });
+    }
+
+    const imagePath = `/uploads/${req.file.filename}`;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profileImage: imagePath },
+      { new: true },
+    ).select("-password");
+
+    res.json({
+      message: "Profile picture updated",
+      user: updatedUser,
+    });
+  } catch (err) {
+    console.error("Upload error:", err);
+    res.status(500).json({ message: "Upload failed" });
   }
 };
 

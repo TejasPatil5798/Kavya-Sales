@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+const upload = require("../middleware/uploadMiddleware");
 const authMiddleware = require("../middleware/authMiddleware");
 const roleMiddleware = require("../middleware/roleMiddleware");
 const User = require("../models/User");
@@ -11,8 +12,9 @@ const {
   deleteUser,
   getProfile,
   updateUser,
-  resetPassword, // ✅ MISSING IMPORT (FIX)
+  resetPassword,
   checkUserByEmail,
+  uploadProfilePicture,
 } = require("../controllers/userController");
 
 /* =====================================================
@@ -55,5 +57,12 @@ router.put("/:id", authMiddleware, roleMiddleware("admin"), updateUser);
    USER ROUTES
    ===================== */
 router.get("/me", authMiddleware, getProfile);
+
+router.put(
+  "/upload-profile-picture",
+  authMiddleware,
+  upload.single("profileImage"),
+  uploadProfilePicture,
+);
 
 module.exports = router;
