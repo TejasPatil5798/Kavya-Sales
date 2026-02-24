@@ -179,6 +179,11 @@ input, select {
   color: #fff;
 }
 
+.allocation-table thead:hover {
+  background-color: linear-gradient(135deg, #2d6cdf, #4f8cff);
+  color: #fff;
+}
+
 .allocation-table th {
   padding: 12px 14px;
   text-align: left;
