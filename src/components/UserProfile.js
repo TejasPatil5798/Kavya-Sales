@@ -55,36 +55,61 @@ const UserProfile = () => {
       <div className="profile-card">
         <h2 className="profile-title">My Profile</h2>
 
-        <div className="profile-header">
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+          }}
+        >
           {/* PROFILE IMAGE */}
-          <div className="profile-avatar" style={{ position: "relative" }}>
+          <div style={{ position: "relative" }}>
             <label htmlFor="profileUpload" style={{ cursor: "pointer" }}>
               {preview || user.profileImage ? (
                 <img
                   src={preview || user.profileImage}
                   alt="Profile"
                   style={{
-                    width: "80px",
-                    height: "80px",
+                    width: "90px",
+                    height: "90px",
                     borderRadius: "50%",
                     objectFit: "cover",
+                    border: "3px solid #0b1f32",
                   }}
                 />
               ) : (
-                <FiUser size={28} />
+                <div
+                  style={{
+                    width: "90px",
+                    height: "90px",
+                    borderRadius: "50%",
+                    background: "#0b1f32",
+                    color: "#ffffff",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "30px",
+                  }}
+                >
+                  <FiUser />
+                </div>
               )}
             </label>
 
-            {/* Camera icon */}
+            {/* CAMERA ICON PERFECTLY PLACED */}
             <label
               htmlFor="profileUpload"
               style={{
                 position: "absolute",
-                bottom: "-5px",
-                right: "-5px",
-                background: "#fff",
+                bottom: "4px",
+                right: "4px",
+                background: "#ffffff",
                 borderRadius: "50%",
-                padding: "6px",
+                width: "28px",
+                height: "28px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
                 cursor: "pointer",
               }}
@@ -101,9 +126,9 @@ const UserProfile = () => {
             />
           </div>
 
-          <div className="profile-role">
-            <h4>{user.name || "User"}</h4>
-            <p>Employee Access</p>
+          <div>
+            <h4 style={{ margin: 0 }}>{user.name || "User"}</h4>
+            <p style={{ margin: "4px 0", color: "#64748b" }}>Employee Access</p>
           </div>
         </div>
 
