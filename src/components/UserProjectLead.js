@@ -55,13 +55,20 @@ const UserProjectLead = () => {
     // ✅ Client Name
     if (!leadForm.clientName.trim()) {
       newErrors.clientName = "Client Name is required";
-    } else if (!nameRegex.test(leadForm.clientName.trim())) {
-      newErrors.clientName = "Only alphabets are allowed.";
+    } else if (!/^[A-Za-z\s]+$/.test(leadForm.clientName.trim())) {
+      newErrors.clientName = "Client Name must contain only alphabets.";
+    } else if (leadForm.clientName.trim().length < 5) {
+      newErrors.clientName = "Client Name must be at least 5 characters long.";
     }
 
-    // ✅ Company Name (optional alphabet check)
+    // ✅ Client Company
     if (!leadForm.clientCompany.trim()) {
-      newErrors.clientCompany = "Company is required";
+      newErrors.clientCompany = "Company Name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(leadForm.clientCompany.trim())) {
+      newErrors.clientCompany = "Company Name must contain only alphabets.";
+    } else if (leadForm.clientCompany.trim().length < 4) {
+      newErrors.clientCompany =
+        "Company Name must be at least 4 characters long.";
     }
 
     // ✅ Email
@@ -76,11 +83,17 @@ const UserProjectLead = () => {
       newErrors.mobile = "Mobile must be 10 digits";
     }
 
-    // ✅ Project Name (ONLY ALPHABETS)
+    // ✅ Project Name
     if (!leadForm.projectName.trim()) {
       newErrors.projectName = "Project Name is required";
-    } else if (!nameRegex.test(leadForm.projectName.trim())) {
-      newErrors.projectName = "Only alphabets are allowed.";
+    } else if (leadForm.projectName.trim().length < 3) {
+      newErrors.projectName =
+        "Project Name must be at least 3 characters long.";
+    }
+
+    // ✅ Budget (numeric only)
+    if (leadForm.budget && !/^[0-9]+$/.test(leadForm.budget)) {
+      newErrors.budget = "Budget must contain numbers only.";
     }
 
     // ✅ Follow Up
@@ -467,7 +480,12 @@ const UserProjectLead = () => {
               placeholder="Client Name"
               value={leadForm.clientName}
               onChange={(e) => {
-                setLeadForm({ ...leadForm, clientName: e.target.value });
+                const value = e.target.value;
+
+                if (/^[A-Za-z\s]*$/.test(value)) {
+                  setLeadForm({ ...leadForm, clientName: value });
+                }
+
                 setErrors({ ...errors, clientName: "" });
               }}
               className={errors.clientName ? "error" : ""}
@@ -480,7 +498,12 @@ const UserProjectLead = () => {
               placeholder="Client Company"
               value={leadForm.clientCompany}
               onChange={(e) => {
-                setLeadForm({ ...leadForm, clientCompany: e.target.value });
+                const value = e.target.value;
+
+                if (/^[A-Za-z\s]*$/.test(value)) {
+                  setLeadForm({ ...leadForm, clientCompany: value });
+                }
+
                 setErrors({ ...errors, clientCompany: "" });
               }}
               className={errors.clientCompany ? "error" : ""}
@@ -604,10 +627,17 @@ const UserProjectLead = () => {
             <input
               placeholder="Budget"
               value={leadForm.budget}
-              onChange={(e) =>
-                setLeadForm({ ...leadForm, budget: e.target.value })
-              }
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                setLeadForm({ ...leadForm, budget: value });
+                setErrors({ ...errors, budget: "" });
+              }}
             />
+
+            {errors.budget && (
+              <small style={{ color: "red" }}>{errors.budget}</small>
+            )}
+
             <input
               placeholder="Reference"
               value={leadForm.reference}
