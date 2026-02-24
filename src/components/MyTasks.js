@@ -218,19 +218,19 @@ const MyTasks = () => {
 
       {/* CARDS */}
       <div className="task-cards">
-        <div className="task-card total">
+        <div className="kpi-card glass-card gradient-purple">
           <p>Total Tasks</p>
           <h3>{totalTasks}</h3>
         </div>
-        <div className="task-card pending">
+        <div className="kpi-card glass-card gradient-pink">
           <p>Pending</p>
           <h3>{pendingTasks}</h3>
         </div>
-        <div className="task-card progress">
+        <div className="kpi-card glass-card gradient-teal">
           <p>In Progress</p>
           <h3>{inProgressTasks}</h3>
         </div>
-        <div className="task-card completed">
+        <div className="kpi-card glass-card gradient-orange">
           <p>Completed</p>
           <h3>{completedTasks}</h3>
         </div>

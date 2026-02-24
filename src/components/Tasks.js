@@ -257,7 +257,7 @@ const Tasks = () => {
 
       {/* KPI CARDS */}
       <div className="kpi-grid">
-        <div className="kpi-card glass-card gradient-blue">
+        <div className="kpi-card glass-card gradient-pink">
           <h4>Total</h4>
           <p>{totalTasks}</p>
         </div>

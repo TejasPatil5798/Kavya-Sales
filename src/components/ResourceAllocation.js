@@ -133,7 +133,7 @@ const ResourceAllocation = () => {
     <div className="resource-page">
       {/* KPI */}
       <div className="kpi-row">
-        <div className="kpi-card glass-card gradient-lavender">
+        <div className="kpi-card glass-card gradient-pink">
           <h2>Total IT Teams</h2>
           <p>5</p>
         </div>

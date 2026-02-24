@@ -275,7 +275,7 @@ const ProjectLead = () => {
           <h6>Total Deals</h6>
           <h3>5034K</h3>
         </div>
-        <div className="kpi-card glass-card gradient-orange">
+        <div className="kpi-card glass-card gradient-pink">
           <h6>Lead Conversion</h6>
           <h3>36%</h3>
         </div>

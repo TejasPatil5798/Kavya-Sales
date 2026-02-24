@@ -78,12 +78,12 @@ const UserResourceAllocation = () => {
     <div className="resource-page">
       {/* KPI */}
       <div className="ra-cards">
-        <div className="ra-card purple">
+        <div className="kpi-card glass-card gradient-pink">
           <small>Total Resources</small>
           <h3>{allocations.length}</h3>
         </div>
 
-        <div className="ra-card blue">
+        <div className="kpi-card glass-card gradient-orange">
           <small>Active Allocations</small>
           <h3>
             {
