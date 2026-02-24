@@ -100,7 +100,7 @@
 }
 
 .leads-table tbody tr:hover {
-  background: #f8fafc;
+  background: #fcf9f8;
 }
 
 .leads-table tbody tr:not(:last-child) {
