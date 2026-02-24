@@ -70,7 +70,7 @@ const UserProjectIntake = () => {
         </div>
 
         <div className="intake-card pink">
-          <small>Active Projects (Follow-Ups)</small>
+          <small>Follow-Ups</small>
           <h3>{followUpProjects.length}</h3>
         </div>
       </div>

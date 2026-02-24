@@ -61,17 +61,31 @@ const UserHome = () => {
     (lead) => lead.status === "Follow Up",
   ).length;
 
-  /* ================= DAY WISE COMPLETED ================= */
+  /* ================= LAST 7 DAYS (TODAY LAST) ================= */
 
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const completedPerDay = Array(7).fill(0);
+  const today = new Date();
+  const rollingDays = [];
+  const rollingCounts = [];
 
-  tasks.forEach((task) => {
-    if (task.status === "Completed") {
-      const dayIndex = new Date(task.taskDate).getDay();
-      completedPerDay[dayIndex] += 1;
-    }
-  });
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date();
+    date.setDate(today.getDate() - i);
+
+    const formattedDate = date.toISOString().split("T")[0];
+
+    const dayLabel = date.toLocaleDateString("en-US", {
+      weekday: "short",
+      day: "numeric",
+    });
+
+    rollingDays.push(dayLabel);
+
+    const count = tasks.filter(
+      (task) => task.status === "Completed" && task.taskDate === formattedDate,
+    ).length;
+
+    rollingCounts.push(count);
+  }
 
   /* ================= TODAY PENDING TASKS ================= */
 
@@ -91,11 +105,11 @@ const UserHome = () => {
       activityChartRef.current = new Chart(activityCtx, {
         type: "line",
         data: {
-          labels: days,
+          labels: rollingDays,
           datasets: [
             {
               label: "Completed Tasks",
-              data: completedPerDay,
+              data: rollingCounts,
               borderColor: "#124c81",
               backgroundColor: "rgba(18,76,129,0.2)",
               tension: 0.4,
