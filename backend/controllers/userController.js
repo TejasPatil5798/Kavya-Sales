@@ -233,7 +233,6 @@ exports.uploadProfilePicture = async (req, res) => {
       });
     }
 
-    // Cloudinary gives full URL
     const imageUrl = req.file.path;
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -247,9 +246,9 @@ exports.uploadProfilePicture = async (req, res) => {
       user: updatedUser,
     });
   } catch (err) {
-    console.error("Cloudinary upload error:", err);
+    console.error("CLOUDINARY ERROR FULL:", err);
     res.status(500).json({
-      message: "Image upload failed",
+      message: err.message,
     });
   }
 };

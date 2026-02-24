@@ -35,15 +35,7 @@ const Profile = () => {
     formData.append("profileImage", file);
 
     try {
-      const { data } = await API.put(
-        "/users/upload-profile-picture",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
+      const { data } = await API.put("/users/upload-profile-picture", formData);
 
       setUser(data.user);
       alert("Profile picture updated successfully");
