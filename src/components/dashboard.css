@@ -11,10 +11,21 @@
 }
 
 .kpi-card {
+  background: linear-gradient(
+    135deg,
+    rgb(45, 108, 223),
+    rgb(79, 140, 255)
+  );
   color: #ffffff;
   padding: 20px;
   border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 25px rgba(45, 108, 223, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgba(45, 108, 223, 0.45);
 }
 
 .kpi-card h6 {
@@ -26,11 +37,6 @@
   margin-top: 8px;
   font-size: 24px;
 }
-
-.purple { background: #a15ca0; }
-.pink { background: #de638a; }
-.blue { background: #124c81; }
-.lavender { background: #9d8dde; }
 
 .chart-grid {
   display: grid;
