@@ -267,7 +267,7 @@ const ProjectLead = () => {
   return (
     <div className="projectlead-page">
       <div className="pl-cards">
-        <div className="kpi-card glass-card gradient-orange">
+        <div className="kpi-card glass-card gradient-purple">
           <h6>Total Leads</h6>
           <h3>{leads.length}</h3>
         </div>
@@ -275,7 +275,7 @@ const ProjectLead = () => {
           <h6>Total Deals</h6>
           <h3>5034K</h3>
         </div>
-        <div className="kpi-card glass-card gradient-purple">
+        <div className="kpi-card glass-card gradient-orange">
           <h6>Lead Conversion</h6>
           <h3>36%</h3>
         </div>

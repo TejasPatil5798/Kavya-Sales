@@ -175,7 +175,8 @@ input, select {
 
 /* TABLE HEADER */
 .allocation-table thead {
-  background-color: #f8fafc;
+  background-color: linear-gradient(135deg, #2d6cdf, #4f8cff);
+  color: #fff;
 }
 
 .allocation-table th {
