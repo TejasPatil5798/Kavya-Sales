@@ -234,17 +234,17 @@ const Employees = () => {
 
       {/* DASHBOARD CARDS */}
       <div className="employee-cards">
-        <div className="emp-card blue">
+        <div className="kpi-card glass-card gradient-blue">
           <h4>Total Employees</h4>
           <h2>{totalEmployees}</h2>
         </div>
 
-        <div className="emp-card purple">
+        <div className="kpi-card glass-card gradient-purple">
           <h4>Total Admins</h4>
           <h2>{totalAdmins}</h2>
         </div>
 
-        <div className="emp-card green">
+        <div className="kpi-card glass-card gradient-teal">
           <h4>Total Users</h4>
           <h2>{totalUsers}</h2>
         </div>
