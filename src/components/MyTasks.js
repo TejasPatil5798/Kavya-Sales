@@ -214,7 +214,6 @@ const MyTasks = () => {
 
   return (
     <div className="my-tasks">
-      <h2>My Tasks</h2>
 
       {/* CARDS */}
       <div className="task-cards">
