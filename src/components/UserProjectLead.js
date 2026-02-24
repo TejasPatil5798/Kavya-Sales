@@ -296,12 +296,12 @@ const UserProjectLead = () => {
       {/* rest of your JSX */}
 
       <div className="pl-cards">
-        <div className="kpi-card glass-card gradient-pink">
+        <div className="kpi-card glass-card gradient-purple">
           <h6>Total Leads</h6>
           <h3>{leads.length}</h3>
         </div>
 
-        <div className="kpi-card glass-card gradient-purple">
+        <div className="kpi-card glass-card gradient-pink">
 
           <h6>Total Deals</h6>
           <h3>—</h3>
@@ -312,7 +312,7 @@ const UserProjectLead = () => {
           <h3>—</h3>
         </div>
 
-        <div className="kpi-card glass-card gradient-lavender">
+        <div className="kpi-card glass-card gradient-orange">
           <h6>Avg Deal</h6>
           <h3>—</h3>
         </div>
