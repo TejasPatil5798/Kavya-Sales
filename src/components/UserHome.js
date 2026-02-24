@@ -1,62 +1,48 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
+import API from "../api/api";
 import "./UserHome.css";
 
 const UserHome = () => {
   const activityChartRef = useRef(null);
   const performanceChartRef = useRef(null);
 
+  const [tasks, setTasks] = useState([]);
+
+  /* ================= FETCH USER TASKS ================= */
+  const fetchTasks = async () => {
+    try {
+      const res = await API.get("/tasks");
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      if (!user?.email) return;
+
+      const userTasks = res.data.filter(
+        (task) => task.userMail === user.email
+      );
+
+      setTasks(userTasks);
+    } catch (err) {
+      console.error("Failed to load tasks", err);
+    }
+  };
+
   useEffect(() => {
-    const activityCtx = document.getElementById("activityChart");
-    const performanceCtx = document.getElementById("userPerformanceChart");
+    fetchTasks();
+  }, []);
 
-    // Destroy old charts
-    if (activityChartRef.current) activityChartRef.current.destroy();
-    if (performanceChartRef.current) performanceChartRef.current.destroy();
+    const totalTasks = tasks.length;
+  const completedTasks = tasks.filter(
+    (t) => t.status === "Completed"
+  ).length;
 
-    // USER ACTIVITY CHART
-    if (activityCtx) {
-      activityChartRef.current = new Chart(activityCtx, {
-        type: "line",
-        data: {
-          labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-          datasets: [
-            {
-              label: "Tasks Completed",
-              data: [3, 5, 4, 6, 7, 5],
-              borderColor: "#124c81",
-              backgroundColor: "rgba(18,76,129,0.2)",
-              tension: 0.4,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-        },
-      });
-    }
+  const pendingTasks = tasks.filter(
+    (t) => t.status === "Pending"
+  ).length;
 
-    // USER PERFORMANCE CHART
-    if (performanceCtx) {
-      performanceChartRef.current = new Chart(performanceCtx, {
-        type: "bar",
-        data: {
-          labels: ["Leads", "Intake", "Resources"],
-          datasets: [
-            {
-              label: "Your Performance",
-              data: [85, 72, 90],
-              backgroundColor: "#de638a",
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-        },
-      });
-    }
+  const performanceScore =
+    totalTasks === 0
+      ? 0
+      : Math.round((completedTasks / totalTasks) * 100);
 
     return () => {
       if (activityChartRef.current) activityChartRef.current.destroy();
@@ -75,17 +61,17 @@ const UserHome = () => {
 
         <div className="kpi-card pink">
           <h2>Completed Tasks</h2>
-          <h3>42</h3>
+          <h3>{completedTasks}</h3>
         </div>
 
         <div className="kpi-card blue">
           <h2>Pending Tasks</h2>
-          <h3>8</h3>
+          <h3>{pendingTasks}</h3>
         </div>
 
         <div className="kpi-card lavender">
           <h2>Performance Score</h2>
-          <h3>82%</h3>
+          <h3>{performanceScore}%</h3>
         </div>
       </div>
 
