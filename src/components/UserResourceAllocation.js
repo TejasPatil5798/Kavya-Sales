@@ -21,15 +21,15 @@ const UserResourceAllocation = () => {
       // ✅ MAP BACKEND FIELDS → EXISTING UI FIELDS (NO UI CHANGE)
       const mappedData = Array.isArray(data)
         ? data.map((item) => ({
-          ...item,
-          employeeName: item.tl_name,           // mapped
-          projectName: item.project_name,       // mapped
-          role: item.it_team,                   // mapped
-          allocationPercentage: 100,             // default / placeholder
-          status: "Active",                      // default / placeholder
-          startDate: item.start_date,            // mapped
-          endDate: item.end_date,                // mapped
-        }))
+            ...item,
+            employeeName: item.tl_name, // mapped
+            projectName: item.project_name, // mapped
+            role: item.it_team, // mapped
+            allocationPercentage: 100, // default / placeholder
+            status: "Active", // default / placeholder
+            startDate: item.start_date, // mapped
+            endDate: item.end_date, // mapped
+          }))
         : [];
 
       setAllocations(mappedData);
@@ -63,8 +63,15 @@ const UserResourceAllocation = () => {
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedAllocations = filteredAllocations.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
+
+  /* 🔥 SAFETY FIX */
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [currentPage, totalPages]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -83,9 +90,8 @@ const UserResourceAllocation = () => {
           <small>Active Allocations</small>
           <h3>
             {
-              allocations.filter(
-                (a) => a.status && a.status !== "Completed"
-              ).length
+              allocations.filter((a) => a.status && a.status !== "Completed")
+                .length
             }
           </h3>
         </div>
@@ -141,7 +147,6 @@ const UserResourceAllocation = () => {
           </div>
         </div>
 
-
         <div className="table-scroll">
           <table className="leads-table">
             <thead>
@@ -188,40 +193,40 @@ const UserResourceAllocation = () => {
         </div>
 
         {/* PAGINATION */}
-        <div className="pagination">
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-          >
-            ◀ Prev
-          </button>
+        {filteredAllocations.length > 0 && (
+          <div className="pagination">
+            <button
+              disabled={currentPage === 1 || totalPages === 0}
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            >
+              ◀ Prev
+            </button>
 
-          {Array.from({ length: totalPages }).map((_, i) => {
-            const page = i + 1;
-            return (
-              <button
-                key={page}
-                className={currentPage === page ? "active" : ""}
-                onClick={() => setCurrentPage(page)}
-              >
-                {page}
-              </button>
-            );
-          })}
+            {Array.from({ length: totalPages }).map((_, i) => {
+              const page = i + 1;
+              return (
+                <button
+                  key={page}
+                  className={currentPage === page ? "active" : ""}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </button>
+              );
+            })}
 
-          <button
-            disabled={currentPage === totalPages}
-            onClick={() =>
-              setCurrentPage((p) => Math.min(p + 1, totalPages))
-            }
-          >
-            Next ▶
-          </button>
+            <button
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            >
+              Next ▶
+            </button>
 
-          <span className="page-info">
-            Page {currentPage} of {totalPages || 1}
-          </span>
-        </div>
+            <span className="page-info">
+              Page {currentPage} of {totalPages || 1}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* VIEW MODAL */}
@@ -240,8 +245,7 @@ const UserResourceAllocation = () => {
               <b>Role:</b> {selectedAllocation.role}
             </p>
             <p>
-              <b>Allocation:</b>{" "}
-              {selectedAllocation.allocationPercentage}%
+              <b>Allocation:</b> {selectedAllocation.allocationPercentage}%
             </p>
             <p>
               <b>Status:</b> {selectedAllocation.status}
@@ -250,25 +254,18 @@ const UserResourceAllocation = () => {
             <p>
               <b>Start Date:</b>{" "}
               {selectedAllocation.startDate
-                ? new Date(
-                  selectedAllocation.startDate
-                ).toLocaleDateString()
+                ? new Date(selectedAllocation.startDate).toLocaleDateString()
                 : "-"}
             </p>
 
             <p>
               <b>End Date:</b>{" "}
               {selectedAllocation.endDate
-                ? new Date(
-                  selectedAllocation.endDate
-                ).toLocaleDateString()
+                ? new Date(selectedAllocation.endDate).toLocaleDateString()
                 : "-"}
             </p>
 
-            <button
-              className="reset"
-              onClick={() => setShowViewModal(false)}
-            >
+            <button className="reset" onClick={() => setShowViewModal(false)}>
               Close
             </button>
           </div>
