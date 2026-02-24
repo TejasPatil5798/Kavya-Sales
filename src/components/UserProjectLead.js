@@ -167,7 +167,6 @@ const UserProjectLead = () => {
     fetchLeads();
   };
 
-  /* ================= PAGINATION ================= */
   /* ================= SEARCH + FILTER ================= */
   const filteredLeads = leads.filter((lead) => {
     const matchesSearch =
@@ -182,11 +181,19 @@ const UserProjectLead = () => {
   });
 
   /* ================= PAGINATION ================= */
+  const totalPages = Math.ceil(filteredLeads.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedLeads = filteredLeads.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
+
+  /* 🔥 SAFETY FIX */
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [currentPage, totalPages]);
 
   return (
     <div className="projectlead-page">
@@ -296,8 +303,15 @@ const UserProjectLead = () => {
           <h3>—</h3>
         </div>
       </div>
-      <div className="filter-bar top-bar" style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
-
+      <div
+        className="filter-bar top-bar"
+        style={{
+          display: "flex",
+          gap: "10px",
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
         <input
           type="text"
           placeholder="Search by name, company, project..."
@@ -310,7 +324,7 @@ const UserProjectLead = () => {
             padding: "8px",
             borderRadius: "6px",
             border: "1px solid #ccc",
-            minWidth: "250px"
+            minWidth: "250px",
           }}
         />
 
@@ -323,7 +337,7 @@ const UserProjectLead = () => {
           style={{
             padding: "8px",
             borderRadius: "6px",
-            border: "1px solid #ccc"
+            border: "1px solid #ccc",
           }}
         >
           <option value="All">All Status</option>
@@ -355,7 +369,6 @@ const UserProjectLead = () => {
         >
           + Add Lead
         </button>
-
       </div>
 
       <div className="filter-card">
@@ -415,34 +428,34 @@ const UserProjectLead = () => {
             </tbody>
           </table>
         </div>
-        <div className="pagination">
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((p) => p - 1)}
-          >
-            Prev
-          </button>
 
-          {Array.from(
-            { length: Math.ceil(filteredLeads.length / ITEMS_PER_PAGE) },
-            (_, i) => i + 1,
-          ).map((page) => (
+        {filteredLeads.length > 0 && (
+          <div className="pagination">
             <button
-              key={page}
-              className={currentPage === page ? "active" : ""}
-              onClick={() => setCurrentPage(page)}
+              disabled={currentPage === 1 || totalPages === 0}
+              onClick={() => setCurrentPage((p) => p - 1)}
             >
-              {page}
+              Prev
             </button>
-          ))}
 
-          <button
-            disabled={currentPage === Math.ceil(leads.length / ITEMS_PER_PAGE)}
-            onClick={() => setCurrentPage((p) => p + 1)}
-          >
-            Next
-          </button>
-        </div>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                className={currentPage === page ? "active" : ""}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage((p) => p + 1)}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ADD / EDIT MODAL – FULL FORM */}
@@ -479,7 +492,7 @@ const UserProjectLead = () => {
             <input
               placeholder="User Email"
               value={leadForm.email}
-              disabled   // ✅ makes it non-editable
+              disabled // ✅ makes it non-editable
               className="readonly-input"
             />
             {errors.email && (
@@ -528,7 +541,6 @@ const UserProjectLead = () => {
                 });
               }}
             >
-
               {STATUS_OPTIONS.map((s) => (
                 <option key={s}>{s}</option>
               ))}
@@ -548,9 +560,7 @@ const UserProjectLead = () => {
                   }
                 />
                 {errors.followUpDate && (
-                  <small style={{ color: "red" }}>
-                    {errors.followUpDate}
-                  </small>
+                  <small style={{ color: "red" }}>{errors.followUpDate}</small>
                 )}
               </>
             )}
