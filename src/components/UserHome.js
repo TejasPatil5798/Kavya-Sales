@@ -17,7 +17,7 @@ const UserHome = () => {
         if (!user?.email) return;
 
         const userTasks = res.data.filter(
-          (task) => task.userMail === user.email
+          (task) => task.userMail === user.email,
         );
 
         setTasks(userTasks);
@@ -32,71 +32,72 @@ const UserHome = () => {
   /* ================= CALCULATIONS ================= */
   const totalTasks = tasks.length;
 
-  const completedTasks = tasks.filter(
-    (t) => t.status === "Completed"
-  ).length;
+  const completedTasks = tasks.filter((t) => t.status === "Completed").length;
 
-  const pendingTasks = tasks.filter(
-    (t) => t.status === "Pending"
-  ).length;
+  const pendingTasks = tasks.filter((t) => t.status === "Pending").length;
 
   const performanceScore =
-    totalTasks === 0
-      ? 0
-      : Math.round((completedTasks / totalTasks) * 100);
+    totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+
+  /* ================= DAY WISE COMPLETED ================= */
+
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const completedPerDay = Array(7).fill(0);
+
+  tasks.forEach((task) => {
+    if (task.status === "Completed") {
+      const dayIndex = new Date(task.taskDate).getDay();
+      completedPerDay[dayIndex] += 1;
+    }
+  });
+
+  /* ================= TODAY PENDING TASKS ================= */
+
+  const todayDate = new Date().toISOString().split("T")[0];
+
+  const todaysPendingTasks = tasks.filter(
+    (task) => task.status === "Pending" && task.taskDate === todayDate,
+  );
 
   /* ================= CHARTS ================= */
   useEffect(() => {
     const activityCtx = document.getElementById("activityChart");
-    const performanceCtx = document.getElementById("userPerformanceChart");
 
     if (activityChartRef.current) activityChartRef.current.destroy();
-    if (performanceChartRef.current) performanceChartRef.current.destroy();
 
     if (activityCtx) {
       activityChartRef.current = new Chart(activityCtx, {
-        type: "bar",
+        type: "line",
         data: {
-          labels: ["Completed", "Pending"],
+          labels: days,
           datasets: [
             {
-              label: "Tasks",
-              data: [completedTasks, pendingTasks],
-              backgroundColor: ["#de638a", "#124c81"],
+              label: "Completed Tasks",
+              data: completedPerDay,
+              borderColor: "#124c81",
+              backgroundColor: "rgba(18,76,129,0.2)",
+              tension: 0.4,
+              fill: true,
             },
           ],
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
-        },
-      });
-    }
-
-    if (performanceCtx) {
-      performanceChartRef.current = new Chart(performanceCtx, {
-        type: "doughnut",
-        data: {
-          labels: ["Performance %"],
-          datasets: [
-            {
-              data: [performanceScore, 100 - performanceScore],
-              backgroundColor: ["#8e44ad", "#e0e0e0"],
+          scales: {
+            y: {
+              beginAtZero: true,
+              precision: 0, // 🔥 ensures whole numbers only
             },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
+          },
         },
       });
     }
 
     return () => {
       if (activityChartRef.current) activityChartRef.current.destroy();
-      if (performanceChartRef.current) performanceChartRef.current.destroy();
     };
-  }, [completedTasks, pendingTasks, performanceScore]);
+  }, [tasks]);
 
   return (
     <div className="dashboard">
@@ -117,10 +118,29 @@ const UserHome = () => {
         </div>
       </div>
 
-      <div className="card full-width">
-        <div className="card-header">Your Performance Overview</div>
-        <div className="card-body chart-container">
-          <canvas id="activityChart"></canvas>
+      <div className="chart-grid">
+        <div className="card">
+          <div className="card-header">Weekly Completed Tasks</div>
+          <div className="card-body chart-container">
+            <canvas id="activityChart"></canvas>
+          </div>
+        </div>
+
+        <div className="card">
+          <div className="card-header">Today's Pending Tasks</div>
+          <div className="card-body">
+            {todaysPendingTasks.length === 0 ? (
+              <p>No pending tasks for today 🎉</p>
+            ) : (
+              <ul>
+                {todaysPendingTasks.map((task) => (
+                  <li key={task._id}>
+                    {task.client} - {task.taskType}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </div>
 
