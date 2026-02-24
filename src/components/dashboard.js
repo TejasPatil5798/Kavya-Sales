@@ -43,7 +43,9 @@ const Dashboard = () => {
   useEffect(() => {
     fetchEmployeeCount(); // ✅ ONLY CALL ADDED
     fetchDashboardData();
+  }, []);
 
+  useEffect(() => {
     const salesCtx = document.getElementById("salesChart");
     const performanceCtx = document.getElementById("topPerformanceChart");
 
@@ -110,7 +112,7 @@ const Dashboard = () => {
         performanceChartRef.current.destroy();
       }
     };
-  }, []);
+  }, [salesData, performanceData]);
 
   return (
     <div className="dashboard">
