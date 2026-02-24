@@ -11,16 +11,14 @@
 }
 
 .kpi-card {
-  background: linear-gradient(
-    135deg,
-    rgb(45, 108, 223),
-    rgb(79, 140, 255)
-  );
+  background: linear-gradient(135deg, rgb(45, 108, 223), rgb(79, 140, 255));
   color: #ffffff;
   padding: 20px;
   border-radius: 14px;
   box-shadow: 0 10px 25px rgba(45, 108, 223, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .kpi-card:hover {
@@ -45,17 +43,19 @@
 }
 
 .card {
-  background: #ffffff;
+  background: linear-gradient(135deg, rgb(45, 108, 223), rgb(79, 140, 255));
   border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 22px rgba(45, 108, 223, 0.25);
   overflow: hidden;
+  color: #ffffff;
 }
 
 .card-header {
   padding: 14px 18px;
   font-weight: 600;
-  background: #f1f5f9;
   font-size: 15px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
 }
 
 .card-body {
@@ -72,14 +72,15 @@
   padding: 10px;
   text-align: left;
   font-size: 14px;
+  color: #ffffff;
 }
 
 .data-table thead {
-  background: #f8fafc;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .data-table tbody tr:not(:last-child) {
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .full-width {
