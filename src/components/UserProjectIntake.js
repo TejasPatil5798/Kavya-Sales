@@ -71,12 +71,12 @@ const UserProjectIntake = () => {
       {/* KPI */}
       <div className="intake-cards">
         <div className="kpi-card glass-card gradient-purple">
-          <small>Total Projects</small>
+          <h2 style={{fontSize: "14px"}}>Total Projects</h2>
           <h3>{filteredProjects.length}</h3>
         </div>
 
         <div className="kpi-card glass-card gradient-teal">
-          <small>Follow-Ups</small>
+          <h2 style={{fontSize: "14px"}}>Follow-Ups</h2>
           <h3>{followUpProjects.length}</h3>
         </div>
       </div>
