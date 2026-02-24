@@ -99,6 +99,36 @@ const UserHome = () => {
     };
   }, [tasks]);
 
+  useEffect(() => {
+    const performanceCtx = document.getElementById("userPerformanceChart");
+
+    if (performanceChartRef.current) performanceChartRef.current.destroy();
+
+    if (performanceCtx) {
+      performanceChartRef.current = new Chart(performanceCtx, {
+        type: "doughnut",
+        data: {
+          labels: ["Completed", "Remaining"],
+          datasets: [
+            {
+              data: [performanceScore, 100 - performanceScore],
+              backgroundColor: ["#8e44ad", "#e0e0e0"],
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "70%", // makes it modern donut style
+        },
+      });
+    }
+
+    return () => {
+      if (performanceChartRef.current) performanceChartRef.current.destroy();
+    };
+  }, [performanceScore]);
+
   return (
     <div className="dashboard">
       <div className="kpi-grid">
