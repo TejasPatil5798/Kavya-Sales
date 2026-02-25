@@ -97,9 +97,14 @@ const UserHome = () => {
 
   const todayDate = new Date().toISOString().split("T")[0];
 
-  const todaysPendingTasks = tasks.filter(
-    (task) => task.status === "Pending" && task.taskDate === todayDate,
-  );
+  const todaysPendingTasks = tasks.filter((task) => {
+    if (task.status !== "Pending") return false;
+    if (!task.taskDate) return false;
+
+    const taskDateOnly = new Date(task.taskDate).toISOString().split("T")[0];
+
+    return taskDateOnly === todayDate;
+  });
 
   /* ================= CHARTS ================= */
   useEffect(() => {
