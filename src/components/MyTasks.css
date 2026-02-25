@@ -176,29 +176,6 @@
   margin-top: 15px;
 }
 
-/* TABLE */
-.tasks-table {
-  width: 100%;
-  min-width: 900px;
-  /* forces horizontal scroll on small screens */
-  border-collapse: collapse;
-  background: #fff;
-}
-
-.tasks-table th,
-.tasks-table td {
-  padding: 10px 12px;
-  text-align: left;
-  border-bottom: 1px solid #e0e0e0;
-  white-space: nowrap;
-  /* prevents text wrapping */
-}
-
-/* HEADER */
-.tasks-table th {
-  background: #f4f6f8;
-  font-weight: 600;
-}
 
 /* OVERDUE ROW */
 .tasks-table tr.overdue {
