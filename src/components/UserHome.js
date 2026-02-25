@@ -80,9 +80,15 @@ const UserHome = () => {
 
     rollingDays.push(dayLabel);
 
-    const count = tasks.filter(
-      (task) => task.status === "Completed" && task.taskDate === formattedDate,
-    ).length;
+    const count = tasks.filter((task) => {
+      if (task.status !== "Completed") return false;
+
+      if (!task.taskDate) return false;
+
+      const taskDateOnly = new Date(task.taskDate).toISOString().split("T")[0];
+
+      return taskDateOnly === formattedDate;
+    }).length;
 
     rollingCounts.push(count);
   }
