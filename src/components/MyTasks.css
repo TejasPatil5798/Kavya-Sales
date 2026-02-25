@@ -1,93 +1,98 @@
 /* My Tasks Page */
 .my-tasks {
-    padding: 24px;
-    background-color: #f9fafb;
-    min-height: 100vh;
+  padding: 24px;
+  background-color: #f9fafb;
+  min-height: 100vh;
 }
 
 .my-tasks h2 {
-    margin-bottom: 20px;
-    color: #1f2937;
-    font-weight: 600;
+  margin-bottom: 20px;
+  color: #1f2937;
+  font-weight: 600;
 }
 
 /* Table */
 .tasks-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
 }
 
 .tasks-table thead {
-    background: linear-gradient(135deg, #2d6cdf, #4f8cff);
-    color: #fff;
+  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
+  color: #fff;
+}
+
+.task-head {
+  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
+  color: #fff;
 }
 
 .tasks-table th,
 .tasks-table td {
-    padding: 12px 14px;
-    text-align: left;
-    font-size: 14px;
-    color: #374151;
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 14px;
+  color: #374151;
 }
 
 .tasks-table th {
-    font-weight: 600;
-    color: #111827;
-    text-transform: uppercase;
-    font-size: 12px;
+  font-weight: 600;
+  color: #111827;
+  text-transform: uppercase;
+  font-size: 12px;
 }
 
 .tasks-table tr {
-    border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .tasks-table tr:last-child {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 /* Status badges */
 .status {
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 600;
-    display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
 }
 
 .status.Pending {
-    background-color: #fff7ed;
-    color: #c2410c;
+  background-color: #fff7ed;
+  color: #c2410c;
 }
 
 .status.Completed {
-    background-color: #ecfdf5;
-    color: #047857;
+  background-color: #ecfdf5;
+  color: #047857;
 }
 
 /* Buttons */
 .complete-btn {
-    padding: 6px 14px;
-    border-radius: 6px;
-    border: none;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    background-color: #2563eb;
-    color: #ffffff;
-    transition: background 0.2s ease;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: #2563eb;
+  color: #ffffff;
+  transition: background 0.2s ease;
 }
 
 .complete-btn:hover {
-    background-color: #1d4ed8;
+  background-color: #1d4ed8;
 }
 
 .complete-btn:disabled {
-    background-color: #9ca3af;
-    cursor: not-allowed;
+  background-color: #9ca3af;
+  cursor: not-allowed;
 }
 
 /* ===============================
@@ -95,60 +100,62 @@
 ================================ */
 
 .task-cards {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin: 20px 0 28px 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin: 20px 0 28px 0;
 }
 
 .task-card {
-    background: #ffffff;
-    border-radius: 10px;
-    padding: 18px 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-    border-left: 5px solid transparent;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+  border-left: 5px solid transparent;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .task-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
 }
 
 .task-card p {
-    margin: 0;
-    font-size: 20px;
-    color: #ffffff;
-    font-weight: 600;
-    text-transform: uppercase;
+  margin: 0;
+  font-size: 20px;
+  color: #ffffff;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .task-card h3 {
-    margin-top: 8px;
-    font-size: 28px;
-    font-weight: 700;
-    color: #ffffff;
+  margin-top: 8px;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 /* Card Variants */
 .task-card.total {
-    background-color: #6366f1;
-    /* indigo */
+  background-color: #6366f1;
+  /* indigo */
 }
 
 .task-card.pending {
-    background-color: #f59e0b;
-    /* amber */
+  background-color: #f59e0b;
+  /* amber */
 }
 
 .task-card.progress {
-    background-color: #2563eb;
-    /* blue */
+  background-color: #2563eb;
+  /* blue */
 }
 
 .task-card.completed {
-    background-color: #16a34a;
-    /* green */
+  background-color: #16a34a;
+  /* green */
 }
 
 /* ===============================
@@ -156,69 +163,69 @@
 ================================ */
 
 @media (max-width: 1024px) {
-    .task-cards {
-        grid-template-columns: repeat(2, 1fr);
-    }
+  .task-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 600px) {
-    .task-cards {
-        grid-template-columns: 1fr;
-    }
+  .task-cards {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* TABLE RESPONSIVE WRAPPER */
 .table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    margin-top: 15px;
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 15px;
 }
 
 /* TABLE */
 .tasks-table {
-    width: 100%;
-    min-width: 900px;
-    /* forces horizontal scroll on small screens */
-    border-collapse: collapse;
-    background: #fff;
+  width: 100%;
+  min-width: 900px;
+  /* forces horizontal scroll on small screens */
+  border-collapse: collapse;
+  background: #fff;
 }
 
 .tasks-table th,
 .tasks-table td {
-    padding: 10px 12px;
-    text-align: left;
-    border-bottom: 1px solid #e0e0e0;
-    white-space: nowrap;
-    /* prevents text wrapping */
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;
+  /* prevents text wrapping */
 }
 
 /* HEADER */
 .tasks-table th {
-    background: #f4f6f8;
-    font-weight: 600;
+  background: #f4f6f8;
+  font-weight: 600;
 }
 
 /* OVERDUE ROW */
 .tasks-table tr.overdue {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 /* STATUS SELECT */
 .status-select {
-    padding: 5px;
-    border-radius: 6px;
+  padding: 5px;
+  border-radius: 6px;
 }
 
 /* SCROLLBAR STYLING (OPTIONAL, looks clean) */
 .table-wrapper::-webkit-scrollbar {
-    height: 8px;
+  height: 8px;
 }
 
 .table-wrapper::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 10px;
+  background: #c1c1c1;
+  border-radius: 10px;
 }
 
 .table-wrapper::-webkit-scrollbar-track {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
