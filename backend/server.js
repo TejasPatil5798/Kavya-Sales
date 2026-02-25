@@ -32,7 +32,7 @@ app.use(
       }
     },
     credentials: true,
-  })
+  }),
 );
 
 /* ================= MIDDLEWARE ================= */
@@ -56,6 +56,10 @@ app.get("/health", (req, res) => {
 
 app.get("/", (req, res) => {
   res.send("Sales Portal API running");
+});
+
+app.get("/api/test-dashboard", (req, res) => {
+  res.json({ message: "Dashboard route file is loaded" });
 });
 
 /* ================= 404 HANDLER ================= */
