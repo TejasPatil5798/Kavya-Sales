@@ -214,23 +214,22 @@ const MyTasks = () => {
 
   return (
     <div className="my-tasks">
-
       {/* CARDS */}
       <div className="task-cards">
         <div className="kpi-card glass-card gradient-purple">
-          <p style={{fontSize: "14px"}}>Total Tasks</p>
+          <p style={{ fontSize: "14px" }}>Total Tasks</p>
           <h3>{totalTasks}</h3>
         </div>
         <div className="kpi-card glass-card gradient-pink">
-          <p style={{fontSize: "14px"}}>Pending</p>
+          <p style={{ fontSize: "14px" }}>Pending</p>
           <h3>{pendingTasks}</h3>
         </div>
         <div className="kpi-card glass-card gradient-teal">
-          <p style={{fontSize: "14px"}}>In Progress</p>
+          <p style={{ fontSize: "14px" }}>In Progress</p>
           <h3>{inProgressTasks}</h3>
         </div>
         <div className="kpi-card glass-card gradient-orange">
-          <p style={{fontSize: "14px"}}>Completed</p>
+          <p style={{ fontSize: "14px" }}>Completed</p>
           <h3>{completedTasks}</h3>
         </div>
       </div>
@@ -308,7 +307,11 @@ const MyTasks = () => {
                   <td>{task.client}</td>
                   <td>{task.userMail}</td>
                   <td>{task.taskType}</td>
-                  <td>{task.taskDate}</td>
+                  <td>
+                    {task.taskDate
+                      ? new Date(task.taskDate).toLocaleDateString("en-IN")
+                      : "-"}
+                  </td>
                   <td>{task.note || "-"}</td>
                   <td>
                     <select

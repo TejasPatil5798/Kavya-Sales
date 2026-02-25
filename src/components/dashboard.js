@@ -150,7 +150,6 @@ const Dashboard = () => {
       </div>
 
       {/* TOP PERFORMANCE */}
-
       <div className="card full-width">
         <div className="card-header1">
           <p>Top 10 Performer ({period.toUpperCase()})</p>
