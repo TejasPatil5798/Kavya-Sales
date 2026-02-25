@@ -11,6 +11,36 @@
     font-weight: 600;
 }
 
+/* Table */
+.tasks-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+.tasks-table thead {
+    background: linear-gradient(135deg, #2d6cdf, #4f8cff);
+    color: #fff;
+}
+
+.tasks-table th,
+.tasks-table td {
+    padding: 12px 14px;
+    text-align: left;
+    font-size: 14px;
+    color: #374151;
+}
+
+.tasks-table th {
+    font-weight: 600;
+    color: #111827;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
 .tasks-table tr {
     border-bottom: 1px solid #e5e7eb;
 }
@@ -162,14 +192,9 @@
     /* prevents text wrapping */
 }
 
-.task-head {
-    background: linear-gradient(135deg, #2d6cdf, #4f8cff);
-    color: #ffffff;
-}
-
 /* HEADER */
 .tasks-table th {
-    /* background: #f4f6f8; */
+    background: #f4f6f8;
     font-weight: 600;
 }
 
