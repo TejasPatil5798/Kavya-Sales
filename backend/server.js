@@ -54,12 +54,28 @@ app.get("/health", (req, res) => {
   res.json({ status: "API is running" });
 });
 
-app.get("/", (req, res) => {
-  res.send("Sales Portal API running");
-});
-
 app.get("/api/test-dashboard", (req, res) => {
   res.json({ message: "Dashboard route file is loaded" });
+});
+
+app.get("/api/fix-task-dates", async (req, res) => {
+  try {
+    const Task = require("./models/Task");
+
+    const tasks = await Task.find();
+
+    for (let task of tasks) {
+      if (typeof task.taskDate === "string") {
+        task.taskDate = new Date(task.taskDate);
+        await task.save();
+      }
+    }
+
+    res.json({ message: "Task dates fixed successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Fix failed" });
+  }
 });
 
 /* ================= 404 HANDLER ================= */
