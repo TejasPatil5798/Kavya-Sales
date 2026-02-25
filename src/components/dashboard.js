@@ -154,7 +154,7 @@ const Dashboard = () => {
       <div className="card full-width">
         <div className="card-header1">
           <p>Top 10 Performer ({period.toUpperCase()})</p>
-          <div className="time-buttons" style={{ marginBottom: "10px" }}>
+          <div className="time-buttons">
             <button onClick={() => setPeriod("daily")}>Daily</button>
             <button onClick={() => setPeriod("weekly")}>Weekly</button>
             <button onClick={() => setPeriod("monthly")}>Monthly</button>
