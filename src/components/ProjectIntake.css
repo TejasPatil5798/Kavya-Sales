@@ -315,12 +315,3 @@
   display: block;
 }
 
-.leads-table thead {
-  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
-  color: white;
-  transition: 0.3s ease;
-}
-
-.leads-table thead:hover {
-  background: linear-gradient(135deg, #1e4ed8, #3b82f6);
-}
