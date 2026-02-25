@@ -20,7 +20,7 @@ const UserDashboard = () => {
       // Only this user's tasks
       const userTasks = res.data.filter((task) => task.userMail === user.email);
 
-      setTasks(userTasks);
+      setTasks(userTasks || []);
     } catch (err) {
       console.error("Failed to load tasks", err);
     }
@@ -42,26 +42,50 @@ const UserDashboard = () => {
 
   /* CREATE CHART */
   useEffect(() => {
+    if (!chartRef.current) return;
+
     if (chartInstance.current) {
       chartInstance.current.destroy();
     }
 
     if (!tasks.length) return;
 
-    const completed = tasks.filter((t) => t.status === "Completed").length;
-    const pending = tasks.filter((t) => t.status === "Pending").length;
-    const inProgress = tasks.filter((t) => t.status === "In Progress").length;
+    // Get only completed tasks
+    const completedTasks = tasks.filter((t) => t.status === "Completed");
+
+    // Group by date
+    const dateMap = {};
+
+    completedTasks.forEach((task) => {
+      if (!task.taskDate) return;
+
+      const date = new Date(task.taskDate).toISOString().split("T")[0]; // only YYYY-MM-DD
+
+      dateMap[date] = (dateMap[date] || 0) + 1;
+    });
+
+    const labels = Object.keys(dateMap).sort();
+    const data = labels.map((date) => dateMap[date]);
 
     chartInstance.current = new Chart(chartRef.current, {
-      type: "doughnut",
+      type: "bar", // weekly style
       data: {
-        labels: ["Completed", "Pending", "In Progress"],
+        labels,
         datasets: [
           {
-            data: [completed, pending, inProgress],
-            backgroundColor: ["#4CAF50", "#FF9800", "#2196F3"],
+            label: "Completed Tasks",
+            data,
+            backgroundColor: "#4CAF50",
           },
         ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
       },
     });
   }, [tasks]);
@@ -82,7 +106,6 @@ const UserDashboard = () => {
         </div>
 
         <div className="kpi-card glass-card gradient-orange">
-
           <h3>Status</h3>
           <p>Active</p>
         </div>
