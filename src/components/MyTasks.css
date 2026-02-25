@@ -162,9 +162,14 @@
     /* prevents text wrapping */
 }
 
+.task-head {
+    background: linear-gradient(135deg, #2d6cdf, #4f8cff);
+    color: #ffffff;
+}
+
 /* HEADER */
 .tasks-table th {
-    background: #f4f6f8;
+    /* background: #f4f6f8; */
     font-weight: 600;
 }
 
