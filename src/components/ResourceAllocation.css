@@ -204,7 +204,7 @@ input, select {
 }
 
 .allocation-table tbody tr:hover {
-  background-color: #0178ef;
+  background-color: #f1f1f1;
 }
 
 /* ACTION BUTTONS */
