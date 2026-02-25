@@ -291,7 +291,7 @@ const MyTasks = () => {
       ) : (
         <div className="table-wrapper">
           <table className="tasks-table">
-            <thead>
+            <thead className="task-head">
               <tr>
                 <th>Client</th>
                 <th>User Mail</th>
