@@ -88,8 +88,8 @@
   align-items: center;
   gap: 8px;
   background: #f1f5f9;
-  padding: 8px 14px;
-  border-radius: 20px;
+  padding: 7px 20px 7px 11px;
+  border-radius: 25px;
   cursor: pointer;
   font-size: 14px;
   color: #0b1f32;
@@ -222,4 +222,13 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.navbar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+  border: 2px solid #0b1f32;
 }

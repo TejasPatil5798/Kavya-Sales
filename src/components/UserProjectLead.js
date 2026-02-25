@@ -55,13 +55,20 @@ const UserProjectLead = () => {
     // ✅ Client Name
     if (!leadForm.clientName.trim()) {
       newErrors.clientName = "Client Name is required";
-    } else if (!nameRegex.test(leadForm.clientName.trim())) {
-      newErrors.clientName = "Only alphabets are allowed.";
+    } else if (!/^[A-Za-z\s]+$/.test(leadForm.clientName.trim())) {
+      newErrors.clientName = "Client Name must contain only alphabets.";
+    } else if (leadForm.clientName.trim().length < 5) {
+      newErrors.clientName = "Client Name must be at least 5 characters long.";
     }
 
-    // ✅ Company Name (optional alphabet check)
+    // ✅ Client Company
     if (!leadForm.clientCompany.trim()) {
-      newErrors.clientCompany = "Company is required";
+      newErrors.clientCompany = "Company Name is required";
+    } else if (!/^[A-Za-z\s]+$/.test(leadForm.clientCompany.trim())) {
+      newErrors.clientCompany = "Company Name must contain only alphabets.";
+    } else if (leadForm.clientCompany.trim().length < 4) {
+      newErrors.clientCompany =
+        "Company Name must be at least 4 characters long.";
     }
 
     // ✅ Email
@@ -76,11 +83,17 @@ const UserProjectLead = () => {
       newErrors.mobile = "Mobile must be 10 digits";
     }
 
-    // ✅ Project Name (ONLY ALPHABETS)
+    // ✅ Project Name
     if (!leadForm.projectName.trim()) {
       newErrors.projectName = "Project Name is required";
-    } else if (!nameRegex.test(leadForm.projectName.trim())) {
-      newErrors.projectName = "Only alphabets are allowed.";
+    } else if (leadForm.projectName.trim().length < 3) {
+      newErrors.projectName =
+        "Project Name must be at least 3 characters long.";
+    }
+
+    // ✅ Budget (numeric only)
+    if (leadForm.budget && !/^[0-9]+$/.test(leadForm.budget)) {
+      newErrors.budget = "Budget must contain numbers only.";
     }
 
     // ✅ Follow Up
@@ -167,7 +180,6 @@ const UserProjectLead = () => {
     fetchLeads();
   };
 
-  /* ================= PAGINATION ================= */
   /* ================= SEARCH + FILTER ================= */
   const filteredLeads = leads.filter((lead) => {
     const matchesSearch =
@@ -182,11 +194,19 @@ const UserProjectLead = () => {
   });
 
   /* ================= PAGINATION ================= */
+  const totalPages = Math.ceil(filteredLeads.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedLeads = filteredLeads.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
+
+  /* 🔥 SAFETY FIX */
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [currentPage, totalPages]);
 
   return (
     <div className="projectlead-page">
@@ -276,28 +296,36 @@ const UserProjectLead = () => {
       {/* rest of your JSX */}
 
       <div className="pl-cards">
-        <div className="pl-card purple">
+        <div className="kpi-card glass-card gradient-purple">
           <h6>Total Leads</h6>
           <h3>{leads.length}</h3>
         </div>
 
-        <div className="pl-card pink">
+        <div className="kpi-card glass-card gradient-pink">
+
           <h6>Total Deals</h6>
           <h3>—</h3>
         </div>
 
-        <div className="pl-card blue">
+        <div className="kpi-card glass-card gradient-blue">
           <h6>Lead Conversion</h6>
           <h3>—</h3>
         </div>
 
-        <div className="pl-card lavender">
+        <div className="kpi-card glass-card gradient-green">
           <h6>Avg Deal</h6>
           <h3>—</h3>
         </div>
       </div>
-      <div className="filter-bar top-bar" style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
-
+      <div
+        className="filter-bar top-bar"
+        style={{
+          display: "flex",
+          gap: "10px",
+          alignItems: "center",
+          flexWrap: "wrap",
+        }}
+      >
         <input
           type="text"
           placeholder="Search by name, company, project..."
@@ -310,7 +338,7 @@ const UserProjectLead = () => {
             padding: "8px",
             borderRadius: "6px",
             border: "1px solid #ccc",
-            minWidth: "250px"
+            minWidth: "250px",
           }}
         />
 
@@ -323,7 +351,7 @@ const UserProjectLead = () => {
           style={{
             padding: "8px",
             borderRadius: "6px",
-            border: "1px solid #ccc"
+            border: "1px solid #ccc",
           }}
         >
           <option value="All">All Status</option>
@@ -355,7 +383,6 @@ const UserProjectLead = () => {
         >
           + Add Lead
         </button>
-
       </div>
 
       <div className="filter-card">
@@ -415,34 +442,34 @@ const UserProjectLead = () => {
             </tbody>
           </table>
         </div>
-        <div className="pagination">
-          <button
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((p) => p - 1)}
-          >
-            Prev
-          </button>
 
-          {Array.from(
-            { length: Math.ceil(filteredLeads.length / ITEMS_PER_PAGE) },
-            (_, i) => i + 1,
-          ).map((page) => (
+        {filteredLeads.length > 0 && (
+          <div className="pagination">
             <button
-              key={page}
-              className={currentPage === page ? "active" : ""}
-              onClick={() => setCurrentPage(page)}
+              disabled={currentPage === 1 || totalPages === 0}
+              onClick={() => setCurrentPage((p) => p - 1)}
             >
-              {page}
+              Prev
             </button>
-          ))}
 
-          <button
-            disabled={currentPage === Math.ceil(leads.length / ITEMS_PER_PAGE)}
-            onClick={() => setCurrentPage((p) => p + 1)}
-          >
-            Next
-          </button>
-        </div>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                className={currentPage === page ? "active" : ""}
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              disabled={currentPage === totalPages || totalPages === 0}
+              onClick={() => setCurrentPage((p) => p + 1)}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ADD / EDIT MODAL – FULL FORM */}
@@ -454,7 +481,12 @@ const UserProjectLead = () => {
               placeholder="Client Name"
               value={leadForm.clientName}
               onChange={(e) => {
-                setLeadForm({ ...leadForm, clientName: e.target.value });
+                const value = e.target.value;
+
+                if (/^[A-Za-z\s]*$/.test(value)) {
+                  setLeadForm({ ...leadForm, clientName: value });
+                }
+
                 setErrors({ ...errors, clientName: "" });
               }}
               className={errors.clientName ? "error" : ""}
@@ -467,7 +499,12 @@ const UserProjectLead = () => {
               placeholder="Client Company"
               value={leadForm.clientCompany}
               onChange={(e) => {
-                setLeadForm({ ...leadForm, clientCompany: e.target.value });
+                const value = e.target.value;
+
+                if (/^[A-Za-z\s]*$/.test(value)) {
+                  setLeadForm({ ...leadForm, clientCompany: value });
+                }
+
                 setErrors({ ...errors, clientCompany: "" });
               }}
               className={errors.clientCompany ? "error" : ""}
@@ -479,7 +516,7 @@ const UserProjectLead = () => {
             <input
               placeholder="User Email"
               value={leadForm.email}
-              disabled   // ✅ makes it non-editable
+              disabled // ✅ makes it non-editable
               className="readonly-input"
             />
             {errors.email && (
@@ -528,7 +565,6 @@ const UserProjectLead = () => {
                 });
               }}
             >
-
               {STATUS_OPTIONS.map((s) => (
                 <option key={s}>{s}</option>
               ))}
@@ -548,9 +584,7 @@ const UserProjectLead = () => {
                   }
                 />
                 {errors.followUpDate && (
-                  <small style={{ color: "red" }}>
-                    {errors.followUpDate}
-                  </small>
+                  <small style={{ color: "red" }}>{errors.followUpDate}</small>
                 )}
               </>
             )}
@@ -594,10 +628,17 @@ const UserProjectLead = () => {
             <input
               placeholder="Budget"
               value={leadForm.budget}
-              onChange={(e) =>
-                setLeadForm({ ...leadForm, budget: e.target.value })
-              }
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                setLeadForm({ ...leadForm, budget: value });
+                setErrors({ ...errors, budget: "" });
+              }}
             />
+
+            {errors.budget && (
+              <small style={{ color: "red" }}>{errors.budget}</small>
+            )}
+
             <input
               placeholder="Reference"
               value={leadForm.reference}

@@ -104,7 +104,11 @@
 }
 
 .leads-table thead {
-  background: #f1f5f9;
+  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
+}
+
+.leads-table thead:hover {
+  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
 }
 
 .leads-table th,
@@ -113,10 +117,6 @@
   text-align: left;
   font-size: 14px;
   border-bottom: 1px solid #e5e7eb;
-}
-
-.leads-table tbody tr:hover {
-  background: #f9fafb;
 }
 
 /* ================= ACTION BUTTONS ================= */

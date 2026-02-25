@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { FiUser } from "react-icons/fi";
-import API from "../api/api"; // ⭐ use axios instance
+import { FiUser, FiCamera } from "react-icons/fi";
+import API from "../api/api";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [preview, setPreview] = useState(null);
 
   const fetchProfile = async () => {
     try {
@@ -21,6 +22,28 @@ const Profile = () => {
   useEffect(() => {
     fetchProfile();
   }, []);
+
+  /* ================= UPLOAD HANDLER ================= */
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Preview instantly
+    setPreview(URL.createObjectURL(file));
+
+    const formData = new FormData();
+    formData.append("profileImage", file);
+
+    try {
+      const { data } = await API.put("/users/upload-profile-picture", formData);
+
+      setUser(data.user);
+      alert("Profile picture updated successfully");
+    } catch (err) {
+      console.error(err);
+      alert(err.response?.data?.message || "Upload failed");
+    }
+  };
 
   if (loading) return <p>Loading profile...</p>;
   if (!user) return <p>No profile data</p>;
@@ -40,24 +63,68 @@ const Profile = () => {
       <h2 style={{ marginBottom: "24px" }}>My Profile</h2>
 
       <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-        <div
-          style={{
-            width: "72px",
-            height: "72px",
-            borderRadius: "50%",
-            background: "#0b1f32",
-            color: "#ffffff",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "28px",
-          }}
-        >
-          <FiUser />
+        {/* PROFILE IMAGE */}
+        <div style={{ position: "relative" }}>
+          <label htmlFor="profileUpload" style={{ cursor: "pointer" }}>
+            {preview || user.profileImage ? (
+              <img
+                src={preview || user.profileImage}
+                alt="Profile"
+                style={{
+                  width: "90px",
+                  height: "90px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  border: "3px solid #0b1f32",
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: "90px",
+                  height: "90px",
+                  borderRadius: "50%",
+                  background: "#0b1f32",
+                  color: "#ffffff",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "30px",
+                }}
+              >
+                <FiUser />
+              </div>
+            )}
+          </label>
+
+          {/* CAMERA ICON */}
+          <label
+            htmlFor="profileUpload"
+            style={{
+              position: "absolute",
+              bottom: "0",
+              right: "0",
+              background: "#ffffff",
+              borderRadius: "50%",
+              padding: "6px",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+              cursor: "pointer",
+            }}
+          >
+            <FiCamera size={16} />
+          </label>
+
+          <input
+            type="file"
+            id="profileUpload"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleImageChange}
+          />
         </div>
 
         <div>
-          <h3 style={{ margin: 0 }}>{user.fullName || user.name}</h3>
+          <h3 style={{ margin: 0 }}>{user.name}</h3>
           <p style={{ margin: "4px 0", color: "#64748b" }}>
             {isAdmin ? "System Administrator" : "Employee"}
           </p>
@@ -76,7 +143,7 @@ const Profile = () => {
       >
         <div>
           <strong>Name</strong>
-          <p>{user.fullName || user.name}</p>
+          <p>{user.name}</p>
         </div>
 
         <div>
@@ -94,35 +161,11 @@ const Profile = () => {
           <p>{user.role}</p>
         </div>
 
-        {isAdmin && (
-          <>
-            <div>
-              <strong>Admin Level</strong>
-              <p>{user.adminLevel || "Full Access"}</p>
-            </div>
-
-            <div>
-              <strong>Permissions</strong>
-              <p>All System Permissions</p>
-            </div>
-          </>
-        )}
-
         {!isAdmin && (
           <>
             <div>
-              <strong>Employee ID</strong>
-              <p>{user.employeeId || "-"}</p>
-            </div>
-
-            <div>
-              <strong>Department</strong>
-              <p>{user.department || "-"}</p>
-            </div>
-
-            <div>
-              <strong>Manager</strong>
-              <p>{user.managerName || "-"}</p>
+              <strong>Team</strong>
+              <p>{user.team || "-"}</p>
             </div>
           </>
         )}

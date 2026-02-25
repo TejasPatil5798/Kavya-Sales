@@ -22,7 +22,8 @@
 }
 
 .tasks-table thead {
-    background-color: #f1f5f9;
+    background-color: linear-gradient(135deg, #2d6cdf, #4f8cff);
+    color: #fff;
 }
 
 .tasks-table th,

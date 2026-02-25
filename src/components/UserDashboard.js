@@ -2,38 +2,56 @@ import { useEffect, useState, useRef } from "react";
 import Chart from "chart.js/auto";
 import API from "../api/api";
 import "./UserDashboard.css";
- 
+
 const UserDashboard = () => {
   const [tasks, setTasks] = useState([]);
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
- 
+
   /* FETCH TASKS */
   const fetchTasks = async () => {
     try {
       const res = await API.get("/tasks");
-      setTasks(res.data);
+
+      // Get logged in user from localStorage
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      if (!user?.email) return;
+
+      // Only this user's tasks
+      const userTasks = res.data.filter((task) => task.userMail === user.email);
+
+      setTasks(userTasks);
     } catch (err) {
       console.error("Failed to load tasks", err);
     }
   };
- 
+
   useEffect(() => {
     fetchTasks();
   }, []);
- 
+
+  useEffect(() => {
+    const handleFocus = () => {
+      fetchTasks();
+    };
+
+    window.addEventListener("focus", handleFocus);
+
+    return () => window.removeEventListener("focus", handleFocus);
+  }, []);
+
   /* CREATE CHART */
   useEffect(() => {
-    if (!tasks.length) return;
- 
-    const completed = tasks.filter(t => t.status === "Completed").length;
-    const pending = tasks.filter(t => t.status === "Pending").length;
-    const inProgress = tasks.filter(t => t.status === "In Progress").length;
- 
     if (chartInstance.current) {
       chartInstance.current.destroy();
     }
- 
+
+    if (!tasks.length) return;
+
+    const completed = tasks.filter((t) => t.status === "Completed").length;
+    const pending = tasks.filter((t) => t.status === "Pending").length;
+    const inProgress = tasks.filter((t) => t.status === "In Progress").length;
+
     chartInstance.current = new Chart(chartRef.current, {
       type: "doughnut",
       data: {
@@ -41,38 +59,35 @@ const UserDashboard = () => {
         datasets: [
           {
             data: [completed, pending, inProgress],
-            backgroundColor: [
-              "#4CAF50",
-              "#FF9800",
-              "#2196F3"
-            ],
+            backgroundColor: ["#4CAF50", "#FF9800", "#2196F3"],
           },
         ],
       },
     });
   }, [tasks]);
- 
+
   return (
     <div className="user-dashboard">
       <h1>Welcome User</h1>
- 
-      <div className="user-cards">
+
+      <div className="kpi-card glass-card gradient-blue">
         <div className="card">
           <h3>Total Tasks</h3>
           <p>{tasks.length}</p>
         </div>
- 
-        <div className="card">
+
+        <div className="kpi-card glass-card gradient-purple">
           <h3>Completed Tasks</h3>
-          <p>{tasks.filter(t => t.status === "Completed").length}</p>
+          <p>{tasks.filter((t) => t.status === "Completed").length}</p>
         </div>
- 
-        <div className="card">
+
+        <div className="kpi-card glass-card gradient-orange">
+
           <h3>Status</h3>
           <p>Active</p>
         </div>
       </div>
- 
+
       {/* CHART */}
       <div style={{ width: "400px", marginTop: "40px" }}>
         <canvas ref={chartRef}></canvas>
@@ -80,5 +95,5 @@ const UserDashboard = () => {
     </div>
   );
 };
- 
+
 export default UserDashboard;

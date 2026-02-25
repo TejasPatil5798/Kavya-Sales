@@ -1,32 +1,33 @@
 import { useEffect, useState } from "react";
-import { FiUser, FiBell, FiSettings, FiLogOut } from "react-icons/fi";
+import { FiUser, FiSettings, FiLogOut } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import API from "../api/api";
 import "./Navbar.css";
 
 const Navbar = ({ onLogout }) => {
   const [open, setOpen] = useState(false);
-  const [displayName, setDisplayName] = useState("User");
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const role = localStorage.getItem("role");
 
-  // ✅ LOAD USER NAME SAFELY
+  // ✅ FETCH USER FROM API (always latest)
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-
-    if (storedUser) {
+    const fetchUser = async () => {
       try {
-        const user = JSON.parse(storedUser);
-
-        setDisplayName(user?.name || user?.fullName || user?.email || "User");
-      } catch (error) {
-        console.error("Navbar user parse error", error);
-        setDisplayName("User");
+        const { data } = await API.get("/users/me");
+        setUser(data);
+      } catch (err) {
+        console.error("Navbar fetch error", err);
       }
-    }
+    };
+
+    fetchUser();
   }, []);
 
-  // ✅ EXTRACT FIRST NAME ONLY
-  const firstName = displayName?.split(" ")[0];
+  const displayName =
+    user?.name || user?.fullName || user?.email || "User";
+
+  const firstName = displayName.split(" ")[0];
 
   const goToProfile = () => {
     setOpen(false);
@@ -47,7 +48,7 @@ const Navbar = ({ onLogout }) => {
 
   return (
     <header className="navbar">
-      {/* LEFT SIDE */}
+      {/* LEFT */}
       <div className="navbar-left">
         <h3 className="welcome-text">
           Hello,
@@ -55,19 +56,25 @@ const Navbar = ({ onLogout }) => {
         </h3>
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* RIGHT */}
       <div className="navbar-right">
-        {/* <button className="icon-btn">
-          <FiBell />
-        </button> */}
-
         <div className="profile-wrapper">
           <div
             className="profile"
             onClick={() => setOpen(!open)}
             style={{ cursor: "pointer" }}
           >
-            <FiUser />
+            {/* 🔥 PROFILE IMAGE OR ICON */}
+            {user?.profileImage ? (
+              <img
+                src={user.profileImage}
+                alt="Profile"
+                className="navbar-avatar"
+              />
+            ) : (
+              <FiUser />
+            )}
+
             <span className="profile-name">{displayName}</span>
           </div>
 

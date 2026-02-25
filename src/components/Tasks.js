@@ -257,19 +257,19 @@ const Tasks = () => {
 
       {/* KPI CARDS */}
       <div className="kpi-grid">
-        <div className="kpi-card blue">
+        <div className="kpi-card glass-card gradient-pink">
           <h4>Total</h4>
           <p>{totalTasks}</p>
         </div>
-        <div className="kpi-card green">
+        <div className="kpi-card glass-card gradient-purple">
           <h4>Completed</h4>
           <p>{completedTasks}</p>
         </div>
-        <div className="kpi-card yellow">
+        <div className="kpi-card glass-card gradient-orange">
           <h4>In Progress</h4>
           <p>{inProgressTasks}</p>
         </div>
-        <div className="kpi-card red">
+        <div className="kpi-card glass-card gradient-teal">
           <h4>Pending</h4>
           <p>{pendingTasks}</p>
         </div>

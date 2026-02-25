@@ -233,11 +233,11 @@ const ProjectIntake = () => {
     <div className="intake-page">
       {/* KPI */}
       <div className="intake-cards">
-        <div className="intake-card purple">
+        <div className="kpi-card glass-card gradient-blue ">
           <small>Total Projects</small>
           <h3>{projects.length}</h3>
         </div>
-        <div className="intake-card pink">
+        <div className="kpi-card glass-card gradient-teal">
           <small>Follow up</small>
           <h3>{projects.length}</h3>
         </div>
