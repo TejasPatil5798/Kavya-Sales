@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [achievementPercent, setAchievementPercent] = useState(0);
   const [salesData, setSalesData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
+  const [period, setPeriod] = useState("weekly");
 
   // ✅ Fetch employee count from registered users (ONLY ADDITION)
   const fetchEmployeeCount = async () => {
@@ -28,17 +29,16 @@ const Dashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const { data } = await API.get("/dashboard/summary");
-
-      setTotalTarget(data.totalTarget || 0);
-      setTotalAchieved(data.totalAchieved || 0);
-      setAchievementPercent(data.achievementPercent || 0);
-      setSalesData(data.weeklySales || []);
+      const { data } = await API.get(`/dashboard/summary?period=${period}`);
       setPerformanceData(data.topPerformers || []);
     } catch (error) {
       console.error("Dashboard fetch error", error);
     }
   };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [period]);
 
   useEffect(() => {
     fetchEmployeeCount(); // ✅ ONLY CALL ADDED
@@ -80,7 +80,6 @@ const Dashboard = () => {
       });
     }
 
-
     // TOP PERFORMANCE CHART
     if (performanceCtx && performanceData.length > 0) {
       performanceChartRef.current = new Chart(performanceCtx, {
@@ -89,9 +88,11 @@ const Dashboard = () => {
           labels: performanceData.map((p) => p.name),
           datasets: [
             {
-              label: "Performance",
+              label: "Completed Tasks",
               data: performanceData.map((p) => p.achievement),
-              backgroundColor: "#de638a",
+              backgroundColor: performanceData.map((_, index) =>
+                index === 0 ? "#FFD700" : "#de638a",
+              ),
             },
           ],
         },
@@ -101,7 +102,6 @@ const Dashboard = () => {
         },
       });
     }
-
 
     // ✅ CLEANUP ON UNMOUNT
     return () => {
@@ -137,7 +137,6 @@ const Dashboard = () => {
           <h2>Sales Achieved</h2>
           <h3>₹{totalAchieved.toLocaleString()}</h3>
         </div>
-
       </div>
 
       {/* CHARTS */}
@@ -151,6 +150,11 @@ const Dashboard = () => {
       </div>
 
       {/* TOP PERFORMANCE */}
+      <div style={{ marginBottom: "10px" }}>
+        <button onClick={() => setPeriod("daily")}>Daily</button>
+        <button onClick={() => setPeriod("weekly")}>Weekly</button>
+        <button onClick={() => setPeriod("monthly")}>Monthly</button>
+      </div>
       <div className="card full-width">
         <div className="card-header">Top 10 Performer (Daily)</div>
         <div className="card-body chart-container">

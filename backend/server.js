@@ -11,6 +11,7 @@ const leadRoutes = require("./routes/leadRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const taskRoutes = require("./routes/taskRoutes");
 const allocationRoutes = require("./routes/allocationRoutes"); // ✅ ADDED
+const dashboardRoutes = require("./routes/dashboard");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -34,8 +35,6 @@ app.use(
   })
 );
 
-
-
 /* ================= MIDDLEWARE ================= */
 app.use(express.json());
 
@@ -48,6 +47,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/allocations", allocationRoutes); // ✅ NEW ROUTE
 app.use("/uploads", express.static("uploads"));
+app.use("/dashboard", dashboardRoutes);
 
 /* ================= HEALTH CHECK ================= */
 app.get("/health", (req, res) => {
