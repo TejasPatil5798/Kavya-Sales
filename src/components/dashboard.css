@@ -214,3 +214,19 @@
     height: 220px;
   }
 }
+
+.time-buttons{
+  display: flex;
+  gap: 8px;
+}
+
+.time-buttons button {
+  background: #4f8cff;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  margin-right: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}

@@ -150,7 +150,7 @@ const Dashboard = () => {
       </div>
 
       {/* TOP PERFORMANCE */}
-      <div style={{ marginBottom: "10px" }}>
+      <div className="time-buttons" style={{ marginBottom: "10px" }}>
         <button onClick={() => setPeriod("daily")}>Daily</button>
         <button onClick={() => setPeriod("weekly")}>Weekly</button>
         <button onClick={() => setPeriod("monthly")}>Monthly</button>
