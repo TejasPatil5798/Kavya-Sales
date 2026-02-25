@@ -5,7 +5,7 @@ exports.createTask = async (req, res) => {
   try {
     const task = await Task.create({
       ...req.body,
-      taskDate: new Date(req.body.taskDate), // ✅ FORCE DATE
+      taskDate: new Date(req.body.taskDate),
     });
 
     res.status(201).json(task);

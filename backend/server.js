@@ -54,31 +54,6 @@ app.get("/health", (req, res) => {
   res.json({ status: "API is running" });
 });
 
-app.get("/api/test-dashboard", (req, res) => {
-  res.json({ message: "Dashboard route file is loaded" });
-});
-
-app.get("/api/fix-task-dates", async (req, res) => {
-  try {
-    const Task = require("./models/Task");
-
-    const tasks = await Task.find();
-
-    for (let task of tasks) {
-      // If taskDate is broken object
-      if (typeof task.taskDate === "object") {
-        task.taskDate = task.createdAt; // ✅ use createdAt
-        await task.save();
-      }
-    }
-
-    res.json({ message: "Task dates fully repaired" });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Fix failed" });
-  }
-});
-
 /* ================= 404 HANDLER ================= */
 app.use((req, res) => {
   res.status(404).json({ message: "API route not found" });

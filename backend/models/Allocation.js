@@ -10,6 +10,7 @@ const allocationSchema = new mongoose.Schema(
     project_id: {
       type: Number,
       required: true,
+      unique: true,
     },
 
     it_team: {
