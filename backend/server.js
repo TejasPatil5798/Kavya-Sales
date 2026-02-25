@@ -65,13 +65,14 @@ app.get("/api/fix-task-dates", async (req, res) => {
     const tasks = await Task.find();
 
     for (let task of tasks) {
-      if (typeof task.taskDate === "string") {
-        task.taskDate = new Date(task.taskDate);
+      // If taskDate is broken object
+      if (typeof task.taskDate === "object") {
+        task.taskDate = task.createdAt; // ✅ use createdAt
         await task.save();
       }
     }
 
-    res.json({ message: "Task dates fixed successfully" });
+    res.json({ message: "Task dates fully repaired" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Fix failed" });
