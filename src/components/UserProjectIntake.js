@@ -140,7 +140,7 @@ const UserProjectIntake = () => {
             <tbody>
               {paginatedProjects.map((p) => (
                 <tr key={p._id}>
-                  <td>{p.clientName}</td>
+                  <td style={{background:"pink"}}>{p.clientName}</td>
                   <td>{p.clientCompany}</td>
                   <td>{p.email}</td>
                   <td>{p.mobile}</td>
