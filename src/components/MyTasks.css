@@ -21,7 +21,7 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
 }
 
-.task-head {
+.task-head thead{
   background: linear-gradient(135deg, #2d6cdf, #4f8cff);
   color: #ffffff;
 }
