@@ -47,7 +47,7 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/allocations", allocationRoutes); // ✅ NEW ROUTE
 app.use("/uploads", express.static("uploads"));
-app.use("/dashboard", dashboardRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 /* ================= HEALTH CHECK ================= */
 app.get("/health", (req, res) => {
