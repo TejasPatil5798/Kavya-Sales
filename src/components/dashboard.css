@@ -105,7 +105,8 @@
 .card-header1 {
   padding: 14px 18px;
   font-weight: 600;
-  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  background: linear-gradient(135deg, rgb(45, 108, 223), rgb(79, 140, 255));
+  color: #ffffff;
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
@@ -224,7 +225,7 @@
 }
 
 .time-buttons button {
-  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
+  background: linear-gradient(135deg, #00b3a4, #4dded2);
   color: #ffffff;
   border: none;
   padding: 4px 10px;
