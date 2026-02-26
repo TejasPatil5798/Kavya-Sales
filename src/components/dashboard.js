@@ -151,7 +151,7 @@ const Dashboard = () => {
         <div className="card">
           <div className="card-header">
             Sales Overview
-            <div style={{ float: "right" }}>
+            <div className="time-buttons" style={{ float: "right" }}>
               <button onClick={() => setPeriod("weekly")}>
                 Weekly
               </button>
