@@ -99,6 +99,17 @@
 .gradient-green {
   background: linear-gradient(135deg, #27cc38, #55ff4f);
 }
+.react-calendar {
+  border: none;
+  font-family: inherit;
+  width: 100%;
+}
+
+.react-calendar__tile--active {
+  background: #124c81;
+  color: white;
+  border-radius: 8px;
+}
 
 
 .card {
