@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import API from "../api/api";
 import "./dashboard.css";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 const Dashboard = () => {
   const salesChartRef = useRef(null);
@@ -15,7 +17,7 @@ const Dashboard = () => {
   const [salesData, setSalesData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
   const [period, setPeriod] = useState("weekly");
-  
+
 
   // ✅ FETCH ALL USERS (same as Employees.js)
   const fetchEmployees = async () => {
@@ -42,10 +44,10 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {
-    fetchEmployees();
-    fetchDashboardData(period);
-  }, [period]);
+ useEffect(() => {
+  fetchEmployees();
+  fetchDashboardData(period, selectedDate);
+}, [period, selectedDate]);
 
   // 🔥 CHART EFFECT (separate for correct rendering)
   useEffect(() => {
@@ -149,26 +151,43 @@ const Dashboard = () => {
       {/* CHARTS */}
 
       <div className="chart-grid">
-        <div className="card">
-          <div className="card-header">
-            Sales Overview
-            <div className="time-buttons" style={{ float: "right" }}>
-              <button onClick={() => setPeriod("weekly")}>
-                Weekly
-              </button>
-              <button onClick={() => setPeriod("monthly")}>
-                Monthly
-              </button>
+        <div style={{ display: "flex", gap: "20px" }}>
+
+          {/* LEFT SIDE - GRAPH */}
+          <div className="card" style={{ flex: 2 }}>
+            <div className="card-header">
+              Sales Overview
+              <div className="time-buttons" style={{ float: "right" }}>
+                <button onClick={() => setPeriod("weekly")}>
+                  Weekly
+                </button>
+                <button onClick={() => setPeriod("monthly")}>
+                  Monthly
+                </button>
+              </div>
+            </div>
+
+            <div className="card-body chart-container">
+              <canvas id="salesChart"></canvas>
             </div>
           </div>
-          <div className="card-body chart-container">
-            <canvas id="salesChart"></canvas>
+
+          {/* RIGHT SIDE - CALENDAR */}
+          <div className="card" style={{ flex: 1 }}>
+            <div className="card-header">Calendar</div>
+            <div className="card-body" style={{ display: "flex", justifyContent: "center" }}>
+              <Calendar
+                onChange={setSelectedDate}
+                value={selectedDate}
+              />
+            </div>
           </div>
+
         </div>
       </div>
 
       {/* TOP PERFORMANCE */}
-          <div className="card full-width">
+      <div className="card full-width">
         <div className="card-header1">
           <p>Top 10 Performer ({period.toUpperCase()})</p>
           <div className="time-buttons">

@@ -62,6 +62,17 @@
   transform: translateY(-6px);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
 }
+.react-calendar {
+  border: none;
+  font-family: inherit;
+  width: 100%;
+}
+
+.react-calendar__tile--active {
+  background: #124c81;
+  color: white;
+  border-radius: 8px;
+}
 
 /* ===== KPI COLORS ===== */
 
