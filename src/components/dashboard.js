@@ -17,6 +17,7 @@ const Dashboard = () => {
   const [salesData, setSalesData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
   const [period, setPeriod] = useState("weekly");
+  const [selectedDate, setSelectedDate] = useState(new Date());
  
  
   // ✅ FETCH ALL USERS (same as Employees.js)
@@ -30,19 +31,26 @@ const Dashboard = () => {
     }
   };
  
-  const fetchDashboardData = async (selectedPeriod = "weekly") => {
-    try {
-      const { data } = await API.get(`/dashboard/summary?period=${selectedPeriod}`);
- 
-      setTotalTarget(data.totalTarget || 0);
-      setTotalAchieved(data.totalAchieved || 0);
-      setAchievementPercent(data.achievementPercent || 0);
-      setSalesData(data.weeklySales || []);
-      setPerformanceData(data.topPerformers || []);
-    } catch (error) {
-      console.error("Dashboard fetch error", error);
-    }
-  };
+  const fetchDashboardData = async (
+  selectedPeriod = "weekly",
+  date = new Date()
+) => {
+  try {
+    const formattedDate = date.toISOString();
+
+    const { data } = await API.get(
+      `/dashboard/summary?period=${selectedPeriod}&date=${formattedDate}`
+    );
+
+    setTotalTarget(data.totalTarget || 0);
+    setTotalAchieved(data.totalAchieved || 0);
+    setAchievementPercent(data.achievementPercent || 0);
+    setSalesData(data.weeklySales || []);
+    setPerformanceData(data.topPerformers || []);
+  } catch (error) {
+    console.error("Dashboard fetch error", error);
+  }
+};
  
  useEffect(() => {
   fetchEmployees();
