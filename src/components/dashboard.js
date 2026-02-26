@@ -167,8 +167,15 @@ const Dashboard = () => {
       </div>
 
       {/* TOP PERFORMANCE */}
-      <div className="card full-width">
-        <div className="card-header">Top 10 Performer (Daily)</div>
+          <div className="card full-width">
+        <div className="card-header1">
+          <p>Top 10 Performer ({period.toUpperCase()})</p>
+          <div className="time-buttons">
+            <button onClick={() => setPeriod("daily")}>Daily</button>
+            <button onClick={() => setPeriod("weekly")}>Weekly</button>
+            <button onClick={() => setPeriod("monthly")}>Monthly</button>
+          </div>
+        </div>
         <div className="card-body chart-container">
           <canvas id="topPerformanceChart"></canvas>
         </div>
