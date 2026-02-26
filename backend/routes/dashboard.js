@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
+const Lead = require("../models/Lead");   // ✅ ADD THIS
 
 // GET Dashboard Summary
 router.get("/summary", async (req, res) => {
@@ -10,7 +11,7 @@ router.get("/summary", async (req, res) => {
     const now = new Date();
     let startDate = new Date();
 
-    // FILTER BASED ON PERIOD
+    // ✅ FILTER BASED ON PERIOD
     if (period === "daily") {
       startDate.setHours(0, 0, 0, 0);
     } else if (period === "weekly") {
@@ -19,13 +20,14 @@ router.get("/summary", async (req, res) => {
       startDate.setMonth(now.getMonth() - 1);
     }
 
-    // GET COMPLETED TASKS
+    // ================================
+    // ✅ TASK PERFORMANCE (YOUR OLD LOGIC)
+    // ================================
     const completedTasks = await Task.find({
       status: "Completed",
       taskDate: { $gte: startDate },
     });
 
-    // GROUP BY USER MAIL
     const performanceMap = {};
 
     completedTasks.forEach((task) => {
@@ -35,21 +37,54 @@ router.get("/summary", async (req, res) => {
       performanceMap[task.userMail]++;
     });
 
-    // CONVERT TO ARRAY
     let topPerformers = Object.keys(performanceMap).map((email) => ({
       name: email,
       achievement: performanceMap[email],
     }));
 
-    // SORT DESC
     topPerformers.sort((a, b) => b.achievement - a.achievement);
-
-    // TAKE TOP 10
     topPerformers = topPerformers.slice(0, 10);
 
+    // ================================
+    // 🔥 NEW: SALES TARGET FROM LEADS
+    // ================================
+
+    const validStatuses = [
+      "Interested",
+      "Done",
+      "Open",
+      "Closed",
+      "Follow Up",
+      "Pending",
+    ];
+
+    const salesResult = await Lead.aggregate([
+      {
+        $match: {
+          status: { $in: validStatuses },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$budget" },
+        },
+      },
+    ]);
+
+    const totalTarget = salesResult[0]?.total || 0;
+
+    // ================================
+    // ✅ SEND RESPONSE TO FRONTEND
+    // ================================
     res.json({
+      totalTarget,          // 👈 THIS WILL SHOW IN SALES TARGET CARD
+      totalAchieved: 0,
+      achievementPercent: 0,
+      weeklySales: [],
       topPerformers,
     });
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
