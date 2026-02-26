@@ -159,40 +159,36 @@ const Dashboard = () => {
       {/* CHARTS */}
  
       <div className="chart-grid">
-        <div style={{ display: "flex", gap: "20px" }}>
- 
-          {/* LEFT SIDE - GRAPH */}
-          <div className="card" style={{ flex: 2 }}>
-            <div className="card-header">
-              Sales Overview
-              <div className="time-buttons" style={{ float: "right" }}>
-                <button onClick={() => setPeriod("weekly")}>
-                  Weekly
-                </button>
-                <button onClick={() => setPeriod("monthly")}>
-                  Monthly
-                </button>
-              </div>
-            </div>
- 
-            <div className="card-body chart-container">
-              <canvas id="salesChart"></canvas>
-            </div>
-          </div>
- 
-          {/* RIGHT SIDE - CALENDAR */}
-          <div className="card" style={{ flex: 1 }}>
-            <div className="card-header">Calendar</div>
-            <div className="card-body" style={{ display: "flex", justifyContent: "center" }}>
-              <Calendar
-                onChange={setSelectedDate}
-                value={selectedDate}
-              />
-            </div>
-          </div>
- 
+  <div className="sales-calendar-wrapper">
+
+    {/* LEFT SIDE - GRAPH */}
+    <div className="card sales-card">
+      <div className="card-header">
+        Sales Overview
+        <div className="time-buttons">
+          <button onClick={() => setPeriod("weekly")}>Weekly</button>
+          <button onClick={() => setPeriod("monthly")}>Monthly</button>
         </div>
       </div>
+
+      <div className="card-body chart-container">
+        <canvas id="salesChart"></canvas>
+      </div>
+    </div>
+
+    {/* RIGHT SIDE - CALENDAR */}
+    <div className="card calendar-card">
+      <div className="card-header">Calendar</div>
+      <div className="card-body calendar-body">
+        <Calendar
+          onChange={setSelectedDate}
+          value={selectedDate}
+        />
+      </div>
+    </div>
+
+  </div>
+</div>
  
       {/* TOP PERFORMANCE */}
       <div className="card full-width">

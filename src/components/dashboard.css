@@ -260,3 +260,61 @@
 .card-header1 p {
   margin: 5px;
 }
+
+/* Wrapper for graph + calendar */
+.sales-calendar-wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: stretch;
+}
+
+/* Graph card bigger */
+.sales-card {
+  flex: 2;
+}
+
+/* Calendar card smaller */
+.calendar-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Center calendar */
+.calendar-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}
+
+/* Improve calendar look */
+.react-calendar {
+  width: 100% !important;
+  max-width: 350px;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+}
+
+.react-calendar__tile--active {
+  background: #124c81 !important;
+  color: white !important;
+  border-radius: 8px;
+}
+
+/* Make it responsive */
+@media (max-width: 1024px) {
+  .sales-calendar-wrapper {
+    flex-direction: column;
+  }
+
+  .sales-card,
+  .calendar-card {
+    width: 100%;
+  }
+
+  .react-calendar {
+    max-width: 100%;
+  }
+}
