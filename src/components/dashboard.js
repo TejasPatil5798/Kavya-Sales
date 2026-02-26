@@ -14,6 +14,7 @@ const Dashboard = () => {
   const [achievementPercent, setAchievementPercent] = useState(0);
   const [salesData, setSalesData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
+  const [period, setPeriod] = useState("weekly");
 
   // ✅ FETCH ALL USERS (same as Employees.js)
   const fetchEmployees = async () => {
@@ -26,9 +27,9 @@ const Dashboard = () => {
     }
   };
 
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = async (selectedPeriod = "weekly") => {
     try {
-      const { data } = await API.get("/dashboard/summary");
+      const { data } = await API.get(`/dashboard/summary?period=${selectedPeriod}`);
 
       setTotalTarget(data.totalTarget || 0);
       setTotalAchieved(data.totalAchieved || 0);
@@ -41,9 +42,9 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchEmployees();       // ✅ now same source
-    fetchDashboardData();
-  }, []);
+    fetchEmployees();
+    fetchDashboardData(period);
+  }, [period]);
 
   // 🔥 CHART EFFECT (separate for correct rendering)
   useEffect(() => {
@@ -61,7 +62,7 @@ const Dashboard = () => {
       salesChartRef.current = new Chart(salesCtx, {
         type: "line",
         data: {
-          labels: salesData.map((d) => d.day),
+          labels: salesData.map((d) => d.label),
           datasets: [
             {
               label: "Sales",
@@ -75,7 +76,18 @@ const Dashboard = () => {
         options: {
           responsive: true,
           maintainAspectRatio: false,
-        },
+          scales: {
+            y: {
+              min: 200000,      // 2 Lakhs
+              max: 2000000,     // 20 Lakhs
+              ticks: {
+                callback: function (value) {
+                  return "₹" + value.toLocaleString();
+                }
+              }
+            }
+          }
+        }
       });
     }
 
@@ -112,31 +124,42 @@ const Dashboard = () => {
     <div className="dashboard">
       {/* KPI CARDS */}
       <div className="kpi-grid">
-        <div className="kpi-card purple">
+        <div className="kpi-card glass-card gradient-blue ">
           <h2>Employee Count</h2>
           <h3>{totalEmployees}</h3>
         </div>
 
-        <div className="kpi-card pink">
+        <div className="kpi-card glass-card gradient-purple ">
           <h2>Meet Target (%)</h2>
           <h3>{achievementPercent}%</h3>
         </div>
 
-        <div className="kpi-card blue">
+        <div className="kpi-card glass-card gradient-pink">
           <h2>Sales Target</h2>
           <h3>₹{totalTarget.toLocaleString()}</h3>
         </div>
 
-        <div className="kpi-card lavender">
+        <div className="kpi-card glass-card gradient-orange">
           <h2>Sales Achieved</h2>
           <h3>₹{totalAchieved.toLocaleString()}</h3>
         </div>
       </div>
 
       {/* CHARTS */}
+
       <div className="chart-grid">
         <div className="card">
-          <div className="card-header">Sales Overview</div>
+          <div className="card-header">
+            Sales Overview
+            <div style={{ float: "right" }}>
+              <button onClick={() => setPeriod("weekly")}>
+                Weekly
+              </button>
+              <button onClick={() => setPeriod("monthly")}>
+                Monthly
+              </button>
+            </div>
+          </div>
           <div className="card-body chart-container">
             <canvas id="salesChart"></canvas>
           </div>

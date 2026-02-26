@@ -12,7 +12,7 @@ router.get("/summary", async (req, res) => {
     let startDate = new Date();
 
     // ================================
-    // PERIOD FILTER (TASKS)
+    // PERIOD FILTER (FOR TASKS & WEEKLY GRAPH)
     // ================================
     if (period === "daily") {
       startDate.setHours(0, 0, 0, 0);
@@ -23,7 +23,7 @@ router.get("/summary", async (req, res) => {
     }
 
     // ================================
-    // TASK PERFORMANCE (UNCHANGED)
+    // TASK PERFORMANCE
     // ================================
     const completedTasks = await Task.find({
       status: "Completed",
@@ -48,7 +48,7 @@ router.get("/summary", async (req, res) => {
     topPerformers = topPerformers.slice(0, 10);
 
     // ================================
-    // 🔥 SALES TARGET (ALL ACTIVE STATUSES)
+    // SALES TARGET (ALL ACTIVE STATUSES)
     // ================================
     const targetStatuses = [
       "Interested",
@@ -67,7 +67,7 @@ router.get("/summary", async (req, res) => {
     const totalTarget = targetResult[0]?.total || 0;
 
     // ================================
-    // 🔥 SALES ACHIEVED (DONE + CLOSED ONLY)
+    // SALES ACHIEVED (DONE + CLOSED)
     // ================================
     const achievedStatuses = ["Done", "Closed"];
 
@@ -79,12 +79,82 @@ router.get("/summary", async (req, res) => {
     const totalAchieved = achievedResult[0]?.total || 0;
 
     // ================================
-    // 🎯 ACHIEVEMENT PERCENT
+    // ACHIEVEMENT PERCENT
     // ================================
     const achievementPercent =
       totalTarget > 0
         ? ((totalAchieved / totalTarget) * 100).toFixed(2)
         : 0;
+
+    // ================================
+    // SALES OVERVIEW GRAPH
+    // ================================
+    const graphStatuses = ["Done", "Closed"];
+    let salesGraphData = [];
+
+    // ---------- WEEKLY ----------
+    if (period === "weekly") {
+      const result = await Lead.aggregate([
+        {
+          $match: {
+            status: { $in: graphStatuses },
+            createdAt: { $gte: startDate },
+          },
+        },
+        {
+          $group: {
+            _id: { $dayOfWeek: "$createdAt" },
+            total: { $sum: "$budget" },
+          },
+        },
+      ]);
+
+      const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+      salesGraphData = days.map((day, index) => {
+        const found = result.find((r) => r._id === index + 1);
+        return {
+          label: day,
+          amount: found ? found.total : 0,
+        };
+      });
+    }
+
+    // ---------- MONTHLY (CURRENT YEAR ONLY) ----------
+    else if (period === "monthly") {
+      const currentYear = new Date().getFullYear();
+
+      const result = await Lead.aggregate([
+        {
+          $match: {
+            status: { $in: graphStatuses },
+            createdAt: {
+              $gte: new Date(currentYear, 0, 1),
+              $lte: new Date(currentYear, 11, 31, 23, 59, 59),
+            },
+          },
+        },
+        {
+          $group: {
+            _id: { $month: "$createdAt" },
+            total: { $sum: "$budget" },
+          },
+        },
+      ]);
+
+      const months = [
+        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+      ];
+
+      salesGraphData = months.map((month, index) => {
+        const found = result.find((r) => r._id === index + 1);
+        return {
+          label: month,
+          amount: found ? found.total : 0,
+        };
+      });
+    }
 
     // ================================
     // SEND RESPONSE
@@ -93,7 +163,7 @@ router.get("/summary", async (req, res) => {
       totalTarget,
       totalAchieved,
       achievementPercent,
-      weeklySales: [],
+      weeklySales: salesGraphData,
       topPerformers,
     });
 
