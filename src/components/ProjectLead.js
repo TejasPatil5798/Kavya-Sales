@@ -26,6 +26,7 @@ const ProjectLead = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [errors, setErrors] = useState({});
   const [editLeadId, setEditLeadId] = useState(null);
+  const [employees, setEmployees] = useState([]);
 
   const [selectedLead, setSelectedLead] = useState(null);
 
@@ -65,11 +66,21 @@ const ProjectLead = () => {
       newErrors.clientCompany = "Only characters allowed";
     }
 
-    // ✅ Email
+    // ✅ Email validation
     if (!leadForm.email.trim()) {
       newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(leadForm.email)) {
-      newErrors.email = "Enter valid email (must contain @ and .)";
+    } else if (!/^[A-Za-z0-9._%+-]+@kavyainfoweb\.com$/.test(leadForm.email)) {
+      newErrors.email = "Email must be @kavyainfoweb.com";
+    } else {
+      const emailExists = employees.some(
+        (emp) =>
+          emp.email?.toLowerCase() === leadForm.email.toLowerCase() &&
+          emp.isActive === true,
+      );
+
+      if (!emailExists) {
+        newErrors.email = "Only active employees allowed";
+      }
     }
 
     // ✅ Mobile (exactly 10 digits)
@@ -132,6 +143,19 @@ const ProjectLead = () => {
     return true;
   };
 
+  const fetchEmployees = async () => {
+    try {
+      const { data } = await API.get("/users/all");
+
+      const onlyEmployees = data.filter((user) => user.role === "employee");
+
+      setEmployees(onlyEmployees);
+    } catch (err) {
+      console.error("Failed to fetch employees", err);
+      setEmployees([]);
+    }
+  };
+
   /* ================= FETCH LEADS ================= */
   const fetchLeads = async () => {
     try {
@@ -148,6 +172,7 @@ const ProjectLead = () => {
 
   useEffect(() => {
     fetchLeads();
+    fetchEmployees();
   }, []);
 
   /* ================= EDIT ================= */
