@@ -6,28 +6,57 @@ const Lead = require("../models/Lead");
 // GET Dashboard Summary
 router.get("/summary", async (req, res) => {
   try {
-    const { period = "weekly" } = req.query;
+    const { period = "weekly", date } = req.query;
 
-    const now = new Date();
-    let startDate = new Date();
+    // ✅ Use selected date from frontend
+    const baseDate = date ? new Date(date) : new Date();
+
+    let startDate;
+    let endDate;
 
     // ================================
-    // PERIOD FILTER (FOR TASKS & WEEKLY GRAPH)
+    // DATE FILTER LOGIC
     // ================================
-    if (period === "daily") {
+    if (period === "weekly") {
+      startDate = new Date(baseDate);
+      startDate.setDate(baseDate.getDate() - 6);
       startDate.setHours(0, 0, 0, 0);
-    } else if (period === "weekly") {
-      startDate.setDate(now.getDate() - 7);
-    } else if (period === "monthly") {
-      startDate.setMonth(now.getMonth() - 1);
+
+      endDate = new Date(baseDate);
+      endDate.setHours(23, 59, 59, 999);
+    }
+
+    else if (period === "monthly") {
+      startDate = new Date(
+        baseDate.getFullYear(),
+        baseDate.getMonth(),
+        1
+      );
+
+      endDate = new Date(
+        baseDate.getFullYear(),
+        baseDate.getMonth() + 1,
+        0,
+        23,
+        59,
+        59
+      );
+    }
+
+    else {
+      startDate = new Date(baseDate);
+      startDate.setHours(0, 0, 0, 0);
+
+      endDate = new Date(baseDate);
+      endDate.setHours(23, 59, 59, 999);
     }
 
     // ================================
-    // TASK PERFORMANCE
+    // TASK PERFORMANCE (FILTERED BY DATE)
     // ================================
     const completedTasks = await Task.find({
       status: "Completed",
-      taskDate: { $gte: startDate },
+      taskDate: { $gte: startDate, $lte: endDate },
     });
 
     const performanceMap = {};
@@ -60,8 +89,18 @@ router.get("/summary", async (req, res) => {
     ];
 
     const targetResult = await Lead.aggregate([
-      { $match: { status: { $in: targetStatuses } } },
-      { $group: { _id: null, total: { $sum: "$budget" } } },
+      {
+        $match: {
+          status: { $in: targetStatuses },
+          createdAt: { $gte: startDate, $lte: endDate },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$budget" },
+        },
+      },
     ]);
 
     const totalTarget = targetResult[0]?.total || 0;
@@ -72,14 +111,24 @@ router.get("/summary", async (req, res) => {
     const achievedStatuses = ["Done", "Closed"];
 
     const achievedResult = await Lead.aggregate([
-      { $match: { status: { $in: achievedStatuses } } },
-      { $group: { _id: null, total: { $sum: "$budget" } } },
+      {
+        $match: {
+          status: { $in: achievedStatuses },
+          createdAt: { $gte: startDate, $lte: endDate },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$budget" },
+        },
+      },
     ]);
 
     const totalAchieved = achievedResult[0]?.total || 0;
 
     // ================================
-    // ACHIEVEMENT PERCENT
+    // ACHIEVEMENT %
     // ================================
     const achievementPercent =
       totalTarget > 0
@@ -92,13 +141,12 @@ router.get("/summary", async (req, res) => {
     const graphStatuses = ["Done", "Closed"];
     let salesGraphData = [];
 
-    // ---------- WEEKLY ----------
     if (period === "weekly") {
       const result = await Lead.aggregate([
         {
           $match: {
             status: { $in: graphStatuses },
-            createdAt: { $gte: startDate },
+            createdAt: { $gte: startDate, $lte: endDate },
           },
         },
         {
@@ -120,37 +168,32 @@ router.get("/summary", async (req, res) => {
       });
     }
 
-    // ---------- MONTHLY (CURRENT YEAR ONLY) ----------
     else if (period === "monthly") {
-      const currentYear = new Date().getFullYear();
-
       const result = await Lead.aggregate([
         {
           $match: {
             status: { $in: graphStatuses },
-            createdAt: {
-              $gte: new Date(currentYear, 0, 1),
-              $lte: new Date(currentYear, 11, 31, 23, 59, 59),
-            },
+            createdAt: { $gte: startDate, $lte: endDate },
           },
         },
         {
           $group: {
-            _id: { $month: "$createdAt" },
+            _id: { $dayOfMonth: "$createdAt" },
             total: { $sum: "$budget" },
           },
         },
       ]);
 
-      const months = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-      ];
+      const totalDays = new Date(
+        baseDate.getFullYear(),
+        baseDate.getMonth() + 1,
+        0
+      ).getDate();
 
-      salesGraphData = months.map((month, index) => {
-        const found = result.find((r) => r._id === index + 1);
+      salesGraphData = Array.from({ length: totalDays }, (_, i) => {
+        const found = result.find((r) => r._id === i + 1);
         return {
-          label: month,
+          label: i + 1,
           amount: found ? found.total : 0,
         };
       });
