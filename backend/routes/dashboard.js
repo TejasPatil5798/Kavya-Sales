@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/Task");
-const Lead = require("../models/Lead");   // ✅ ADD THIS
+const Lead = require("../models/Lead");
 
 // GET Dashboard Summary
 router.get("/summary", async (req, res) => {
@@ -11,7 +11,9 @@ router.get("/summary", async (req, res) => {
     const now = new Date();
     let startDate = new Date();
 
-    // ✅ FILTER BASED ON PERIOD
+    // ================================
+    // PERIOD FILTER (TASKS)
+    // ================================
     if (period === "daily") {
       startDate.setHours(0, 0, 0, 0);
     } else if (period === "weekly") {
@@ -21,7 +23,7 @@ router.get("/summary", async (req, res) => {
     }
 
     // ================================
-    // ✅ TASK PERFORMANCE (YOUR OLD LOGIC)
+    // TASK PERFORMANCE (UNCHANGED)
     // ================================
     const completedTasks = await Task.find({
       status: "Completed",
@@ -46,41 +48,51 @@ router.get("/summary", async (req, res) => {
     topPerformers = topPerformers.slice(0, 10);
 
     // ================================
-    // 🔥 NEW: SALES TARGET FROM LEADS
+    // 🔥 SALES TARGET (ALL ACTIVE STATUSES)
     // ================================
-
-    const validStatuses = [
+    const targetStatuses = [
       "Interested",
-      "Done",
       "Open",
-      "Closed",
       "Follow Up",
       "Pending",
+      "Done",
+      "Closed",
     ];
 
-    const salesResult = await Lead.aggregate([
-      {
-        $match: {
-          status: { $in: validStatuses },
-        },
-      },
-      {
-        $group: {
-          _id: null,
-          total: { $sum: "$budget" },
-        },
-      },
+    const targetResult = await Lead.aggregate([
+      { $match: { status: { $in: targetStatuses } } },
+      { $group: { _id: null, total: { $sum: "$budget" } } },
     ]);
 
-    const totalTarget = salesResult[0]?.total || 0;
+    const totalTarget = targetResult[0]?.total || 0;
 
     // ================================
-    // ✅ SEND RESPONSE TO FRONTEND
+    // 🔥 SALES ACHIEVED (DONE + CLOSED ONLY)
+    // ================================
+    const achievedStatuses = ["Done", "Closed"];
+
+    const achievedResult = await Lead.aggregate([
+      { $match: { status: { $in: achievedStatuses } } },
+      { $group: { _id: null, total: { $sum: "$budget" } } },
+    ]);
+
+    const totalAchieved = achievedResult[0]?.total || 0;
+
+    // ================================
+    // 🎯 ACHIEVEMENT PERCENT
+    // ================================
+    const achievementPercent =
+      totalTarget > 0
+        ? ((totalAchieved / totalTarget) * 100).toFixed(2)
+        : 0;
+
+    // ================================
+    // SEND RESPONSE
     // ================================
     res.json({
-      totalTarget,          // 👈 THIS WILL SHOW IN SALES TARGET CARD
-      totalAchieved: 0,
-      achievementPercent: 0,
+      totalTarget,
+      totalAchieved,
+      achievementPercent,
       weeklySales: [],
       topPerformers,
     });
