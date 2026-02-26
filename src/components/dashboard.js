@@ -163,8 +163,8 @@ const Dashboard = () => {
 
     {/* LEFT SIDE - GRAPH */}
     <div className="card sales-card">
-      <div className="card-header">
-        Sales Overview
+      <div className="card-header1">
+       <h2> Sales Overview</h2>
         <div className="time-buttons">
           <button onClick={() => setPeriod("weekly")}>Weekly</button>
           <button onClick={() => setPeriod("monthly")}>Monthly</button>
