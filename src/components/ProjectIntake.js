@@ -24,6 +24,7 @@ const ProjectIntake = () => {
   const [errors, setErrors] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
   const [followUpFilter, setFollowUpFilter] = useState("");
+  const [employees, setEmployees] = useState([]);
 
   // ✅ ADD PROJECT STATE
   const [newProject, setNewProject] = useState({
@@ -38,6 +39,19 @@ const ProjectIntake = () => {
     remarks: "",
   });
 
+  const fetchEmployees = async () => {
+    try {
+      const { data } = await API.get("/users/all");
+
+      const onlyEmployees = data.filter((user) => user.role === "employee");
+
+      setEmployees(onlyEmployees);
+    } catch (err) {
+      console.error("Failed to fetch employees", err);
+      setEmployees([]);
+    }
+  };
+
   /* ================= FETCH LEADS ================= */
   const fetchLeads = async () => {
     try {
@@ -51,6 +65,7 @@ const ProjectIntake = () => {
 
   useEffect(() => {
     fetchLeads();
+    fetchEmployees();
   }, []);
 
   /* ================= FILTER LEAD → PROJECT ================= */
@@ -117,8 +132,10 @@ const ProjectIntake = () => {
     }
     // Must exist in registered users (leads list)
     else {
-      const emailExists = leads.some(
-        (l) => l.email?.toLowerCase() === project.email.toLowerCase(),
+      const emailExists = employees.some(
+        (emp) =>
+          emp.email?.toLowerCase() === project.email.toLowerCase() &&
+          emp.isActive === true,
       );
 
       if (!emailExists) {
