@@ -15,8 +15,7 @@ const Dashboard = () => {
   const [salesData, setSalesData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
   const [period, setPeriod] = useState("weekly");
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
+  
 
   // ✅ FETCH ALL USERS (same as Employees.js)
   const fetchEmployees = async () => {
@@ -28,28 +27,25 @@ const Dashboard = () => {
       setEmployees([]);
     }
   };
-const fetchDashboardData = async (selectedPeriod = "weekly", date = new Date()) => {
-  try {
-    const formattedDate = date.toISOString();
 
-    const { data } = await API.get(
-      `/dashboard/summary?period=${selectedPeriod}&date=${formattedDate}`
-    );
+  const fetchDashboardData = async (selectedPeriod = "weekly") => {
+    try {
+      const { data } = await API.get(`/dashboard/summary?period=${selectedPeriod}`);
 
-    setTotalTarget(data.totalTarget || 0);
-    setTotalAchieved(data.totalAchieved || 0);
-    setAchievementPercent(data.achievementPercent || 0);
-    setSalesData(data.weeklySales || []);
-    setPerformanceData(data.topPerformers || []);
-  } catch (error) {
-    console.error("Dashboard fetch error", error);
-  }
-};
+      setTotalTarget(data.totalTarget || 0);
+      setTotalAchieved(data.totalAchieved || 0);
+      setAchievementPercent(data.achievementPercent || 0);
+      setSalesData(data.weeklySales || []);
+      setPerformanceData(data.topPerformers || []);
+    } catch (error) {
+      console.error("Dashboard fetch error", error);
+    }
+  };
 
- useEffect(() => {
-  fetchEmployees();
-  fetchDashboardData(period, selectedDate);
-}, [period, selectedDate]);
+  useEffect(() => {
+    fetchEmployees();
+    fetchDashboardData(period);
+  }, [period]);
 
   // 🔥 CHART EFFECT (separate for correct rendering)
   useEffect(() => {
@@ -154,27 +150,17 @@ const fetchDashboardData = async (selectedPeriod = "weekly", date = new Date()) 
 
       <div className="chart-grid">
         <div className="card">
-         <div className="card-header">
-  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-    
-    <div>
-      Sales Overview
-      <button onClick={() => setPeriod("weekly")} style={{ marginLeft: 15 }}>
-        Weekly
-      </button>
-      <button onClick={() => setPeriod("monthly")} style={{ marginLeft: 5 }}>
-        Monthly
-      </button>
-    </div>
-
-    <input
-      type="date"
-      value={selectedDate.toISOString().split("T")[0]}
-      onChange={(e) => setSelectedDate(new Date(e.target.value))}
-    />
-
-  </div>
-</div>
+          <div className="card-header">
+            Sales Overview
+            <div className="time-buttons" style={{ float: "right" }}>
+              <button onClick={() => setPeriod("weekly")}>
+                Weekly
+              </button>
+              <button onClick={() => setPeriod("monthly")}>
+                Monthly
+              </button>
+            </div>
+          </div>
           <div className="card-body chart-container">
             <canvas id="salesChart"></canvas>
           </div>
