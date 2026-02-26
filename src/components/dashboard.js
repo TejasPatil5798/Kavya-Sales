@@ -7,29 +7,33 @@ const Dashboard = () => {
   const salesChartRef = useRef(null);
   const performanceChartRef = useRef(null);
 
-  // ✅ Employee Count state (ONLY ADDITION)
-  const [employeeCount, setEmployeeCount] = useState(0);
+  // ✅ SAME LOGIC AS EMPLOYEES PAGE
+  const [employees, setEmployees] = useState([]);
   const [totalTarget, setTotalTarget] = useState(0);
   const [totalAchieved, setTotalAchieved] = useState(0);
   const [achievementPercent, setAchievementPercent] = useState(0);
   const [salesData, setSalesData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
-  const [period, setPeriod] = useState("weekly");
 
-  // ✅ Fetch employee count from registered users (ONLY ADDITION)
-  const fetchEmployeeCount = async () => {
+  // ✅ FETCH ALL USERS (same as Employees.js)
+  const fetchEmployees = async () => {
     try {
-      const { data } = await API.get("/users/count/employees");
-      setEmployeeCount(data.count || 0);
+      const { data } = await API.get("/users/all");
+      setEmployees(data);
     } catch (error) {
-      console.error("Error fetching employee count", error);
-      setEmployeeCount(0);
+      console.error("Error fetching employees", error);
+      setEmployees([]);
     }
   };
 
   const fetchDashboardData = async () => {
     try {
-      const { data } = await API.get(`/dashboard/summary?period=${period}`);
+      const { data } = await API.get("/dashboard/summary");
+
+      setTotalTarget(data.totalTarget || 0);
+      setTotalAchieved(data.totalAchieved || 0);
+      setAchievementPercent(data.achievementPercent || 0);
+      setSalesData(data.weeklySales || []);
       setPerformanceData(data.topPerformers || []);
     } catch (error) {
       console.error("Dashboard fetch error", error);
@@ -37,19 +41,15 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    fetchDashboardData();
-  }, [period]);
-
-  useEffect(() => {
-    fetchEmployeeCount(); // ✅ ONLY CALL ADDED
+    fetchEmployees();       // ✅ now same source
     fetchDashboardData();
   }, []);
 
+  // 🔥 CHART EFFECT (separate for correct rendering)
   useEffect(() => {
     const salesCtx = document.getElementById("salesChart");
     const performanceCtx = document.getElementById("topPerformanceChart");
 
-    // 🔥 DESTROY old charts if they exist
     if (salesChartRef.current) {
       salesChartRef.current.destroy();
     }
@@ -57,7 +57,6 @@ const Dashboard = () => {
       performanceChartRef.current.destroy();
     }
 
-    // SALES OVERVIEW CHART
     if (salesCtx && salesData.length > 0) {
       salesChartRef.current = new Chart(salesCtx, {
         type: "line",
@@ -80,7 +79,6 @@ const Dashboard = () => {
       });
     }
 
-    // TOP PERFORMANCE CHART
     if (performanceCtx && performanceData.length > 0) {
       performanceChartRef.current = new Chart(performanceCtx, {
         type: "bar",
@@ -88,11 +86,9 @@ const Dashboard = () => {
           labels: performanceData.map((p) => p.name),
           datasets: [
             {
-              label: "Completed Tasks",
+              label: "Performance",
               data: performanceData.map((p) => p.achievement),
-              backgroundColor: performanceData.map((_, index) =>
-                index === 0 ? "#FFD700" : "#de638a",
-              ),
+              backgroundColor: "#de638a",
             },
           ],
         },
@@ -103,37 +99,35 @@ const Dashboard = () => {
       });
     }
 
-    // ✅ CLEANUP ON UNMOUNT
     return () => {
-      if (salesChartRef.current) {
-        salesChartRef.current.destroy();
-      }
-      if (performanceChartRef.current) {
-        performanceChartRef.current.destroy();
-      }
+      if (salesChartRef.current) salesChartRef.current.destroy();
+      if (performanceChartRef.current) performanceChartRef.current.destroy();
     };
   }, [salesData, performanceData]);
+
+  // ✅ EXACT SAME COUNT AS EMPLOYEES PAGE
+  const totalEmployees = employees.length;
 
   return (
     <div className="dashboard">
       {/* KPI CARDS */}
       <div className="kpi-grid">
-        <div className="kpi-card glass-card gradient-blue">
+        <div className="kpi-card purple">
           <h2>Employee Count</h2>
-          <h3>{employeeCount}</h3>
+          <h3>{totalEmployees}</h3>
         </div>
 
-        <div className="kpi-card glass-card gradient-purple">
+        <div className="kpi-card pink">
           <h2>Meet Target (%)</h2>
           <h3>{achievementPercent}%</h3>
         </div>
 
-        <div className="kpi-card glass-card gradient-pink">
+        <div className="kpi-card blue">
           <h2>Sales Target</h2>
           <h3>₹{totalTarget.toLocaleString()}</h3>
         </div>
 
-        <div className="kpi-card glass-card gradient-orange">
+        <div className="kpi-card lavender">
           <h2>Sales Achieved</h2>
           <h3>₹{totalAchieved.toLocaleString()}</h3>
         </div>
@@ -151,14 +145,7 @@ const Dashboard = () => {
 
       {/* TOP PERFORMANCE */}
       <div className="card full-width">
-        <div className="card-header1">
-          <p>Top 10 Performer ({period.toUpperCase()})</p>
-          <div className="time-buttons">
-            <button onClick={() => setPeriod("daily")}>Daily</button>
-            <button onClick={() => setPeriod("weekly")}>Weekly</button>
-            <button onClick={() => setPeriod("monthly")}>Monthly</button>
-          </div>
-        </div>
+        <div className="card-header">Top 10 Performer (Daily)</div>
         <div className="card-body chart-container">
           <canvas id="topPerformanceChart"></canvas>
         </div>
