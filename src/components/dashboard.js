@@ -4,11 +4,11 @@ import API from "../api/api";
 import "./dashboard.css";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
- 
+
 const Dashboard = () => {
   const salesChartRef = useRef(null);
   const performanceChartRef = useRef(null);
- 
+
   // ✅ SAME LOGIC AS EMPLOYEES PAGE
   const [employees, setEmployees] = useState([]);
   const [totalTarget, setTotalTarget] = useState(0);
@@ -18,8 +18,7 @@ const Dashboard = () => {
   const [performanceData, setPerformanceData] = useState([]);
   const [period, setPeriod] = useState("weekly");
   const [selectedDate, setSelectedDate] = useState(new Date());
- 
- 
+
   // ✅ FETCH ALL USERS (same as Employees.js)
   const fetchEmployees = async () => {
     try {
@@ -30,45 +29,45 @@ const Dashboard = () => {
       setEmployees([]);
     }
   };
- 
+
   const fetchDashboardData = async (
-  selectedPeriod = "weekly",
-  date = new Date()
-) => {
-  try {
-    const formattedDate = date.toISOString();
+    selectedPeriod = "weekly",
+    date = new Date(),
+  ) => {
+    try {
+      const formattedDate = date.toISOString();
 
-    const { data } = await API.get(
-      `/dashboard/summary?period=${selectedPeriod}&date=${formattedDate}`
-    );
+      const { data } = await API.get(
+        `/dashboard/summary?period=${selectedPeriod}&date=${formattedDate}`,
+      );
 
-    setTotalTarget(data.totalTarget || 0);
-    setTotalAchieved(data.totalAchieved || 0);
-    setAchievementPercent(data.achievementPercent || 0);
-    setSalesData(data.weeklySales || []);
-    setPerformanceData(data.topPerformers || []);
-  } catch (error) {
-    console.error("Dashboard fetch error", error);
-  }
-};
- 
- useEffect(() => {
-  fetchEmployees();
-  fetchDashboardData(period, selectedDate);
-}, [period, selectedDate]);
- 
+      setTotalTarget(data.totalTarget || 0);
+      setTotalAchieved(data.totalAchieved || 0);
+      setAchievementPercent(data.achievementPercent || 0);
+      setSalesData(data.weeklySales || []);
+      setPerformanceData(data.topPerformers || []);
+    } catch (error) {
+      console.error("Dashboard fetch error", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEmployees();
+    fetchDashboardData(period, selectedDate);
+  }, [period, selectedDate]);
+
   // 🔥 CHART EFFECT (separate for correct rendering)
   useEffect(() => {
     const salesCtx = document.getElementById("salesChart");
     const performanceCtx = document.getElementById("topPerformanceChart");
- 
+
     if (salesChartRef.current) {
       salesChartRef.current.destroy();
     }
     if (performanceChartRef.current) {
       performanceChartRef.current.destroy();
     }
- 
+
     if (salesCtx && salesData.length > 0) {
       salesChartRef.current = new Chart(salesCtx, {
         type: "line",
@@ -89,19 +88,18 @@ const Dashboard = () => {
           maintainAspectRatio: false,
           scales: {
             y: {
-              min: 200000,      // 2 Lakhs
-              max: 2000000,     // 20 Lakhs
+              beginAtZero: true,
               ticks: {
                 callback: function (value) {
                   return "₹" + value.toLocaleString();
-                }
-              }
-            }
-          }
-        }
+                },
+              },
+            },
+          },
+        },
       });
     }
- 
+
     if (performanceCtx && performanceData.length > 0) {
       performanceChartRef.current = new Chart(performanceCtx, {
         type: "bar",
@@ -121,16 +119,16 @@ const Dashboard = () => {
         },
       });
     }
- 
+
     return () => {
       if (salesChartRef.current) salesChartRef.current.destroy();
       if (performanceChartRef.current) performanceChartRef.current.destroy();
     };
   }, [salesData, performanceData]);
- 
+
   // ✅ EXACT SAME COUNT AS EMPLOYEES PAGE
   const totalEmployees = employees.length;
- 
+
   return (
     <div className="dashboard">
       {/* KPI CARDS */}
@@ -139,57 +137,52 @@ const Dashboard = () => {
           <h2>Employee Count</h2>
           <h3>{totalEmployees}</h3>
         </div>
- 
+
         <div className="kpi-card glass-card gradient-purple ">
           <h2>Meet Target (%)</h2>
           <h3>{achievementPercent}%</h3>
         </div>
- 
+
         <div className="kpi-card glass-card gradient-pink">
           <h2>Sales Target</h2>
           <h3>₹{totalTarget.toLocaleString()}</h3>
         </div>
- 
+
         <div className="kpi-card glass-card gradient-orange">
           <h2>Sales Achieved</h2>
           <h3>₹{totalAchieved.toLocaleString()}</h3>
         </div>
       </div>
- 
-      {/* CHARTS */}
- 
-      <div className="chart-grid">
-  <div className="sales-calendar-wrapper">
 
-    {/* LEFT SIDE - GRAPH */}
-    <div className="card sales-card">
-      <div className="card-header1">
-       <h2> Sales Overview</h2>
-        <div className="time-buttons">
-          <button onClick={() => setPeriod("weekly")}>Weekly</button>
-          <button onClick={() => setPeriod("monthly")}>Monthly</button>
+      {/* CHARTS */}
+
+      <div className="chart-grid">
+        <div className="sales-calendar-wrapper">
+          {/* LEFT SIDE - GRAPH */}
+          <div className="card sales-card">
+            <div className="card-header1">
+              <h2> Sales Overview</h2>
+              <div className="time-buttons">
+                <button onClick={() => setPeriod("weekly")}>Weekly</button>
+                <button onClick={() => setPeriod("monthly")}>Monthly</button>
+              </div>
+            </div>
+
+            <div className="card-body chart-container">
+              <canvas id="salesChart"></canvas>
+            </div>
+          </div>
+
+          {/* RIGHT SIDE - CALENDAR */}
+          <div className="card calendar-card">
+            <div className="card-header">Calendar</div>
+            <div className="card-body calendar-body">
+              <Calendar onChange={setSelectedDate} value={selectedDate} />
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="card-body chart-container">
-        <canvas id="salesChart"></canvas>
-      </div>
-    </div>
-
-    {/* RIGHT SIDE - CALENDAR */}
-    <div className="card calendar-card">
-      <div className="card-header">Calendar</div>
-      <div className="card-body calendar-body">
-        <Calendar
-          onChange={setSelectedDate}
-          value={selectedDate}
-        />
-      </div>
-    </div>
-
-  </div>
-</div>
- 
       {/* TOP PERFORMANCE */}
       <div className="card full-width">
         <div className="card-header1">
@@ -207,6 +200,5 @@ const Dashboard = () => {
     </div>
   );
 };
- 
+
 export default Dashboard;
- 
