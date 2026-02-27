@@ -37,8 +37,7 @@
 }
 
 .chart-grid1 {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
+  display: flex;
   gap: 20px;
 }
 
@@ -172,8 +171,8 @@
 
 /* TABLET (≤ 900px) */
 @media (max-width: 900px) {
-  .chart-grid {
-    grid-template-columns: 1fr;
+  .chart-grid1 {
+    flex-direction: column;
   }
 
   .kpi-grid {
