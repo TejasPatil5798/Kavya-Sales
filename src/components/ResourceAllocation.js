@@ -7,9 +7,6 @@ const ResourceAllocation = () => {
   const barChartRef = useRef(null);
   const lineChartRef = useRef(null);
 
-  const uniqueTeams = [...new Set(allocations.map((a) => a.it_team))];
-  const totalTeams = uniqueTeams.length;
-
   const [allocation, setAllocation] = useState({
     allocation_id: "",
     project_name: "",
@@ -22,6 +19,9 @@ const ResourceAllocation = () => {
 
   const [allocations, setAllocations] = useState([]);
   const [viewItem, setViewItem] = useState(null);
+
+  const uniqueTeams = [...new Set(allocations.map((a) => a.it_team))];
+  const totalTeams = uniqueTeams.length;
 
   const [editItem, setEditItem] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
