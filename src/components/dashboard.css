@@ -111,7 +111,6 @@
   border-radius: 8px;
 }
 
-
 .card {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -134,12 +133,11 @@
   align-items: center;
   justify-content: space-between;
 }
-.card-header1 h2{
+.card-header1 h2 {
   font-size: 16px;
   margin: 0;
   width: max-content;
 }
-
 
 .card-body {
   padding: 18px;
@@ -247,7 +245,7 @@
   }
 }
 
-.time-buttons{
+.time-buttons {
   display: flex;
   gap: 10px;
   margin-left: 400px;
@@ -273,18 +271,19 @@
   display: flex;
   gap: 20px;
   align-items: stretch;
+  width: 100%;
+  flex-wrap: wrap; /* ✅ important for responsiveness */
 }
 
-/* Graph card bigger */
 .sales-card {
   flex: 2;
+  min-width: 0;
 }
 
-/* Calendar card smaller */
 .calendar-card {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  min-width: 280px;
+  max-width: 350px;
 }
 
 /* Center calendar */
@@ -296,12 +295,11 @@
 }
 
 /* Improve calendar look */
+
+/* Make calendar responsive */
 .react-calendar {
   width: 100% !important;
-  max-width: 350px;
   border: none;
-  border-radius: 12px;
-  font-family: inherit;
 }
 
 .react-calendar__tile--active {
