@@ -91,11 +91,16 @@ const ResourceAllocation = () => {
     if (!data.end_date) newErrors.end_date = "End date is required";
 
     // ✅ Check duplicate Project ID
-    const duplicate = allocations.find(
-      (item) =>
-        String(item.project_id).trim() === String(data.project_id).trim() &&
-        (!isEdit || item._id !== data._id),
-    );
+    const duplicate = allocations.find((item) => {
+      const existingId = String(item.project_id).trim();
+      const currentId = String(data.project_id).trim();
+
+      if (isEdit) {
+        return existingId === currentId && item._id !== data._id;
+      } else {
+        return existingId === currentId;
+      }
+    });
 
     if (duplicate) {
       newErrors.project_id = "Project ID already exists";
@@ -169,7 +174,7 @@ const ResourceAllocation = () => {
         </div>
         <div className="kpi-card glass-card gradient-teal">
           <h2>Total Projects</h2>
-          <p>25</p>
+          <p>{allocations.length}</p>
         </div>
       </div>
 
@@ -464,12 +469,17 @@ const ResourceAllocation = () => {
             <div className="view-modal-actions">
               <button
                 onClick={async () => {
-                  if (!validateForm(editItem, true)) return;
-
-                  const res = await API.put(`/allocations/${editItem._id}`, {
+                  const updatedData = {
                     ...editItem,
                     project_id: editItem.project_id.trim(),
-                  });
+                  };
+
+                  if (!validateForm(updatedData, true)) return;
+
+                  const res = await API.put(
+                    `/allocations/${editItem._id}`,
+                    updatedData,
+                  );
                   const updated = res.data;
 
                   setAllocations(
@@ -478,8 +488,8 @@ const ResourceAllocation = () => {
                     ),
                   );
 
-                  setEditItem(null);
                   setErrors({});
+                  setEditItem(null);
                 }}
               >
                 Save
