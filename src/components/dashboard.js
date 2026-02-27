@@ -156,7 +156,7 @@ const Dashboard = () => {
 
       {/* CHARTS */}
 
-      <div className="chart-grid">
+      <div className="chart-grid1">
         <div className="sales-calendar-wrapper">
           {/* LEFT SIDE - GRAPH */}
           <div className="card sales-card">
