@@ -175,7 +175,7 @@ const Dashboard = () => {
 
           {/* RIGHT SIDE - CALENDAR */}
           <div className="card calendar-card">
-            <div className="card-header">Calendar</div>
+            <div className="card-header1">Calendar</div>
             <div className="card-body calendar-body">
               <Calendar onChange={setSelectedDate} value={selectedDate} />
             </div>
