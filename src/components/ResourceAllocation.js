@@ -7,6 +7,19 @@ const ResourceAllocation = () => {
   const barChartRef = useRef(null);
   const lineChartRef = useRef(null);
 
+  const IT_TEAMS = [
+    "Team 1",
+    "Team 2",
+    "Team 3",
+    "Team 4",
+    "Team 5",
+    "Team 6",
+    "Team 7",
+    "Team 8",
+    "Team 9",
+    "Team 10",
+  ];
+
   const [allocation, setAllocation] = useState({
     allocation_id: "",
     project_name: "",
@@ -20,8 +33,7 @@ const ResourceAllocation = () => {
   const [allocations, setAllocations] = useState([]);
   const [viewItem, setViewItem] = useState(null);
 
-  const uniqueTeams = [...new Set(allocations.map((a) => a.it_team))];
-  const totalTeams = uniqueTeams.length;
+  const totalTeams = IT_TEAMS.length;
 
   const [editItem, setEditItem] = useState(null);
   const [editIndex, setEditIndex] = useState(null);
@@ -194,16 +206,11 @@ const ResourceAllocation = () => {
           onChange={handleChange}
         >
           <option value="">Select IT Team</option>
-          <option>Team 1</option>
-          <option>Team 2</option>
-          <option>Team 3</option>
-          <option>Team 4</option>
-          <option>Team 5</option>
-          <option>Team 6</option>
-          <option>Team 7</option>
-          <option>Team 8</option>
-          <option>Team 9</option>
-          <option>Team 10</option>
+          {IT_TEAMS.map((team) => (
+            <option key={team} value={team}>
+              {team}
+            </option>
+          ))}
         </select>
         {errors.it_team && (
           <small className="error-text">{errors.it_team}</small>
@@ -401,16 +408,11 @@ const ResourceAllocation = () => {
               className={errors.it_team ? "error" : ""}
             >
               <option value="">Select IT Team</option>
-              <option>Team 1</option>
-              <option>Team 2</option>
-              <option>Team 3</option>
-              <option>Team 4</option>
-              <option>Team 5</option>
-              <option>Team 6</option>
-              <option>Team 7</option>
-              <option>Team 8</option>
-              <option>Team 9</option>
-              <option>Team 10</option>
+              {IT_TEAMS.map((team) => (
+                <option key={team} value={team}>
+                  {team}
+                </option>
+              ))}
             </select>
 
             {errors.it_team && (
