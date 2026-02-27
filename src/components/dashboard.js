@@ -58,8 +58,10 @@ const Dashboard = () => {
 
   // 🔥 CHART EFFECT (separate for correct rendering)
   useEffect(() => {
-    const salesCtx = document.getElementById("salesChart");
-    const performanceCtx = document.getElementById("topPerformanceChart");
+    const salesCtx = document.getElementById("salesChart")?.getContext("2d");
+    const performanceCtx = document
+      .getElementById("topPerformanceChart")
+      ?.getContext("2d");
 
     if (salesChartRef.current) {
       salesChartRef.current.destroy();

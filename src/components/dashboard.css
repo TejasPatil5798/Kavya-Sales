@@ -280,11 +280,12 @@
   width: 100%;
   max-width: 560px;
   border-radius: 14px;
+  min-width: 0;
 }
 
 .calendar-card {
   flex: 1;
-  min-width: 280px;
+  min-width: 0;
   max-width: 350px;
 }
 
@@ -323,5 +324,60 @@
 
   .react-calendar {
     max-width: 100%;
+  }
+}
+
+canvas {
+  max-width: 100% !important;
+}
+
+@media (max-width: 768px) {
+
+  .sales-calendar-wrapper {
+    flex-direction: column;
+  }
+
+  .sales-card1,
+  .calendar-card {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .time-buttons {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .time-buttons button {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+
+  .card-header1 h2,
+  .card-header {
+    font-size: 14px;
+  }
+
+  .chart-container {
+    height: 250px;
+  }
+}
+
+@media (max-width: 400px) {
+
+  .kpi-card h2 {
+    font-size: 14px;
+  }
+
+  .kpi-card h3 {
+    font-size: 18px;
+  }
+
+  .chart-container {
+    height: 200px;
+  }
+
+  .time-buttons {
+    justify-content: center;
   }
 }
