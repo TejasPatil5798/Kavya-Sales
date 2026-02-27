@@ -276,7 +276,8 @@
 
 .sales-card {
   flex: 2;
-  min-width: 0;
+  width: 100%;
+  max-width: 350px;
 }
 
 .calendar-card {

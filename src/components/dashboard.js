@@ -159,7 +159,7 @@ const Dashboard = () => {
       <div className="chart-grid1">
         <div className="sales-calendar-wrapper">
           {/* LEFT SIDE - GRAPH */}
-          <div className="card sales-card">
+          <div className="sales-card1">
             <div className="card-header1">
               <h2>Sales Overview</h2>
               <div className="time-buttons">
