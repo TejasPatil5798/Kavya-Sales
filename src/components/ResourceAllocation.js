@@ -468,38 +468,45 @@ const ResourceAllocation = () => {
 
             <div className="view-modal-actions">
               <button
+                type="button"
                 onClick={async () => {
-                  const updatedData = {
-                    ...editItem,
-                    project_id: editItem.project_id.trim(),
-                  };
+                  try {
+                    const updatedData = {
+                      ...editItem,
+                      project_id: editItem.project_id.trim(),
+                    };
 
-                  if (!validateForm(updatedData, true)) return;
+                    if (!validateForm(updatedData, true)) return;
 
-                  const res = await API.put(
-                    `/allocations/${editItem._id}`,
-                    updatedData,
-                  );
-                  const updated = res.data;
+                    const res = await API.put(
+                      `/allocations/${editItem._id}`,
+                      updatedData,
+                    );
 
-                  setAllocations(
-                    allocations.map((a) =>
-                      a._id === updated._id ? updated : a,
-                    ),
-                  );
+                    const updated = res.data;
 
-                  setErrors({});
-                  setEditItem(null);
+                    setAllocations((prev) =>
+                      prev.map((a) => (a._id === updated._id ? updated : a)),
+                    );
+
+                    setErrors({});
+                    setEditItem(null);
+                  } catch (error) {
+                    console.error("Edit failed:", error);
+                    alert("Failed to update allocation");
+                  }
                 }}
               >
                 Save
               </button>
 
               <button
+                type="button"
                 className="cancel-btn"
                 onClick={() => {
                   setEditItem(null);
                   setEditIndex(null);
+                  setErrors({});
                 }}
               >
                 Cancel
