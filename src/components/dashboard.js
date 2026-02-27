@@ -16,7 +16,8 @@ const Dashboard = () => {
   const [achievementPercent, setAchievementPercent] = useState(0);
   const [salesData, setSalesData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
-  const [period, setPeriod] = useState("weekly");
+  const [salesPeriod, setSalesPeriod] = useState("weekly");
+  const [performancePeriod, setPerformancePeriod] = useState("weekly");
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   // ✅ FETCH ALL USERS (same as Employees.js)
@@ -31,14 +32,15 @@ const Dashboard = () => {
   };
 
   const fetchDashboardData = async (
-    selectedPeriod = "weekly",
+    selectedSalesPeriod = "weekly",
+    selectedPerformancePeriod = "weekly",
     date = new Date(),
   ) => {
     try {
       const formattedDate = date.toISOString().split("T")[0];
 
       const { data } = await API.get(
-        `/dashboard/summary?period=${selectedPeriod}&date=${formattedDate}`,
+        `/dashboard/summary?salesPeriod=${selectedSalesPeriod}&performancePeriod=${selectedPerformancePeriod}&date=${formattedDate}`,
       );
 
       setTotalTarget(data.totalTarget || 0);
@@ -53,8 +55,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchEmployees();
-    fetchDashboardData(period, selectedDate);
-  }, [period, selectedDate]);
+  }, []);
+
+  useEffect(() => {
+    fetchDashboardData(salesPeriod, performancePeriod, selectedDate);
+  }, [salesPeriod, performancePeriod, selectedDate]);
 
   // 🔥 CHART EFFECT (separate for correct rendering)
   useEffect(() => {
@@ -165,8 +170,10 @@ const Dashboard = () => {
             <div className="card-header1">
               <h2>Sales Overview</h2>
               <div className="time-buttons">
-                <button onClick={() => setPeriod("weekly")}>Weekly</button>
-                <button onClick={() => setPeriod("monthly")}>Monthly</button>
+                <button onClick={() => setSalesPeriod("weekly")}>Weekly</button>
+                <button onClick={() => setSalesPeriod("monthly")}>
+                  Monthly
+                </button>
               </div>
             </div>
 
@@ -188,11 +195,11 @@ const Dashboard = () => {
       {/* TOP PERFORMANCE */}
       <div className="card full-width">
         <div className="card-header1">
-          <p>Top 10 Performer ({period.toUpperCase()})</p>
+          <p>Top 10 Performer ({performancePeriod.toUpperCase()})</p>
           <div className="time-buttons">
-            <button onClick={() => setPeriod("daily")}>Daily</button>
-            <button onClick={() => setPeriod("weekly")}>Weekly</button>
-            <button onClick={() => setPeriod("monthly")}>Monthly</button>
+            <button onClick={() => setPerformancePeriod("daily")}>Daily</button>
+            <button onClick={() => setPerformancePeriod("weekly")}>Weekly</button>
+            <button onClick={() => setPerformancePeriod("monthly")}>Monthly</button>
           </div>
         </div>
         <div className="card-body chart-container">
