@@ -125,7 +125,7 @@ const ResourceAllocation = () => {
     try {
       const res = await API.post("/allocations", {
         ...allocation,
-        project_id: allocation.project_id.trim(),
+        project_id: String(allocation.project_id).trim(),
       });
       const saved = res.data;
 
@@ -473,7 +473,7 @@ const ResourceAllocation = () => {
                   try {
                     const updatedData = {
                       ...editItem,
-                      project_id: editItem.project_id.trim(),
+                      project_id: String(editItem.project_id).trim(),
                     };
 
                     if (!validateForm(updatedData, true)) return;
