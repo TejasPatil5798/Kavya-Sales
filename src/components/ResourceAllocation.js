@@ -283,6 +283,7 @@ const ResourceAllocation = () => {
                   <td>{item.start_date}</td>
                   <td>{item.end_date}</td>
                   <td>
+                    <button onClick={() => setViewItem(item)}>View</button>
                     <button
                       onClick={() => {
                         setEditItem({ ...item });
