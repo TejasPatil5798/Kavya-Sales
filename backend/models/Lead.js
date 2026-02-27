@@ -40,7 +40,6 @@ const leadSchema = new mongoose.Schema(
         "Closed",
         "Pending",
         "Done",
-        "Lead to Client",
       ],
       default: "Follow Up",
     },
