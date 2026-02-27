@@ -93,7 +93,7 @@ const ResourceAllocation = () => {
     // ✅ Check duplicate Project ID
     const duplicate = allocations.find(
       (item) =>
-        item.project_id === data.project_id &&
+        String(item.project_id).trim() === String(data.project_id).trim() &&
         (!isEdit || item._id !== data._id),
     );
 
@@ -118,7 +118,10 @@ const ResourceAllocation = () => {
     if (!validateForm(allocation, false)) return;
 
     try {
-      const res = await API.post("/allocations", allocation);
+      const res = await API.post("/allocations", {
+        ...allocation,
+        project_id: allocation.project_id.trim(),
+      });
       const saved = res.data;
 
       setAllocations([saved, ...allocations]);
@@ -463,10 +466,10 @@ const ResourceAllocation = () => {
                 onClick={async () => {
                   if (!validateForm(editItem, true)) return;
 
-                  const res = await API.put(
-                    `/allocations/${editItem._id}`,
-                    editItem,
-                  );
+                  const res = await API.put(`/allocations/${editItem._id}`, {
+                    ...editItem,
+                    project_id: editItem.project_id.trim(),
+                  });
                   const updated = res.data;
 
                   setAllocations(
