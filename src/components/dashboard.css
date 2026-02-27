@@ -274,7 +274,7 @@
   flex-wrap: wrap; /* ✅ important for responsiveness */
 }
 
-.sales-card {
+.sales-card1 {
   flex: 2;
   width: 100%;
   max-width: 350px;
