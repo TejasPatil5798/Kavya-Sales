@@ -76,6 +76,9 @@ const ResourceAllocation = () => {
     }
 
     if (!data.project_id) newErrors.project_id = "Project ID is required";
+    else if (!/^\d+$/.test(String(data.project_id))) {
+      newErrors.project_id = "Project ID must contain only numbers";
+    }
 
     if (!data.it_team) newErrors.it_team = "IT Team is required";
 
@@ -199,10 +202,18 @@ const ResourceAllocation = () => {
 
         <input
           type="text"
+          inputMode="numeric"
           name="project_id"
           placeholder="Project ID"
           value={allocation.project_id}
-          onChange={handleChange}
+          onChange={(e) => {
+            const value = e.target.value;
+
+            // Allow only digits
+            if (/^\d*$/.test(value)) {
+              handleChange(e);
+            }
+          }}
         />
         {errors.project_id && (
           <small className="error-text">{errors.project_id}</small>
@@ -398,10 +409,15 @@ const ResourceAllocation = () => {
 
             <input
               type="text"
+              inputMode="numeric"
               value={editItem.project_id}
-              onChange={(e) =>
-                setEditItem({ ...editItem, project_id: e.target.value })
-              }
+              onChange={(e) => {
+                const value = e.target.value;
+
+                if (/^\d*$/.test(value)) {
+                  setEditItem({ ...editItem, project_id: value });
+                }
+              }}
               className={errors.project_id ? "error" : ""}
             />
             {errors.project_id && (
