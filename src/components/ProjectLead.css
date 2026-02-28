@@ -355,7 +355,7 @@
 }
 
 .add-btn {
-  background: #6c5ce7;
+  background: linear-gradient(90deg, rgb(37, 99, 235), rgb(30, 64, 175));
   color: #fff;
   border: none;
   padding: 8px 14px;
