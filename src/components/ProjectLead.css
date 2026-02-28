@@ -186,6 +186,10 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
+.leads-table tr :first-child:hover {
+  background: #e64905;
+}
+
 .leads-table tr:hover {
   background: #f0f8ff;
 }
