@@ -14,6 +14,8 @@ const MyTasks = () => {
   const [statusFilter, setStatusFilter] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [dateFilter, setDateFilter] = useState("");
+
   const ITEMS_PER_PAGE = 10;
 
   const [formData, setFormData] = useState({
@@ -174,6 +176,10 @@ const MyTasks = () => {
     const matchesStatus =
       statusFilter === "All" || task.status === statusFilter;
 
+    const matchesDate =
+      !dateFilter ||
+      new Date(task.taskDate).toISOString().split("T")[0] === dateFilter;
+
     const text = `
     ${task.client || ""}
     ${task.userMail || ""}
@@ -183,7 +189,7 @@ const MyTasks = () => {
 
     const matchesSearch = text.includes(searchTerm.toLowerCase());
 
-    return matchesStatus && matchesSearch;
+    return matchesStatus && matchesSearch && matchesDate;
   });
 
   /* ================= PAGINATION ================= */
@@ -278,6 +284,20 @@ const MyTasks = () => {
             <option value="In Progress">In Progress</option>
             <option value="Completed">Completed</option>
           </select>
+
+          <input
+            type="date"
+            value={dateFilter}
+            onChange={(e) => {
+              setDateFilter(e.target.value);
+              setCurrentPage(1);
+            }}
+            style={{
+              padding: "8px",
+              borderRadius: "6px",
+              border: "1px solid #ccc",
+            }}
+          />
         </div>
 
         <button className="primary-btn" onClick={() => setShowModal(true)}>
