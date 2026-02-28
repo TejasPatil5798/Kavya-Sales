@@ -148,8 +148,8 @@ const MyTasks = () => {
     try {
       await API.delete(`/tasks/${id}`);
       fetchTasks();
-    } catch {
-      alert("Failed to delete task");
+    } catch (err) {
+      alert("Only Admin can delete tasks.");
     }
   };
 
