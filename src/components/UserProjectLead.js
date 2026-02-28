@@ -402,7 +402,7 @@ const UserProjectLead = () => {
 
         <div className="table-scroll">
           <table className="leads-table">
-            <thead>
+            <thead style={{color: "white"}}>
               <tr>
                 <th>Client Name</th>
                 <th>Company</th>
