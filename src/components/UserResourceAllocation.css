@@ -75,9 +75,20 @@
 /* ================= TABLE ================= */
 .leads-table-res {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;   /* 🔥 CHANGE THIS */
+  border-spacing: 0;           /* 🔥 IMPORTANT */
   font-size: 14px;
   min-width: 860px;
+}
+
+/* Rounded top-left corner */
+.leads-table-res thead tr th:first-child {
+  border-top-left-radius: 14px;
+}
+
+/* Rounded top-right corner */
+.leads-table-res thead tr th:last-child {
+  border-top-right-radius: 14px;
 }
 
 .leads-table-res thead {
