@@ -111,6 +111,10 @@
   background: linear-gradient(135deg, #2d6cdf, #4f8cff);
 }
 
+.leads-table thead:first-child:hover {
+  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
+}
+
 .leads-table th,
 .leads-table td {
   padding: 12px 14px;
