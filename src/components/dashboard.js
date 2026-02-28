@@ -2,8 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
 import API from "../api/api";
 import "./dashboard.css";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
 
 const Dashboard = () => {
   const salesChartRef = useRef(null);
@@ -18,7 +16,6 @@ const Dashboard = () => {
   const [performanceData, setPerformanceData] = useState([]);
   const [salesPeriod, setSalesPeriod] = useState("weekly");
   const [performancePeriod, setPerformancePeriod] = useState("weekly");
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   // ✅ FETCH ALL USERS (same as Employees.js)
   const fetchEmployees = async () => {
@@ -31,13 +28,9 @@ const Dashboard = () => {
     }
   };
 
-  const fetchSalesData = async (period = "weekly", date = new Date()) => {
+  const fetchSalesData = async (period = "weekly") => {
     try {
-      const formattedDate = date.toISOString().split("T")[0];
-
-      const { data } = await API.get(
-        `/dashboard/sales?period=${period}&date=${formattedDate}`,
-      );
+      const { data } = await API.get(`/dashboard/sales?period=${period}`);
 
       setTotalTarget(data.totalTarget || 0);
       setTotalAchieved(data.totalAchieved || 0);
@@ -48,13 +41,9 @@ const Dashboard = () => {
     }
   };
 
-  const fetchPerformanceData = async (period = "weekly", date = new Date()) => {
+  const fetchPerformanceData = async (period = "weekly") => {
     try {
-      const formattedDate = date.toISOString().split("T")[0];
-
-      const { data } = await API.get(
-        `/dashboard/performance?period=${period}&date=${formattedDate}`,
-      );
+      const { data } = await API.get(`/dashboard/performance?period=${period}`);
 
       setPerformanceData(data.topPerformers || []);
     } catch (error) {
@@ -88,15 +77,13 @@ const Dashboard = () => {
     fetchEmployees();
   }, []);
 
-  // Sales Chart Effect
   useEffect(() => {
-    fetchSalesData(salesPeriod, selectedDate);
-  }, [salesPeriod, selectedDate]);
+    fetchSalesData(salesPeriod);
+  }, [salesPeriod]);
 
-  // Performance Chart Effect
   useEffect(() => {
-    fetchPerformanceData(performancePeriod, selectedDate);
-  }, [performancePeriod, selectedDate]);
+    fetchPerformanceData(performancePeriod);
+  }, [performancePeriod]);
 
   // 🔥 CHART EFFECT (separate for correct rendering)
   useEffect(() => {
@@ -200,32 +187,28 @@ const Dashboard = () => {
 
       {/* CHARTS */}
 
-      <div className="chart-grid1">
-        <div className="sales-calendar-wrapper">
-          {/* LEFT SIDE - GRAPH */}
-          <div className="sales-card1">
-            <div className="card-header1">
-              <h2>Sales Overview</h2>
-              <div className="time-buttons">
-                <button onClick={() => setSalesPeriod("weekly")}>Weekly</button>
-                <button onClick={() => setSalesPeriod("monthly")}>
-                  Monthly
-                </button>
-              </div>
-            </div>
-
-            <div className="card-body chart-container">
-              <canvas id="salesChart"></canvas>
-            </div>
+      {/* SALES OVERVIEW */}
+      <div className="card full-width">
+        <div className="card-header1">
+          <h2>Sales Overview</h2>
+          <div className="time-buttons">
+            <button
+              className={salesPeriod === "weekly" ? "active-btn" : ""}
+              onClick={() => setSalesPeriod("weekly")}
+            >
+              Weekly
+            </button>
+            <button
+              className={salesPeriod === "monthly" ? "active-btn" : ""}
+              onClick={() => setSalesPeriod("monthly")}
+            >
+              Monthly
+            </button>
           </div>
+        </div>
 
-          {/* RIGHT SIDE - CALENDAR */}
-          <div className="card calendar-card">
-            <div className="card-header1">Calendar</div>
-            <div className="card-body calendar-body">
-              <Calendar onChange={setSelectedDate} value={selectedDate} />
-            </div>
-          </div>
+        <div className="card-body chart-container">
+          <canvas id="salesChart"></canvas>
         </div>
       </div>
 

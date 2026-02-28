@@ -36,11 +36,6 @@
   font-size: 24px;
 }
 
-.chart-grid1 {
-  display: flex;
-  gap: 20px;
-}
-
 /* ===== GLASS BASE CARD ===== */
 .glass-card {
   backdrop-filter: blur(14px);
@@ -61,18 +56,6 @@
   transform: translateY(-6px);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
 }
-.react-calendar {
-  border: none;
-  font-family: inherit;
-  width: 100%;
-}
-
-.react-calendar__tile--active {
-  background: #124c81;
-  color: white;
-  border-radius: 8px;
-}
-
 /* ===== KPI COLORS ===== */
 
 .gradient-blue {
@@ -173,10 +156,6 @@
 
 /* TABLET (≤ 900px) */
 @media (max-width: 900px) {
-  .chart-grid1 {
-    flex-direction: column;
-  }
-
   .kpi-grid {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
@@ -266,101 +245,8 @@
   margin: 5px;
 }
 
-/* Wrapper for graph + calendar */
-.sales-calendar-wrapper {
-  display: flex;
-  gap: 20px;
-  align-items: stretch;
-  width: 100%;
-  flex-wrap: wrap; /* ✅ important for responsiveness */
-}
-
-.sales-card1 {
-  flex: 2;
-  width: 100%;
-  max-width: 560px;
-  border-radius: 14px;
-  min-width: 0;
-}
-
-.calendar-card {
-  flex: 1;
-  min-width: 0;
-  max-width: 350px;
-}
-
-/* Center calendar */
-.calendar-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 15px;
-}
-
-/* Improve calendar look */
-
-/* Make calendar responsive */
-.react-calendar {
-  width: 100% !important;
-  border: none;
-}
-
-.react-calendar__tile--active {
-  background: #124c81 !important;
-  color: white !important;
-  border-radius: 8px;
-}
-
-/* Make it responsive */
-@media (max-width: 1024px) {
-  .sales-calendar-wrapper {
-    flex-direction: column;
-  }
-
-  .sales-card1,
-  .calendar-card {
-    width: 100%;
-  }
-
-  .react-calendar {
-    max-width: 100%;
-  }
-}
-
 canvas {
   max-width: 100% !important;
-}
-
-@media (max-width: 768px) {
-
-  .sales-calendar-wrapper {
-    flex-direction: column;
-  }
-
-  .sales-card1,
-  .calendar-card {
-    max-width: 100%;
-    width: 100%;
-  }
-
-  .time-buttons {
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .time-buttons button {
-    font-size: 12px;
-    padding: 4px 8px;
-  }
-
-  .card-header1 h2,
-  .card-header {
-    font-size: 14px;
-  }
-
-  .chart-container {
-    height: 250px;
-  }
 }
 
 @media (max-width: 400px) {
@@ -380,4 +266,22 @@ canvas {
   .time-buttons {
     justify-content: center;
   }
+}
+
+.time-buttons button {
+  background: linear-gradient(135deg, #f37b2b, #ffb86b);
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.time-buttons button:hover {
+  opacity: 0.9;
+}
+
+.active-btn {
+  background: linear-gradient(135deg, #124c81, #2563eb) !important;
 }
