@@ -15,7 +15,6 @@ const Dashboard = () => {
   const [salesData, setSalesData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
   const [salesPeriod, setSalesPeriod] = useState("weekly");
-  const [performancePeriod, setPerformancePeriod] = useState("weekly");
 
   // ✅ FETCH ALL USERS (same as Employees.js)
   const fetchEmployees = async () => {
@@ -28,45 +27,19 @@ const Dashboard = () => {
     }
   };
 
-  const fetchSalesData = async (period = "weekly") => {
+  const fetchDashboardData = async (period = "weekly") => {
     try {
-      const { data } = await API.get(`/dashboard/sales?period=${period}`);
+      const { data } = await API.get(`/dashboard/summary?period=${period}`);
 
+      // KPI
       setTotalTarget(data.totalTarget || 0);
       setTotalAchieved(data.totalAchieved || 0);
       setAchievementPercent(data.achievementPercent || 0);
-      setSalesData(data.sales || []);
-    } catch (error) {
-      console.error("Sales fetch error", error);
-    }
-  };
 
-  const fetchPerformanceData = async (period = "weekly") => {
-    try {
-      const { data } = await API.get(`/dashboard/performance?period=${period}`);
+      // Sales Chart
+      setSalesData(data.sales || data.weeklySales || []);
 
-      setPerformanceData(data.topPerformers || []);
-    } catch (error) {
-      console.error("Performance fetch error", error);
-    }
-  };
-
-  const fetchDashboardData = async (
-    selectedSalesPeriod = "weekly",
-    selectedPerformancePeriod = "weekly",
-    date = new Date(),
-  ) => {
-    try {
-      const formattedDate = date.toISOString().split("T")[0];
-
-      const { data } = await API.get(
-        `/dashboard/summary?period=${selectedPerformancePeriod}&date=${formattedDate}`,
-      );
-
-      setTotalTarget(data.totalTarget || 0);
-      setTotalAchieved(data.totalAchieved || 0);
-      setAchievementPercent(data.achievementPercent || 0);
-      setSalesData(data.weeklySales || []);
+      // Performance Chart
       setPerformanceData(data.topPerformers || []);
     } catch (error) {
       console.error("Dashboard fetch error", error);
@@ -78,12 +51,8 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetchSalesData(salesPeriod);
+    fetchDashboardData(salesPeriod);
   }, [salesPeriod]);
-
-  useEffect(() => {
-    fetchPerformanceData(performancePeriod);
-  }, [performancePeriod]);
 
   // 🔥 CHART EFFECT (separate for correct rendering)
   useEffect(() => {
@@ -215,13 +184,26 @@ const Dashboard = () => {
       {/* TOP PERFORMANCE */}
       <div className="card full-width">
         <div className="card-header1">
-          <p>Top 10 Performer ({performancePeriod.toUpperCase()})</p>
+          <p>Top 10 Performer ({salesPeriod.toUpperCase()})</p>
           <div className="time-buttons">
-            <button onClick={() => setPerformancePeriod("daily")}>Daily</button>
-            <button onClick={() => setPerformancePeriod("weekly")}>
+            <button
+              className={salesPeriod === "daily" ? "active-btn" : ""}
+              onClick={() => setSalesPeriod("daily")}
+            >
+              Daily
+            </button>
+
+            <button
+              className={salesPeriod === "weekly" ? "active-btn" : ""}
+              onClick={() => setSalesPeriod("weekly")}
+            >
               Weekly
             </button>
-            <button onClick={() => setPerformancePeriod("monthly")}>
+
+            <button
+              className={salesPeriod === "monthly" ? "active-btn" : ""}
+              onClick={() => setSalesPeriod("monthly")}
+            >
               Monthly
             </button>
           </div>
