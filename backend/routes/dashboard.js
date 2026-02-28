@@ -7,20 +7,34 @@ const Lead = require("../models/Lead");
 // GET Dashboard Summary
 router.get("/summary", async (req, res) => {
   try {
-    const { period = "weekly" } = req.query;
+    const { period = "weekly", date } = req.query;
 
-    const now = new Date();
-    let startDate = new Date();
+    const selectedDate = date ? new Date(date) : new Date();
+    let startDate = new Date(selectedDate);
+    let endDate = new Date(selectedDate);
 
     // ================================
     // PERIOD FILTER (FOR TASKS & WEEKLY GRAPH)
     // ================================
     if (period === "daily") {
       startDate.setHours(0, 0, 0, 0);
-    } else if (period === "weekly") {
-      startDate.setDate(now.getDate() - 7);
-    } else if (period === "monthly") {
-      startDate.setMonth(now.getMonth() - 1);
+      endDate.setHours(23, 59, 59, 999);
+    }
+
+    else if (period === "weekly") {
+      const day = selectedDate.getDay(); // 0 = Sunday
+      startDate.setDate(selectedDate.getDate() - day);
+      startDate.setHours(0, 0, 0, 0);
+
+      endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 6);
+      endDate.setHours(23, 59, 59, 999);
+    }
+
+    else if (period === "monthly") {
+      startDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+      endDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1, 0);
+      endDate.setHours(23, 59, 59, 999);
     }
 
     // ================================
@@ -28,7 +42,7 @@ router.get("/summary", async (req, res) => {
     // ================================
     const completedTasks = await Task.find({
       status: "Completed",
-      taskDate: { $gte: startDate },
+      taskDate: { $gte: startDate, $lte: endDate },
     });
 
     const performanceMap = {};

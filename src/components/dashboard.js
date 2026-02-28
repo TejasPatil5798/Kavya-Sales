@@ -39,9 +39,10 @@ const Dashboard = () => {
     try {
       const formattedDate = date.toISOString().split("T")[0];
 
-     const { data } = await API.get(
-  `/dashboard/summary?period=${selectedSalesPeriod}`
-);
+
+      const { data } = await API.get(
+        `/dashboard/summary?period=${selectedPerformancePeriod}&date=${formattedDate}`
+      );
 
       setTotalTarget(data.totalTarget || 0);
       setTotalAchieved(data.totalAchieved || 0);
