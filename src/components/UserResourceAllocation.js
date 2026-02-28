@@ -145,7 +145,7 @@ const UserResourceAllocation = () => {
         </div>
 
         <div className="table-scroll">
-          <table className="leads-table">
+          <table className="leads-table-res">
             <thead>
               <tr>
                 <th>Employee</th>
