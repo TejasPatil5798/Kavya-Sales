@@ -18,10 +18,18 @@
   color: #fff;
 }
 
-.purple { background: #a15ca0; }
-.pink { background: #de638a; }
-.blue { background: #124c81; }
-.lavender { background: #9d8dde; }
+.purple {
+  background: #a15ca0;
+}
+.pink {
+  background: #de638a;
+}
+.blue {
+  background: #124c81;
+}
+.lavender {
+  background: #9d8dde;
+}
 
 /* ACTIONS */
 .intake-actions {
@@ -44,18 +52,18 @@
   background: #fff;
   padding: 18px;
   border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 .intake-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 12px;
 }
 
 .intake-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 12px;
 }
 
@@ -86,13 +94,12 @@
   background: #fff;
   padding: 18px;
   border-radius: 14px;
-  box-shadow: 0 6px 20px rgba(0,0,0,.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
 .chart-box {
   height: 260px;
 }
-
 
 /* ================= TABLE ================= */
 .leads-table {
@@ -107,12 +114,8 @@
   background: linear-gradient(135deg, #2d6cdf, #4f8cff);
 }
 
-.leads-table thead:hover {
-  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
-}
-
-.leads-table thead:first-child:hover {
-  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
+.leads-table thead tr:hover {
+  background: linear-gradient(135deg, #2d6cdf, #4f8cff) !important;
 }
 
 .leads-table th,
@@ -201,7 +204,7 @@
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -318,4 +321,3 @@
   margin-top: 4px;
   display: block;
 }
-
