@@ -302,7 +302,6 @@ const UserProjectLead = () => {
         </div>
 
         <div className="kpi-card glass-card gradient-pink">
-
           <h6>Total Deals</h6>
           <h3>—</h3>
         </div>
@@ -317,78 +316,89 @@ const UserProjectLead = () => {
           <h3>—</h3>
         </div>
       </div>
-      <div
-        className="filter-bar top-bar"
-        style={{
-          display: "flex",
-          gap: "10px",
-          alignItems: "center",
-          flexWrap: "wrap",
-        }}
-      >
-        <input
-          type="text"
-          placeholder="Search by name, company, project..."
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            setCurrentPage(1);
-          }}
-          style={{
-            padding: "9px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-            minWidth: "250px",
-            margin: "0",
-          }}
-        />
-
-        <select
-          value={statusFilter}
-          onChange={(e) => {
-            setStatusFilter(e.target.value);
-            setCurrentPage(1);
-          }}
-          style={{
-            padding: "9px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-            margin: "0",
-          }}
-        >
-          <option value="All">All Status</option>
-          {STATUS_OPTIONS.map((status) => (
-            <option key={status} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
-
-        <button
-          className="add-lead-btn"
-          onClick={() => {
-            setEditLeadId(null);
-            setLeadForm({
-              clientName: "",
-              clientCompany: "",
-              email: user?.email || "",
-              mobile: "",
-              projectName: "",
-              status: "Follow Up",
-              followUpDate: "",
-              timeline: { startDate: "", endDate: "" },
-              budget: "",
-              reference: "",
-            });
-            setShowAddLead(true);
-          }}
-        >
-          + Add Lead
-        </button>
-      </div>
 
       <div className="filter-card">
-        <h3>Leads List</h3>
+        <div
+          className="header-div"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "10px",
+          }}
+        >
+          <h3>Leads List</h3>
+          <div
+            className="filter-bar top-bar"
+            style={{
+              display: "flex",
+              gap: "10px",
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Search by name, company, project..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              style={{
+                padding: "9px",
+                borderRadius: "6px",
+                border: "1px solid #ccc",
+                minWidth: "250px",
+                margin: "0",
+              }}
+            />
+
+            <select
+              value={statusFilter}
+              onChange={(e) => {
+                setStatusFilter(e.target.value);
+                setCurrentPage(1);
+              }}
+              style={{
+                padding: "9px",
+                borderRadius: "6px",
+                border: "1px solid #ccc",
+                margin: "0",
+              }}
+            >
+              <option value="All">All Status</option>
+              {STATUS_OPTIONS.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+
+            <button
+              className="add-lead-btn"
+              onClick={() => {
+                setEditLeadId(null);
+                setLeadForm({
+                  clientName: "",
+                  clientCompany: "",
+                  email: user?.email || "",
+                  mobile: "",
+                  projectName: "",
+                  status: "Follow Up",
+                  followUpDate: "",
+                  timeline: { startDate: "", endDate: "" },
+                  budget: "",
+                  reference: "",
+                });
+                setShowAddLead(true);
+              }}
+            >
+              + Add Lead
+            </button>
+          </div>
+        </div>
 
         <div className="table-scroll">
           <table className="leads-table">
