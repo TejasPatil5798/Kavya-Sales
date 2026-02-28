@@ -104,35 +104,32 @@ const Tasks = () => {
 
   /* ================= USER EXISTENCE CHECK (EDIT ONLY) ================= */
   const validateUserExistsForEdit = async () => {
-  try {
-    const res = await API.get(
-      `/users/check?email=${formData.userMail}`
-    );
+    try {
+      const res = await API.get(`/users/check?email=${formData.userMail}`);
 
-    console.log("USER CHECK RESPONSE:", res.data); // 🔥 DEBUG
+      console.log("USER CHECK RESPONSE:", res.data); // 🔥 DEBUG
 
-    // adjust based on backend response
-    if (!res.data.exists) {
+      // adjust based on backend response
+      if (!res.data.exists) {
+        setErrors((prev) => ({
+          ...prev,
+          userMail: "User does not exist.",
+        }));
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.log("USER CHECK ERROR:", error.response?.data || error);
+
       setErrors((prev) => ({
         ...prev,
-        userMail: "User does not exist.",
+        userMail: error.response?.data?.message || "Unable to verify user.",
       }));
+
       return false;
     }
-
-    return true;
-  } catch (error) {
-    console.log("USER CHECK ERROR:", error.response?.data || error);
-
-    setErrors((prev) => ({
-      ...prev,
-      userMail: error.response?.data?.message || "Unable to verify user.",
-    }));
-
-    return false;
-  }
-};
-
+  };
 
   /* ================= UPDATE TASK ================= */
   const handleUpdateTask = async (e) => {
@@ -223,7 +220,9 @@ const Tasks = () => {
         ? task.userMail === loggedInUser
         : task.userMail?.toLowerCase().includes(employeeSearch.toLowerCase());
 
-    const dateMatch = !selectedDate || task.taskDate === selectedDate;
+    const dateMatch =
+      !selectedDate ||
+      new Date(task.taskDate).toISOString().split("T")[0] === selectedDate;
 
     return employeeMatch && dateMatch;
   });
@@ -322,7 +321,7 @@ const Tasks = () => {
                   <td>{task.client}</td>
                   <td className="user-mail-cell">{task.userMail}</td>
                   <td>{task.taskType}</td>
-                  <td>{task.taskDate}</td>
+                  <td>{new Date(task.taskDate).toLocaleDateString("en-GB")}</td>
                   <td className="note-cell">{task.note}</td>
                   <td>
                     <select
