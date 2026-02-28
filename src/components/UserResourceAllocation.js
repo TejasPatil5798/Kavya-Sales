@@ -146,7 +146,7 @@ const UserResourceAllocation = () => {
 
         <div className="table-scroll">
           <table className="leads-table-res">
-            <thead>
+            <thead style={{color: "white", borderRadius: "14px 14px 0 0"}}>
               <tr>
                 <th>Employee</th>
                 <th>Project</th>
