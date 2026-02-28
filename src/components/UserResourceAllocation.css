@@ -108,7 +108,7 @@
 }
 
 /* ================= BUTTONS ================= */
-.edit-btn {
+.edit-btn2 {
   background: #e0f2fe;
   border: none;
   color: #0369a1;
@@ -117,9 +117,10 @@
   cursor: pointer;
   font-size: 13px;
   transition: all 0.2s ease;
+  margin: 0;
 }
 
-.edit-btn:hover {
+.edit-btn2:hover {
   background: #bae6fd;
 }
 

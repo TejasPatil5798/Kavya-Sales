@@ -166,7 +166,7 @@ const UserResourceAllocation = () => {
                   <td>{item.status}</td>
                   <td>
                     <button
-                      className="edit-btn"
+                      className="edit-btn2"
                       onClick={() => {
                         setSelectedAllocation(item);
                         setShowViewModal(true);
