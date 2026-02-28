@@ -31,6 +31,37 @@ const Dashboard = () => {
     }
   };
 
+  const fetchSalesData = async (period = "weekly", date = new Date()) => {
+    try {
+      const formattedDate = date.toISOString().split("T")[0];
+
+      const { data } = await API.get(
+        `/dashboard/sales?period=${period}&date=${formattedDate}`,
+      );
+
+      setTotalTarget(data.totalTarget || 0);
+      setTotalAchieved(data.totalAchieved || 0);
+      setAchievementPercent(data.achievementPercent || 0);
+      setSalesData(data.sales || []);
+    } catch (error) {
+      console.error("Sales fetch error", error);
+    }
+  };
+
+  const fetchPerformanceData = async (period = "weekly", date = new Date()) => {
+    try {
+      const formattedDate = date.toISOString().split("T")[0];
+
+      const { data } = await API.get(
+        `/dashboard/performance?period=${period}&date=${formattedDate}`,
+      );
+
+      setPerformanceData(data.topPerformers || []);
+    } catch (error) {
+      console.error("Performance fetch error", error);
+    }
+  };
+
   const fetchDashboardData = async (
     selectedSalesPeriod = "weekly",
     selectedPerformancePeriod = "weekly",
@@ -39,9 +70,8 @@ const Dashboard = () => {
     try {
       const formattedDate = date.toISOString().split("T")[0];
 
-
       const { data } = await API.get(
-        `/dashboard/summary?period=${selectedPerformancePeriod}&date=${formattedDate}`
+        `/dashboard/summary?period=${selectedPerformancePeriod}&date=${formattedDate}`,
       );
 
       setTotalTarget(data.totalTarget || 0);
@@ -58,9 +88,15 @@ const Dashboard = () => {
     fetchEmployees();
   }, []);
 
+  // Sales Chart Effect
   useEffect(() => {
-    fetchDashboardData(salesPeriod, performancePeriod, selectedDate);
-  }, [salesPeriod, performancePeriod, selectedDate]);
+    fetchSalesData(salesPeriod, selectedDate);
+  }, [salesPeriod, selectedDate]);
+
+  // Performance Chart Effect
+  useEffect(() => {
+    fetchPerformanceData(performancePeriod, selectedDate);
+  }, [performancePeriod, selectedDate]);
 
   // 🔥 CHART EFFECT (separate for correct rendering)
   useEffect(() => {
@@ -199,8 +235,12 @@ const Dashboard = () => {
           <p>Top 10 Performer ({performancePeriod.toUpperCase()})</p>
           <div className="time-buttons">
             <button onClick={() => setPerformancePeriod("daily")}>Daily</button>
-            <button onClick={() => setPerformancePeriod("weekly")}>Weekly</button>
-            <button onClick={() => setPerformancePeriod("monthly")}>Monthly</button>
+            <button onClick={() => setPerformancePeriod("weekly")}>
+              Weekly
+            </button>
+            <button onClick={() => setPerformancePeriod("monthly")}>
+              Monthly
+            </button>
           </div>
         </div>
         <div className="card-body chart-container">
