@@ -187,7 +187,7 @@
 }
 
 .leads-table tr:hover {
-  background: linear-gradient(135deg, #2d6cdf, #4f8cff);
+  background: #f0f8ff;
 }
 
 .edit-btn {
