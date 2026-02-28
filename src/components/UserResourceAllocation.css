@@ -82,7 +82,9 @@
 
 .leads-table-res thead {
   background: linear-gradient(135deg, #2d6cdf, #4f8cff);
-  color: #fff
+  color: #fff;
+  border-radius: 14px;
+  color: #ffffff;
 }
 
 .leads-table-res th,
