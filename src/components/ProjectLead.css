@@ -186,7 +186,7 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
-.leads-table tr :first-child:hover {
+.leads-table thead:hover {
   background: #e64905;
 }
 
