@@ -127,7 +127,7 @@ const UserProjectIntake = () => {
 
         <div className="table-scroll">
           <table className="leads-table">
-            <thead  >
+            <thead style={{color: "white"}}>
               <tr>
                 <th>Client</th>
                 <th>Company</th>
