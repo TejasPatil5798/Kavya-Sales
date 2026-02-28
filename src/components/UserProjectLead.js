@@ -335,10 +335,11 @@ const UserProjectLead = () => {
             setCurrentPage(1);
           }}
           style={{
-            padding: "8px",
+            padding: "9px",
             borderRadius: "6px",
             border: "1px solid #ccc",
             minWidth: "250px",
+            margin: "0",
           }}
         />
 
@@ -349,9 +350,10 @@ const UserProjectLead = () => {
             setCurrentPage(1);
           }}
           style={{
-            padding: "8px",
+            padding: "9px",
             borderRadius: "6px",
             border: "1px solid #ccc",
+            margin: "0",
           }}
         >
           <option value="All">All Status</option>
