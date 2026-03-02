@@ -32,8 +32,6 @@ const Dashboard = () => {
     try {
       const { data } = await API.get(`/dashboard/summary?period=${period}`);
 
-      console.log("Sales Data:", data.sales);
-
       // KPI should follow sales period
       setTotalTarget(data.totalTarget || 0);
       setTotalAchieved(data.totalAchieved || 0);
@@ -48,8 +46,6 @@ const Dashboard = () => {
   const fetchPerformanceData = async (period = "weekly") => {
     try {
       const { data } = await API.get(`/dashboard/summary?period=${period}`);
-
-      console.log("Performance Data:", data.topPerformers);
 
       setPerformanceData(data.topPerformers || []);
     } catch (error) {
