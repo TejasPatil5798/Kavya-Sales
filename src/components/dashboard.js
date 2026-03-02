@@ -188,7 +188,13 @@ const Dashboard = () => {
         </div>
 
         <div className="card-body chart-container">
-          <canvas id="salesChart"></canvas>
+          {performanceData.length === 0 ? (
+            <div className="no-data">
+              No performance data available for this period.
+            </div>
+          ) : (
+            <canvas id="topPerformanceChart"></canvas>
+          )}
         </div>
       </div>
 
@@ -220,7 +226,13 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="card-body chart-container">
-          <canvas id="topPerformanceChart"></canvas>
+          {salesData.length === 0 ? (
+            <div className="no-data">
+              No sales data available for this period.
+            </div>
+          ) : (
+            <canvas id="salesChart"></canvas>
+          )}
         </div>
       </div>
     </div>

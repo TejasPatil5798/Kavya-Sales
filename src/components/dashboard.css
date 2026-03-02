@@ -250,7 +250,6 @@ canvas {
 }
 
 @media (max-width: 400px) {
-
   .kpi-card h2 {
     font-size: 14px;
   }
@@ -284,4 +283,16 @@ canvas {
 
 .active-btn {
   background: linear-gradient(135deg, #124c81, #2563eb) !important;
+}
+
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #777;
+  background: #f9f9f9;
+  border-radius: 8px;
 }
