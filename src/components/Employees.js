@@ -278,6 +278,7 @@ const Employees = () => {
           )}
 
           <select
+            style={{ margin: "0" }}
             value={filters.role}
             onChange={(e) => setFilters({ ...filters, role: e.target.value })}
           >
