@@ -346,7 +346,7 @@ const ProjectLead = () => {
         {/* ✅ CLEAR FILTER BUTTON */}
         {(searchTerm || statusFilter) && (
           <button className="clear-filter-btn" onClick={clearFilters}>
-            ✕
+            X
           </button>
         )}
 
