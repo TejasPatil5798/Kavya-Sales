@@ -30,9 +30,10 @@ body {
 
 /* Header */
 .reg-header {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     margin-bottom: 20px;
+    margin-left: 10px;
     background: linear-gradient(135deg, rgb(45, 108, 223), rgb(79, 140, 255));
     color: #ffffff;
     padding: 15px;
