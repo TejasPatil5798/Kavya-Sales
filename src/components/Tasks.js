@@ -23,6 +23,13 @@ const Tasks = () => {
     priority: "Medium",
     status: "Pending",
   });
+
+  const clearFilters = () => {
+    setEmployeeSearch("");
+    setSelectedDate("");
+    setCurrentPage(1);
+  };
+
   const [errors, setErrors] = useState({});
 
   const role = localStorage.getItem("role");
@@ -279,6 +286,7 @@ const Tasks = () => {
         <div className="filters filters-with-action">
           <div className="filters-left">
             <input
+              style={{ margin: "0" }}
               type="text"
               placeholder="Search user mail..."
               value={employeeSearch}
@@ -286,10 +294,22 @@ const Tasks = () => {
             />
 
             <input
+              style={{ margin: "0" }}
               type="date"
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
             />
+
+            {/* ✅ CLEAR FILTER BUTTON */}
+            {(employeeSearch.trim() !== "" || selectedDate !== "") && (
+              <button
+                className="clear-filter-btn"
+                onClick={clearFilters}
+                title="Clear Filters"
+              >
+                ✕
+              </button>
+            )}
           </div>
 
           <button className="primary-btn" onClick={() => setShowModal(true)}>
