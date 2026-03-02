@@ -275,6 +275,7 @@ const MyTasks = () => {
             }}
             style={{
               padding: "8px",
+              margin: "0",
               borderRadius: "6px",
               border: "1px solid #ccc",
               minWidth: "220px",
@@ -289,6 +290,7 @@ const MyTasks = () => {
             }}
             style={{
               padding: "8px",
+              margin: "0",
               borderRadius: "6px",
               border: "1px solid #ccc",
             }}
@@ -308,6 +310,7 @@ const MyTasks = () => {
             }}
             style={{
               padding: "8px",
+              margin: "0",
               borderRadius: "6px",
               border: "1px solid #ccc",
             }}

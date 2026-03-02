@@ -140,6 +140,7 @@ const UserResourceAllocation = () => {
               }}
               style={{
                 padding: "8px",
+                margin: "0",
                 borderRadius: "6px",
                 border: "1px solid #ccc",
                 minWidth: "250px",
@@ -154,6 +155,7 @@ const UserResourceAllocation = () => {
               }}
               style={{
                 padding: "8px",
+                margin: "0",
                 borderRadius: "6px",
                 border: "1px solid #ccc",
               }}

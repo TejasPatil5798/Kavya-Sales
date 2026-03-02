@@ -103,6 +103,17 @@ const UserProjectIntake = () => {
               alignItems: "center",
             }}
           >
+            {/* ✅ CLEAR FILTER BUTTON */}
+            {(searchTerm.trim() !== "" || statusFilter !== "All") && (
+              <button
+                className="clear-filter-btn"
+                onClick={clearFilters}
+                title="Clear Filters"
+              >
+                ✕
+              </button>
+            )}
+
             <input
               type="text"
               placeholder="Search client, company, project..."
@@ -113,6 +124,7 @@ const UserProjectIntake = () => {
               }}
               style={{
                 padding: "8px",
+                margin: "0",
                 borderRadius: "6px",
                 border: "1px solid #ccc",
                 minWidth: "250px",
@@ -127,6 +139,7 @@ const UserProjectIntake = () => {
               }}
               style={{
                 padding: "8px",
+                margin: "0",
                 borderRadius: "6px",
                 border: "1px solid #ccc",
               }}
@@ -140,17 +153,6 @@ const UserProjectIntake = () => {
               <option value="Pending">Pending</option>
               <option value="Done">Done</option>
             </select>
-
-            {/* ✅ CLEAR FILTER BUTTON */}
-            {(searchTerm.trim() !== "" || statusFilter !== "All") && (
-              <button
-                className="clear-filter-btn"
-                onClick={clearFilters}
-                title="Clear Filters"
-              >
-                ✕
-              </button>
-            )}
           </div>
         </div>
 
