@@ -24,7 +24,7 @@ body {
     max-width: 900px;
     background: #ffffff;
     border-radius: 10px;
-    padding: 0 24px 24px 24px;
+    /* padding: 0 24px 24px 24px; */
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
@@ -37,6 +37,10 @@ body {
     color: #ffffff;
     padding: 10px;
     border-radius: 10px;
+}
+
+.reg-form{
+    padding: 24px;
 }
 
 /* Grid */
