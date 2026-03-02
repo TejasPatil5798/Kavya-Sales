@@ -270,6 +270,13 @@ const Employees = () => {
 
         {/* FILTER BAR */}
         <div className="filter-bar">
+          {/* ✅ CLEAR FILTER BUTTON */}
+          {(filters.role || filters.status || filters.team || searchTerm) && (
+            <button className="clear-filter-btn" onClick={clearFilters}>
+              ✕
+            </button>
+          )}
+
           <select
             value={filters.role}
             onChange={(e) => setFilters({ ...filters, role: e.target.value })}
@@ -299,13 +306,6 @@ const Employees = () => {
             <option>Team B</option>
             <option>Team C</option>
           </select>
-
-          {/* ✅ CLEAR FILTER BUTTON */}
-          {(filters.role || filters.status || filters.team || searchTerm) && (
-            <button className="clear-filter-btn" onClick={clearFilters}>
-              ✕
-            </button>
-          )}
         </div>
       </div>
 
