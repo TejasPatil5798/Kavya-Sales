@@ -13,6 +13,12 @@ const UserResourceAllocation = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
 
+  const clearFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("All");
+    setCurrentPage(1);
+  };
+
   /* ================= FETCH DATA (READ ONLY) ================= */
   const fetchAllocations = async () => {
     try {
@@ -68,11 +74,8 @@ const UserResourceAllocation = () => {
 
   /* 🔥 SAFETY FIX */
   useEffect(() => {
-    if (currentPage > totalPages) {
-      setCurrentPage(1);
-    }
-  }, [currentPage, totalPages]);
-
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter]);
 
   return (
     <div className="resource-page">
@@ -108,7 +111,25 @@ const UserResourceAllocation = () => {
         >
           <h3>Resource Allocation List</h3>
 
-          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            {/* ✅ CLEAR FILTER BUTTON */}
+            {(searchTerm.trim() !== "" || statusFilter !== "All") && (
+              <button
+                className="clear-filter-btn"
+                onClick={clearFilters}
+                title="Clear Filters"
+              >
+                ✕
+              </button>
+            )}
+
             <input
               type="text"
               placeholder="Search employee, project, role..."
@@ -146,7 +167,7 @@ const UserResourceAllocation = () => {
 
         <div className="table-scroll">
           <table className="leads-table-res">
-            <thead style={{color: "white", borderRadius: "14px 14px 0 0"}}>
+            <thead style={{ color: "white", borderRadius: "14px 14px 0 0" }}>
               <tr>
                 <th>Employee</th>
                 <th>Project</th>

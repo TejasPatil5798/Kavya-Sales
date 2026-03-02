@@ -19,6 +19,12 @@ const UserProjectIntake = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
 
+  const clearFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("All");
+    setCurrentPage(1);
+  };
+
   /* ================= FETCH LEADS (READ ONLY) ================= */
   const fetchLeads = async () => {
     try {
@@ -30,12 +36,9 @@ const UserProjectIntake = () => {
     }
   };
 
-
   useEffect(() => {
     fetchLeads();
   }, []);
-
-
 
   /* ================= SEARCH + STATUS FILTER ================= */
   const filteredProjects = leads.filter((lead) => {
@@ -51,18 +54,17 @@ const UserProjectIntake = () => {
     return matchesStatus && matchesSearch;
   });
 
-
   /* ================= PAGINATION ================= */
   const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const paginatedProjects = filteredProjects.slice(
     startIndex,
-    startIndex + ITEMS_PER_PAGE
+    startIndex + ITEMS_PER_PAGE,
   );
 
- useEffect(() => {
-  setCurrentPage(1);
-}, [filteredProjects.length]);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter]);
 
   return (
     <div className="intake-page">
@@ -81,10 +83,26 @@ const UserProjectIntake = () => {
 
       {/* TABLE */}
       <div className="filter-card">
-        <div className="table-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+        <div
+          className="table-header"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            gap: "10px",
+          }}
+        >
           <h3>Project List</h3>
 
-          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
             <input
               type="text"
               placeholder="Search client, company, project..."
@@ -97,7 +115,7 @@ const UserProjectIntake = () => {
                 padding: "8px",
                 borderRadius: "6px",
                 border: "1px solid #ccc",
-                minWidth: "250px"
+                minWidth: "250px",
               }}
             />
 
@@ -110,7 +128,7 @@ const UserProjectIntake = () => {
               style={{
                 padding: "8px",
                 borderRadius: "6px",
-                border: "1px solid #ccc"
+                border: "1px solid #ccc",
               }}
             >
               <option value="All">All Status</option>
@@ -122,12 +140,23 @@ const UserProjectIntake = () => {
               <option value="Pending">Pending</option>
               <option value="Done">Done</option>
             </select>
+
+            {/* ✅ CLEAR FILTER BUTTON */}
+            {(searchTerm.trim() !== "" || statusFilter !== "All") && (
+              <button
+                className="clear-filter-btn"
+                onClick={clearFilters}
+                title="Clear Filters"
+              >
+                ✕
+              </button>
+            )}
           </div>
         </div>
 
         <div className="table-scroll">
           <table className="leads-table">
-            <thead style={{color: "white"}}>
+            <thead style={{ color: "white" }}>
               <tr>
                 <th>Client</th>
                 <th>Company</th>
@@ -140,7 +169,7 @@ const UserProjectIntake = () => {
             <tbody>
               {paginatedProjects.map((p) => (
                 <tr key={p._id}>
-                  <td >{p.clientName}</td>
+                  <td>{p.clientName}</td>
                   <td>{p.clientCompany}</td>
                   <td>{p.email}</td>
                   <td>{p.mobile}</td>
@@ -194,9 +223,7 @@ const UserProjectIntake = () => {
 
           <button
             disabled={currentPage === totalPages}
-            onClick={() =>
-              setCurrentPage((p) => Math.min(p + 1, totalPages))
-            }
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
           >
             Next ▶
           </button>
@@ -225,8 +252,8 @@ const UserProjectIntake = () => {
                   <b>Start Date:</b>{" "}
                   {selectedProject.timeline?.startDate
                     ? new Date(
-                      selectedProject.timeline.startDate
-                    ).toLocaleDateString()
+                        selectedProject.timeline.startDate,
+                      ).toLocaleDateString()
                     : "-"}
                 </p>
 
@@ -234,8 +261,8 @@ const UserProjectIntake = () => {
                   <b>End Date:</b>{" "}
                   {selectedProject.timeline?.endDate
                     ? new Date(
-                      selectedProject.timeline.endDate
-                    ).toLocaleDateString()
+                        selectedProject.timeline.endDate,
+                      ).toLocaleDateString()
                     : "-"}
                 </p>
               </>
@@ -248,10 +275,7 @@ const UserProjectIntake = () => {
               <b>Budget:</b> {selectedProject.budget || "-"}
             </p>
 
-            <button
-              className="reset"
-              onClick={() => setShowViewModal(false)}
-            >
+            <button className="reset" onClick={() => setShowViewModal(false)}>
               Close
             </button>
           </div>
@@ -262,4 +286,3 @@ const UserProjectIntake = () => {
 };
 
 export default UserProjectIntake;
-

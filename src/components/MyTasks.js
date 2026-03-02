@@ -18,6 +18,13 @@ const MyTasks = () => {
 
   const ITEMS_PER_PAGE = 10;
 
+  const clearFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("All");
+    setDateFilter("");
+    setCurrentPage(1);
+  };
+
   const [formData, setFormData] = useState({
     client: "",
     userMail: "",
@@ -202,7 +209,7 @@ const MyTasks = () => {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [filteredTasks.length]);
+  }, [searchTerm, statusFilter, dateFilter]);
 
   /* COUNTS */
   const totalTasks = filteredTasks.length;
@@ -250,7 +257,14 @@ const MyTasks = () => {
           marginBottom: "15px",
         }}
       >
-        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "10px",
+            flexWrap: "wrap",
+            alignItems: "center",
+          }}
+        >
           <input
             type="text"
             placeholder="Search client, type, mail..."
@@ -298,6 +312,19 @@ const MyTasks = () => {
               border: "1px solid #ccc",
             }}
           />
+
+          {/* ✅ CLEAR FILTER BUTTON */}
+          {(searchTerm.trim() !== "" ||
+            statusFilter !== "All" ||
+            dateFilter !== "") && (
+            <button
+              className="clear-filter-btn"
+              onClick={clearFilters}
+              title="Clear Filters"
+            >
+              ✕
+            </button>
+          )}
         </div>
 
         <button className="primary-btn" onClick={() => setShowModal(true)}>
