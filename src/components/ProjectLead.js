@@ -330,7 +330,7 @@ const ProjectLead = () => {
           placeholder="Search client, company, email, project..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ padding: "8px", width: "250px", borderRadius: "6px", margin: "0" }}
+          style={{ padding: "8px", width: "250px", borderRadius: "6px", margin: "0", border: "1px solid rgb(204, 204, 204)" }}
         />
 
         {/* 🎯 STATUS FILTER */}
