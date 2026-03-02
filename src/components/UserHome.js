@@ -53,7 +53,7 @@ const UserHome = () => {
   const pendingTasks = tasks.filter((t) => t.status === "Pending").length;
 
   const performanceScore =
-    totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+    totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
   /* ================= FOLLOW UPS ================= */
 
