@@ -299,7 +299,7 @@ const ProjectIntake = () => {
             value={followUpFilter}
             onChange={(e) => setFollowUpFilter(e.target.value)}
             style={{
-              padding: "6px",
+              padding: "8px",
               margin: "0",
               borderRadius: "6px",
               border: "1px solid rgb(204, 204, 204)",
