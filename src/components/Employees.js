@@ -62,7 +62,7 @@ const Employees = () => {
     // ✅ STATUS FILTER
     if (filters.status) {
       data = data.filter((e) =>
-        filters.status === "active" ? e.isActive : !e.isActive
+        filters.status === "active" ? e.isActive : !e.isActive,
       );
     }
 
@@ -78,7 +78,7 @@ const Employees = () => {
         (e) =>
           e.name?.toLowerCase().includes(lower) ||
           e.email?.toLowerCase().includes(lower) ||
-          e.phone?.includes(lower)
+          e.phone?.includes(lower),
       );
     }
 
@@ -96,27 +96,27 @@ const Employees = () => {
     }
   };
 
- const handleRoleChange = (role) => {
-  setErrors({});
+  const handleRoleChange = (role) => {
+    setErrors({});
 
-  if (role === "admin") {
-    setEditingUser({
-      ...editingUser,
-      role: "admin",
-      team: "",
-      monthlyCallTarget: null,
-      monthlySalesTarget: null,
-    });
-  } else {
-    setEditingUser({
-      ...editingUser,
-      role: "employee",
-      team: editingUser.team || "",
-      monthlyCallTarget: editingUser.monthlyCallTarget || "",
-      monthlySalesTarget: editingUser.monthlySalesTarget || "",
-    });
-  }
-};
+    if (role === "admin") {
+      setEditingUser({
+        ...editingUser,
+        role: "admin",
+        team: "",
+        monthlyCallTarget: null,
+        monthlySalesTarget: null,
+      });
+    } else {
+      setEditingUser({
+        ...editingUser,
+        role: "employee",
+        team: editingUser.team || "",
+        monthlyCallTarget: editingUser.monthlyCallTarget || "",
+        monthlySalesTarget: editingUser.monthlySalesTarget || "",
+      });
+    }
+  };
 
   /* ================= VALIDATION ================= */
   const validateEdit = () => {
@@ -154,8 +154,7 @@ const Employees = () => {
         email: editingUser.email,
         phone: editingUser.phone,
         role: editingUser.role,
-        team:
-          editingUser.role === "employee" ? editingUser.team : "",
+        team: editingUser.role === "employee" ? editingUser.team : "",
         monthlyCallTarget:
           editingUser.role === "employee"
             ? editingUser.monthlyCallTarget
@@ -227,10 +226,19 @@ const Employees = () => {
     startIndex + ITEMS_PER_PAGE,
   );
 
+  const clearFilters = () => {
+    setFilters({
+      role: "",
+      status: "",
+      team: "",
+    });
+    setSearchTerm("");
+    setCurrentPage(1);
+  };
+
   return (
     <div className="employees-page fade-in">
       <h2>Employees</h2>
-
 
       {/* DASHBOARD CARDS */}
       <div className="employee-cards">
@@ -263,6 +271,7 @@ const Employees = () => {
         {/* FILTER BAR */}
         <div className="filter-bar">
           <select
+            value={filters.role}
             onChange={(e) => setFilters({ ...filters, role: e.target.value })}
           >
             <option value="">All Roles</option>
@@ -271,6 +280,7 @@ const Employees = () => {
           </select>
 
           <select
+            value={filters.status}
             onChange={(e) => setFilters({ ...filters, status: e.target.value })}
           >
             <option value="">All Status</option>
@@ -279,6 +289,7 @@ const Employees = () => {
           </select>
 
           <select
+            value={filters.team}
             onChange={(e) => setFilters({ ...filters, team: e.target.value })}
           >
             <option value="">All Teams</option>
@@ -286,8 +297,14 @@ const Employees = () => {
             <option>Team B</option>
             <option>Team C</option>
           </select>
-        </div>
 
+          {/* ✅ CLEAR FILTER BUTTON */}
+          {(filters.role || filters.status || filters.team || searchTerm) && (
+            <button className="clear-filter-btn" onClick={clearFilters}>
+              ✕
+            </button>
+          )}
+        </div>
       </div>
 
       {/* TABLE */}
@@ -492,7 +509,6 @@ const Employees = () => {
               </>
             )}
 
-        
             <select
               value={editingUser.isActive}
               onChange={(e) =>

@@ -23,7 +23,7 @@
 .filter-bar {
   display: flex;
   gap: 12px;
- 
+
   flex-wrap: wrap;
 }
 
@@ -456,4 +456,20 @@
   flex-wrap: wrap;
   gap: 15px;
   margin: 16px 0;
+}
+
+.clear-filter-btn {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.clear-filter-btn:hover {
+  background: #d9363e;
 }
