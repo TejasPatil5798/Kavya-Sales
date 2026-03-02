@@ -39,6 +39,12 @@ const ProjectIntake = () => {
     remarks: "",
   });
 
+  const clearFilters = () => {
+    setSearchTerm("");
+    setFollowUpFilter("");
+    setCurrentPage(1);
+  };
+
   const fetchEmployees = async () => {
     try {
       const { data } = await API.get("/users/all");
@@ -67,6 +73,10 @@ const ProjectIntake = () => {
     fetchLeads();
     fetchEmployees();
   }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, followUpFilter]);
 
   /* ================= FILTER LEAD → PROJECT ================= */
   const projects = leads.filter((l) => {
@@ -274,7 +284,7 @@ const ProjectIntake = () => {
             placeholder="Search client, company, email, project..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ padding: "6px", width: "220px" }}
+            style={{ padding: "6px", width: "220px", margin: "0" }}
           />
 
           {/* 📅 FOLLOW UP DATE FILTER */}
@@ -282,8 +292,19 @@ const ProjectIntake = () => {
             type="date"
             value={followUpFilter}
             onChange={(e) => setFollowUpFilter(e.target.value)}
-            style={{ padding: "6px" }}
+            style={{ padding: "6px", margin: "0" }}
           />
+
+          {/* ✅ CLEAR FILTER BUTTON */}
+          {(searchTerm.trim() !== "" || followUpFilter !== "") && (
+            <button
+              className="clear-filter-btn"
+              onClick={clearFilters}
+              title="Clear Filters"
+            >
+              ✕
+            </button>
+          )}
 
           {/* ➕ ADD BUTTON */}
           <button
@@ -294,9 +315,10 @@ const ProjectIntake = () => {
             + Add Project
           </button>
         </div>
+
         <div className="table-scroll">
           <table className="leads-table">
-            <thead style={{color: "white"}}>
+            <thead style={{ color: "white" }}>
               <tr>
                 <th>Client</th>
                 <th>Company</th>
