@@ -348,15 +348,9 @@ const ProjectLead = () => {
         </select>
 
         {/* ✅ CLEAR FILTER BUTTON */}
-        {(searchTerm || statusFilter) && (
-          <button
-            className="clear-filter-btn"
-            onClick={clearFilters}
-            title="Clear Filters"
-          >
-            ✕
-          </button>
-        )}
+        <button className="clear-filter-btn" onClick={clearFilters}>
+          ✕
+        </button>
 
         {/* ➕ ADD LEAD BUTTON */}
         <button
