@@ -330,14 +330,14 @@ const ProjectLead = () => {
           placeholder="Search client, company, email, project..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ padding: "8px", width: "250px" }}
+          style={{ padding: "8px", width: "250px", margin: "0" }}
         />
 
         {/* 🎯 STATUS FILTER */}
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          style={{ padding: "8px" }}
+          style={{ padding: "8px", margin: "0" }}
         >
           <option value="">All Status</option>
           {STATUS_OPTIONS.map((status) => (
