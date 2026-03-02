@@ -535,7 +535,7 @@
   border: none;
   width: 34px;
   height: 34px;
-  border-radius: 50%;
+  border-radius: 15px;
   cursor: pointer;
   font-size: 16px;
   font-weight: bold;
@@ -547,5 +547,6 @@
 
 .clear-filter-btn:hover {
   background: #ff3e48;
+  color: #fff;
   transform: scale(1.05);
 }
