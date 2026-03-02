@@ -530,8 +530,8 @@
 }
 
 .clear-filter-btn {
-  background: #ff4d4f;
-  color: #fff;
+  border: 2px solid #ff4d4f;
+  color: #ff4d4f;
   border: none;
   width: 34px;
   height: 34px;
@@ -546,6 +546,6 @@
 }
 
 .clear-filter-btn:hover {
-  background: #d9363e;
+  background: #ff3e48;
   transform: scale(1.05);
 }
