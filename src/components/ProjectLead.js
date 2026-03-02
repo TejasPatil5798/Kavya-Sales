@@ -181,6 +181,10 @@ const ProjectLead = () => {
     fetchEmployees();
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, statusFilter]);
+
   /* ================= EDIT ================= */
   const handleEdit = (lead) => {
     setEditLeadId(lead._id);
@@ -345,8 +349,12 @@ const ProjectLead = () => {
 
         {/* ✅ CLEAR FILTER BUTTON */}
         {(searchTerm || statusFilter) && (
-          <button className="clear-filter-btn" onClick={clearFilters}>
-            X
+          <button
+            className="clear-filter-btn"
+            onClick={clearFilters}
+            title="Clear Filters"
+          >
+            ✕
           </button>
         )}
 

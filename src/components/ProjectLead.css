@@ -531,16 +531,21 @@
 
 .clear-filter-btn {
   background: #ff4d4f;
-  color: white;
+  color: #fff;
   border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: 0.2s ease;
 }
 
 .clear-filter-btn:hover {
   background: #d9363e;
+  transform: scale(1.05);
 }
