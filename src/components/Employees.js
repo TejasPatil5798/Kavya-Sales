@@ -261,6 +261,7 @@ const Employees = () => {
       <div className="top-controls">
         <div className="employee-search">
           <input
+            style={{ margin: "0" }}
             type="text"
             placeholder="Search by Name, Email or Mobile..."
             value={searchTerm}
