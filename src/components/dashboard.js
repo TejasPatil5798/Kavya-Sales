@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [salesData, setSalesData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
   const [salesPeriod, setSalesPeriod] = useState("weekly");
+  const [performancePeriod, setPerformancePeriod] = useState("weekly");
 
   // ✅ FETCH ALL USERS (same as Employees.js)
   const fetchEmployees = async () => {
@@ -27,22 +28,28 @@ const Dashboard = () => {
     }
   };
 
-  const fetchDashboardData = async (period = "weekly") => {
+  const fetchSalesData = async (period = "weekly") => {
     try {
       const { data } = await API.get(`/dashboard/summary?period=${period}`);
 
-      // KPI
+      // KPI should follow sales period
       setTotalTarget(data.totalTarget || 0);
       setTotalAchieved(data.totalAchieved || 0);
       setAchievementPercent(data.achievementPercent || 0);
 
-      // Sales Chart
       setSalesData(data.sales || data.weeklySales || []);
+    } catch (error) {
+      console.error("Sales fetch error", error);
+    }
+  };
 
-      // Performance Chart
+  const fetchPerformanceData = async (period = "weekly") => {
+    try {
+      const { data } = await API.get(`/dashboard/summary?period=${period}`);
+
       setPerformanceData(data.topPerformers || []);
     } catch (error) {
-      console.error("Dashboard fetch error", error);
+      console.error("Performance fetch error", error);
     }
   };
 
@@ -51,8 +58,12 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetchDashboardData(salesPeriod);
+    fetchSalesData(salesPeriod);
   }, [salesPeriod]);
+
+  useEffect(() => {
+    fetchPerformanceData(performancePeriod);
+  }, [performancePeriod]);
 
   // 🔥 CHART EFFECT (separate for correct rendering)
   useEffect(() => {
@@ -184,25 +195,25 @@ const Dashboard = () => {
       {/* TOP PERFORMANCE */}
       <div className="card full-width">
         <div className="card-header1">
-          <p>Top 10 Performer ({salesPeriod.toUpperCase()})</p>
+          <p>Top 10 Performer ({performancePeriod.toUpperCase()})</p>
           <div className="time-buttons">
             <button
-              className={salesPeriod === "daily" ? "active-btn" : ""}
-              onClick={() => setSalesPeriod("daily")}
+              className={performancePeriod === "daily" ? "active-btn" : ""}
+              onClick={() => setPerformancePeriod("daily")}
             >
               Daily
             </button>
 
             <button
-              className={salesPeriod === "weekly" ? "active-btn" : ""}
-              onClick={() => setSalesPeriod("weekly")}
+              className={performancePeriod === "weekly" ? "active-btn" : ""}
+              onClick={() => setPerformancePeriod("weekly")}
             >
               Weekly
             </button>
 
             <button
-              className={salesPeriod === "monthly" ? "active-btn" : ""}
-              onClick={() => setSalesPeriod("monthly")}
+              className={performancePeriod === "monthly" ? "active-btn" : ""}
+              onClick={() => setPerformancePeriod("monthly")}
             >
               Monthly
             </button>
