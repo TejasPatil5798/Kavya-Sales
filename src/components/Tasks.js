@@ -286,7 +286,7 @@ const Tasks = () => {
         <div className="filters filters-with-action">
           <div className="filters-left">
             <input
-              style={{ margin: "0" }}
+              style={{ margin: "0",borderRadius: "6px" }}
               type="text"
               placeholder="Search user mail..."
               value={employeeSearch}

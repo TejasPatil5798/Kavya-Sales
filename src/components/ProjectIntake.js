@@ -284,7 +284,7 @@ const ProjectIntake = () => {
             placeholder="Search client, company, email, project..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ padding: "6px", width: "220px", margin: "0" }}
+            style={{ padding: "6px", borderRadius: "6px", width: "220px", margin: "0" }}
           />
 
           {/* 📅 FOLLOW UP DATE FILTER */}

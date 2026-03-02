@@ -27,6 +27,12 @@ const UserProjectLead = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");
 
+  const clearFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("All");
+    setCurrentPage(1);
+  };
+
   const [leadForm, setLeadForm] = useState({
     clientName: "",
     clientCompany: "",
@@ -338,6 +344,17 @@ const UserProjectLead = () => {
               flexWrap: "wrap",
             }}
           >
+            {/* ✅ CLEAR FILTER BUTTON */}
+            {(searchTerm.trim() !== "" || statusFilter !== "All") && (
+              <button
+                className="clear-filter-btn"
+                onClick={clearFilters}
+                title="Clear Filters"
+              >
+                ✕
+              </button>
+            )}
+
             <input
               type="text"
               placeholder="Search by name, company, project..."
@@ -402,7 +419,7 @@ const UserProjectLead = () => {
 
         <div className="table-scroll">
           <table className="leads-table">
-            <thead style={{color: "white"}}>
+            <thead style={{ color: "white" }}>
               <tr>
                 <th>Client Name</th>
                 <th>Company</th>
