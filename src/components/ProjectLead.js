@@ -348,11 +348,12 @@ const ProjectLead = () => {
         </select>
 
         {/* ✅ CLEAR FILTER BUTTON */}
-        {(searchTerm.trim() !== "" || statusFilter !== "") && (
-          <button className="clear-filter-btn" onClick={clearFilters}>
-            ✕
-          </button>
-        )}
+        {(searchTerm.trim() || statusFilter) &&
+          filteredLeads.length !== leads.length && (
+            <button className="clear-filter-btn" onClick={clearFilters}>
+              ✕
+            </button>
+          )}
 
         {/* ➕ ADD LEAD BUTTON */}
         <button
