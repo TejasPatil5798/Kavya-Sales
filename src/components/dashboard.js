@@ -29,9 +29,10 @@ const Dashboard = () => {
   };
 
   const fetchSalesData = async (period = "weekly") => {
-    console.log("Sales Data:", data.sales);
     try {
       const { data } = await API.get(`/dashboard/summary?period=${period}`);
+
+      console.log("Sales Data:", data.sales);
 
       // KPI should follow sales period
       setTotalTarget(data.totalTarget || 0);
@@ -45,9 +46,10 @@ const Dashboard = () => {
   };
 
   const fetchPerformanceData = async (period = "weekly") => {
-    console.log("Performance Data:", data.topPerformers);
     try {
       const { data } = await API.get(`/dashboard/summary?period=${period}`);
+
+      console.log("Performance Data:", data.topPerformers);
 
       setPerformanceData(data.topPerformers || []);
     } catch (error) {
@@ -190,12 +192,12 @@ const Dashboard = () => {
         </div>
 
         <div className="card-body chart-container">
-          {performanceData.length === 0 ? (
+          {salesData.length === 0 ? (
             <div className="no-data">
-              No performance data available for this period.
+              No sales data available for this period.
             </div>
           ) : (
-            <canvas id="topPerformanceChart"></canvas>
+            <canvas id="salesChart"></canvas>
           )}
         </div>
       </div>
@@ -228,12 +230,12 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="card-body chart-container">
-          {salesData.length === 0 ? (
+          {performanceData.length === 0 ? (
             <div className="no-data">
-              No sales data available for this period.
+              No performance data available for this period.
             </div>
           ) : (
-            <canvas id="salesChart"></canvas>
+            <canvas id="topPerformanceChart"></canvas>
           )}
         </div>
       </div>
