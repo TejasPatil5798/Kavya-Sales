@@ -238,7 +238,6 @@ const Employees = () => {
 
   return (
     <div className="employees-page fade-in">
-      <h2>Employees</h2>
 
       {/* DASHBOARD CARDS */}
       <div className="employee-cards">
