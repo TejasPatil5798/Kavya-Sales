@@ -280,6 +280,7 @@ const Employees = () => {
           </select>
 
           <select
+            style={{ margin: "0" }}
             value={filters.status}
             onChange={(e) => setFilters({ ...filters, status: e.target.value })}
           >
@@ -289,6 +290,7 @@ const Employees = () => {
           </select>
 
           <select
+            style={{ margin: "0" }}
             value={filters.team}
             onChange={(e) => setFilters({ ...filters, team: e.target.value })}
           >
