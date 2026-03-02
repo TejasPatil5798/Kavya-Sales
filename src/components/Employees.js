@@ -29,6 +29,16 @@ const Employees = () => {
   const ITEMS_PER_PAGE = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
+  const clearFilters = () => {
+    setFilters({
+      role: "",
+      status: "",
+      team: "",
+    });
+    setSearchTerm("");
+    setCurrentPage(1);
+  };
+
   const totalEmployees = employees.length;
   const totalAdmins = employees.filter((e) => e.role === "admin").length;
   const totalUsers = employees.filter((e) => e.role === "employee").length;
@@ -225,16 +235,6 @@ const Employees = () => {
     startIndex,
     startIndex + ITEMS_PER_PAGE,
   );
-
-  const clearFilters = () => {
-    setFilters({
-      role: "",
-      status: "",
-      team: "",
-    });
-    setSearchTerm("");
-    setCurrentPage(1);
-  };
 
   return (
     <div className="employees-page fade-in">

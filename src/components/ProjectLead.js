@@ -30,6 +30,12 @@ const ProjectLead = () => {
 
   const [selectedLead, setSelectedLead] = useState(null);
 
+  const clearFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("");
+    setCurrentPage(1);
+  };
+
   const [leadForm, setLeadForm] = useState({
     clientName: "",
     clientCompany: "",
@@ -337,6 +343,13 @@ const ProjectLead = () => {
           ))}
         </select>
 
+        {/* ✅ CLEAR FILTER BUTTON */}
+        {(searchTerm || statusFilter) && (
+          <button className="clear-filter-btn" onClick={clearFilters}>
+            ✕
+          </button>
+        )}
+
         {/* ➕ ADD LEAD BUTTON */}
         <button
           className="add-lead-btn"
@@ -354,7 +367,7 @@ const ProjectLead = () => {
         <h3>Leads List</h3>
         <div className="table-scroll">
           <table className="leads-table">
-            <thead style={{color: "white"}}>
+            <thead style={{ color: "white" }}>
               <tr>
                 <th>Client Name</th>
                 <th>Company</th>

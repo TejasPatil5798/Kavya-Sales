@@ -57,7 +57,7 @@
   padding: 8px 16px;
   border-radius: 8px;
   border: none;
-  cursor: point
+  cursor: point;
 }
 
 .filter-card {
@@ -283,7 +283,6 @@
   justify-content: space-between;
   margin-top: 14px;
 }
-
 
 /* ================= ADD / EDIT LEAD FORM – TWO COLUMN ================= */
 
@@ -528,4 +527,20 @@
     transform: scale(1);
     opacity: 1;
   }
+}
+
+.clear-filter-btn {
+  background: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.clear-filter-btn:hover {
+  background: #d9363e;
 }
