@@ -298,7 +298,7 @@ const ProjectIntake = () => {
             type="date"
             value={followUpFilter}
             onChange={(e) => setFollowUpFilter(e.target.value)}
-            style={{ padding: "6px", margin: "0" }}
+            style={{ padding: "6px", margin: "0", border: "1px solid rgb(204, 204, 204)" }}
           />
 
           {/* ✅ CLEAR FILTER BUTTON */}
