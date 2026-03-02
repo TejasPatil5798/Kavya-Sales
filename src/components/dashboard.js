@@ -29,6 +29,7 @@ const Dashboard = () => {
   };
 
   const fetchSalesData = async (period = "weekly") => {
+    console.log("Sales Data:", data.sales);
     try {
       const { data } = await API.get(`/dashboard/summary?period=${period}`);
 
@@ -44,6 +45,7 @@ const Dashboard = () => {
   };
 
   const fetchPerformanceData = async (period = "weekly") => {
+    console.log("Performance Data:", data.topPerformers);
     try {
       const { data } = await API.get(`/dashboard/summary?period=${period}`);
 
@@ -225,7 +227,6 @@ const Dashboard = () => {
             </button>
           </div>
         </div>
-          <p>jasdhsau</p>
         <div className="card-body chart-container">
           {salesData.length === 0 ? (
             <div className="no-data">
