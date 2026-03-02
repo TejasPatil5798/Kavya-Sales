@@ -46,7 +46,7 @@ const UserHome = () => {
   }, []);
 
   /* ================= CALCULATIONS ================= */
-  const totalTasks = tasks.leng;
+  const totalTasks = tasks.length;
 
   const completedTasks = tasks.filter((t) => t.status === "Completed").length;
 
