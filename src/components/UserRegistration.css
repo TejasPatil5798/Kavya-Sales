@@ -33,6 +33,8 @@ body {
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 20px;
+    background: linear-gradient(135deg, rgb(45, 108, 223), rgb(79, 140, 255));
+    color: #ffffff;
 }
 
 /* Grid */
