@@ -15,6 +15,7 @@ const {
   resetPassword,
   checkUserByEmail,
   uploadProfilePicture,
+  removeProfilePicture, // ✅ ADD THIS
 } = require("../controllers/userController");
 
 /* =====================================================
@@ -62,6 +63,8 @@ router.put(
   upload.single("profileImage"),
   uploadProfilePicture,
 );
+
+router.delete("/remove-profile-picture", authMiddleware, removeProfilePicture);
 
 router.put("/:id", authMiddleware, roleMiddleware("admin"), updateUser);
 

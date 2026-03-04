@@ -6,6 +6,7 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [preview, setPreview] = useState(null);
+  const [showImageModal, setShowImageModal] = useState(false);
 
   const fetchProfile = async () => {
     try {
@@ -42,6 +43,22 @@ const Profile = () => {
     } catch (err) {
       console.error(err);
       alert(err.response?.data?.message || "Upload failed");
+    }
+  };
+
+  const handleRemoveImage = async () => {
+    if (!window.confirm("Remove profile picture?")) return;
+
+    try {
+      const { data } = await API.delete("/users/remove-profile-picture");
+
+      setUser(data.user);
+      setPreview(null);
+
+      alert("Profile picture removed");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to remove image");
     }
   };
 
@@ -114,6 +131,46 @@ const Profile = () => {
             <FiCamera size={16} />
           </label>
 
+          <div style={{ marginTop: "10px", display: "flex", gap: "8px" }}>
+            {(preview || user.profileImage) && (
+              <button
+                onClick={() => setShowImageModal(true)}
+                style={{
+                  padding: "4px 10px",
+                  fontSize: "12px",
+                  cursor: "pointer",
+                }}
+              >
+                View
+              </button>
+            )}
+
+            <button
+              onClick={() => document.getElementById("profileUpload").click()}
+              style={{
+                padding: "4px 10px",
+                fontSize: "12px",
+                cursor: "pointer",
+              }}
+            >
+              Update
+            </button>
+
+            {(preview || user.profileImage) && (
+              <button
+                onClick={handleRemoveImage}
+                style={{
+                  padding: "4px 10px",
+                  fontSize: "12px",
+                  color: "red",
+                  cursor: "pointer",
+                }}
+              >
+                Remove
+              </button>
+            )}
+          </div>
+
           <input
             type="file"
             id="profileUpload"
@@ -170,6 +227,36 @@ const Profile = () => {
           </>
         )}
       </div>
+
+      {showImageModal && (preview || user.profileImage) && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(0,0,0,0.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+          }}
+          onClick={() => setShowImageModal(false)}
+        >
+          <img
+            src={preview || user.profileImage}
+            alt="Profile"
+            style={{
+              maxWidth: "400px",
+              maxHeight: "400px",
+              borderRadius: "10px",
+              background: "#fff",
+              padding: "10px",
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };
