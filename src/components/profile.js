@@ -108,6 +108,8 @@ const Profile = () => {
             ) : (
               <div
                 onClick={() => setShowImageModal(true)}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
                 style={{
                   width: "90px",
                   height: "90px",
@@ -118,7 +120,12 @@ const Profile = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   fontSize: "30px",
-                  cursor: "pointer",
+                  cursor: "zoom-in",
+                  transition: "all 0.25s ease",
+                  transform: hover ? "scale(1.08)" : "scale(1)",
+                  boxShadow: hover
+                    ? "0 6px 16px rgba(0,0,0,0.25)"
+                    : "0 2px 6px rgba(0,0,0,0.15)",
                 }}
               >
                 <FiUser />
@@ -237,6 +244,7 @@ const Profile = () => {
           <img
             src={preview || user.profileImage}
             alt="Profile"
+            onClick={(e) => e.stopPropagation()}
             style={{
               maxWidth: "400px",
               maxHeight: "400px",
