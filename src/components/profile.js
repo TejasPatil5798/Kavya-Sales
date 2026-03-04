@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FiUser, FiCamera } from "react-icons/fi";
+import { FiUser } from "react-icons/fi";
 import API from "../api/api";
 
 const Profile = () => {
@@ -50,15 +50,15 @@ const Profile = () => {
     if (!window.confirm("Remove profile picture?")) return;
 
     try {
-      const { data } = await API.delete("/users/remove-profile-picture");
+      const res = await API.delete("/users/remove-profile-picture");
 
-      setUser(data.user);
+      setUser(res.data.user);
       setPreview(null);
 
-      alert("Profile picture removed");
+      alert("Profile picture removed successfully");
     } catch (err) {
-      console.error(err);
-      alert("Failed to remove image");
+      console.error("Remove error:", err.response?.data || err.message);
+      alert(err.response?.data?.message || "Failed to remove image");
     }
   };
 
@@ -82,7 +82,10 @@ const Profile = () => {
       <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
         {/* PROFILE IMAGE */}
         <div style={{ position: "relative" }}>
-          <label htmlFor="profileUpload" style={{ cursor: "pointer" }}>
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => setShowImageModal(true)}
+          >
             {preview || user.profileImage ? (
               <img
                 src={preview || user.profileImage}
@@ -112,39 +115,9 @@ const Profile = () => {
                 <FiUser />
               </div>
             )}
-          </label>
-
-          {/* CAMERA ICON */}
-          <label
-            htmlFor="profileUpload"
-            style={{
-              position: "absolute",
-              bottom: "0",
-              right: "0",
-              background: "#ffffff",
-              borderRadius: "50%",
-              padding: "6px",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-              cursor: "pointer",
-            }}
-          >
-            <FiCamera size={16} />
-          </label>
+          </div>
 
           <div style={{ marginTop: "10px", display: "flex", gap: "8px" }}>
-            {(preview || user.profileImage) && (
-              <button
-                onClick={() => setShowImageModal(true)}
-                style={{
-                  padding: "4px 10px",
-                  fontSize: "12px",
-                  cursor: "pointer",
-                }}
-              >
-                View
-              </button>
-            )}
-
             <button
               onClick={() => document.getElementById("profileUpload").click()}
               style={{
