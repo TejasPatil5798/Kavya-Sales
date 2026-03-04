@@ -99,6 +99,9 @@ const ProjectLead = () => {
     // ✅ Project Name
     if (!leadForm.projectName.trim()) {
       newErrors.projectName = "Project name is required";
+    } else if (!/^[A-Za-z0-9.\s]+$/.test(leadForm.projectName)) {
+      newErrors.projectName =
+        "Project name can contain only letters, numbers and dot";
     }
 
     // ✅ Status
@@ -547,7 +550,10 @@ const ProjectLead = () => {
               placeholder="Project Name"
               value={leadForm.projectName}
               onChange={(e) =>
-                setLeadForm({ ...leadForm, projectName: e.target.value })
+                setLeadForm({
+                  ...leadForm,
+                  projectName: e.target.value.replace(/[^A-Za-z0-9.\s]/g, ""),
+                })
               }
             />
 
