@@ -8,6 +8,7 @@ const Profile = () => {
   const [preview, setPreview] = useState(null);
   const [showImageModal, setShowImageModal] = useState(false);
 
+  const [hover, setHover] = useState(false);
   const fetchProfile = async () => {
     try {
       const { data } = await API.get("/users/me");
@@ -82,24 +83,31 @@ const Profile = () => {
       <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
         {/* PROFILE IMAGE */}
         <div style={{ position: "relative" }}>
-          <div
-            style={{ cursor: "pointer" }}
-            onClick={() => setShowImageModal(true)}
-          >
+          <div>
             {preview || user.profileImage ? (
               <img
                 src={preview || user.profileImage}
                 alt="Profile"
+                onClick={() => setShowImageModal(true)}
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
                 style={{
                   width: "90px",
                   height: "90px",
                   borderRadius: "50%",
                   objectFit: "cover",
                   border: "3px solid #0b1f32",
+                  cursor: "zoom-in",
+                  transition: "all 0.25s ease",
+                  transform: hover ? "scale(1.08)" : "scale(1)",
+                  boxShadow: hover
+                    ? "0 6px 16px rgba(0,0,0,0.25)"
+                    : "0 2px 6px rgba(0,0,0,0.15)",
                 }}
               />
             ) : (
               <div
+                onClick={() => setShowImageModal(true)}
                 style={{
                   width: "90px",
                   height: "90px",
@@ -110,6 +118,7 @@ const Profile = () => {
                   alignItems: "center",
                   justifyContent: "center",
                   fontSize: "30px",
+                  cursor: "pointer",
                 }}
               >
                 <FiUser />
