@@ -92,6 +92,9 @@ const UserProjectLead = () => {
     // ✅ Project Name
     if (!leadForm.projectName.trim()) {
       newErrors.projectName = "Project Name is required";
+    } else if (!/^[A-Za-z0-9.\s]+$/.test(leadForm.projectName.trim())) {
+      newErrors.projectName =
+        "Project name can contain only letters, numbers and dot.";
     } else if (leadForm.projectName.trim().length < 3) {
       newErrors.projectName =
         "Project Name must be at least 3 characters long.";
@@ -597,9 +600,11 @@ const UserProjectLead = () => {
             <input
               placeholder="Project Name"
               value={leadForm.projectName}
-              onChange={(e) =>
-                setLeadForm({ ...leadForm, projectName: e.target.value })
-              }
+              onChange={(e) => {
+                const value = e.target.value.replace(/[^A-Za-z0-9.\s]/g, "");
+                setLeadForm({ ...leadForm, projectName: value });
+                setErrors({ ...errors, projectName: "" });
+              }}
               className={errors.projectName ? "error" : ""}
             />
             {errors.projectName && (
