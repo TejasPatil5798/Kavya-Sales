@@ -163,6 +163,8 @@ const ProjectIntake = () => {
     // 5️⃣ Project Name
     if (!project.projectName?.trim()) {
       e.projectName = "Project name is required";
+    } else if (!/^[A-Za-z0-9.\s]+$/.test(project.projectName)) {
+      e.projectName = "Project name can contain only letters, numbers and dot";
     }
 
     // 6️⃣ Budget (numbers only)
@@ -485,7 +487,10 @@ const ProjectIntake = () => {
               placeholder="Project Name"
               value={newProject.projectName}
               onChange={(e) =>
-                setNewProject({ ...newProject, projectName: e.target.value })
+                setNewProject({
+                  ...newProject,
+                  projectName: e.target.value.replace(/[^A-Za-z0-9.\s]/g, ""),
+                })
               }
             />
 
@@ -630,7 +635,10 @@ const ProjectIntake = () => {
               placeholder="Project Name"
               value={editProject.projectName || ""}
               onChange={(e) =>
-                setEditProject({ ...editProject, projectName: e.target.value })
+                setEditProject({
+                  ...editProject,
+                  projectName: e.target.value.replace(/[^A-Za-z0-9.\s]/g, ""),
+                })
               }
             />
 
