@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FiUser } from "react-icons/fi";
+import { FiUser, FiUpload, FiTrash2 } from "react-icons/fi";
 import API from "../api/api";
 
 const Profile = () => {
@@ -121,11 +121,15 @@ const Profile = () => {
             <button
               onClick={() => document.getElementById("profileUpload").click()}
               style={{
-                padding: "4px 10px",
+                padding: "6px 10px",
                 fontSize: "12px",
                 cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
               }}
             >
+              <FiUpload size={14} />
               Update
             </button>
 
@@ -133,12 +137,16 @@ const Profile = () => {
               <button
                 onClick={handleRemoveImage}
                 style={{
-                  padding: "4px 10px",
+                  padding: "6px 10px",
                   fontSize: "12px",
                   color: "red",
                   cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
                 }}
               >
+                <FiTrash2 size={14} />
                 Remove
               </button>
             )}
