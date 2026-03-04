@@ -207,6 +207,34 @@ const UserProjectLead = () => {
     startIndex + ITEMS_PER_PAGE,
   );
 
+  /* ================= KPI CALCULATIONS ================= */
+
+  // statuses considered as deals
+  const dealStatuses = ["Interested", "Pending", "Follow Up", "Open"];
+
+  // Total Deals (sum of budget)
+  const totalDeals = leads
+    .filter((lead) => dealStatuses.includes(lead.status))
+    .reduce((sum, lead) => sum + (Number(lead.budget) || 0), 0);
+
+  // Lead Conversion
+  const convertedLeads = leads.filter(
+    (lead) => lead.status === "Done" || lead.status === "Closed",
+  ).length;
+
+  const leadConversion =
+    leads.length > 0 ? ((convertedLeads / leads.length) * 100).toFixed(1) : 0;
+
+  // Avg Deal (per user)
+  const totalDealCount = leads.filter((lead) =>
+    dealStatuses.includes(lead.status),
+  ).length;
+
+  const avgDeal =
+    totalDealCount > 0 ? (totalDeals / totalDealCount).toFixed(0) : 0;
+
+  const formatCurrency = (value) => "₹" + Number(value).toLocaleString("en-IN");
+
   /* 🔥 SAFETY FIX */
   useEffect(() => {
     if (currentPage > totalPages) {
@@ -309,17 +337,17 @@ const UserProjectLead = () => {
 
         <div className="kpi-card glass-card gradient-pink">
           <h6>Total Deals</h6>
-          <h3>—</h3>
+          <h3>{formatCurrency(totalDeals)}</h3>
         </div>
 
         <div className="kpi-card glass-card gradient-blue">
           <h6>Lead Conversion</h6>
-          <h3>—</h3>
+          <h3>{leadConversion}%</h3>
         </div>
 
         <div className="kpi-card glass-card gradient-green">
           <h6>Avg Deal</h6>
-          <h3>—</h3>
+          <h3>₹{Number(avgDeal).toLocaleString()}</h3>
         </div>
       </div>
 
