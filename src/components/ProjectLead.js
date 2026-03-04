@@ -279,7 +279,7 @@ const ProjectLead = () => {
   );
 
   // 📄 PAGINATION
-  const totalPages = Math.ceil(filteredLeads.length / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(sortedLeads.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
 
   const paginatedLeads = sortedLeads.slice(
@@ -299,6 +299,28 @@ const ProjectLead = () => {
     return d.toISOString().split("T")[0];
   };
 
+  /* ================= KPI CALCULATIONS ================= */
+
+  // statuses considered for deals
+  const dealStatuses = ["Interested", "Pending", "Follow Up", "Open"];
+
+  // Total Deals (sum of budget)
+  const totalDeals = leads
+    .filter((lead) => dealStatuses.includes(lead.status))
+    .reduce((sum, lead) => sum + (Number(lead.budget) || 0), 0);
+
+  const convertedLeads = leads.filter(
+    (lead) => lead.status === "Done" || lead.status === "Closed",
+  ).length;
+
+  const leadConversion =
+    leads.length > 0 ? ((convertedLeads / leads.length) * 100).toFixed(1) : 0;
+
+  const activeEmployees = employees.filter((emp) => emp.isActive).length;
+
+  const avgDealPerEmployee =
+    activeEmployees > 0 ? (totalDeals / activeEmployees).toFixed(0) : 0;
+
   return (
     <div className="projectlead-page">
       <div className="pl-cards">
@@ -306,17 +328,20 @@ const ProjectLead = () => {
           <h6>Total Leads</h6>
           <h3>{leads.length}</h3>
         </div>
+
         <div className="kpi-card glass-card gradient-blue">
           <h6>Total Deals</h6>
-          <h3>5034K</h3>
+          <h3>₹{totalDeals.toLocaleString()}</h3>
         </div>
+
         <div className="kpi-card glass-card gradient-pink">
           <h6>Lead Conversion</h6>
-          <h3>36%</h3>
+          <h3>{leadConversion}%</h3>
         </div>
+
         <div className="kpi-card glass-card gradient-teal">
           <h6>Avg Deal / Employee</h6>
-          <h3>50</h3>
+          <h3>₹{Number(avgDealPerEmployee).toLocaleString()}</h3>
         </div>
       </div>
 
@@ -330,7 +355,13 @@ const ProjectLead = () => {
           placeholder="Search client, company, email, project..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ padding: "8px", width: "250px", borderRadius: "6px", margin: "0", border: "1px solid rgb(204, 204, 204)" }}
+          style={{
+            padding: "8px",
+            width: "250px",
+            borderRadius: "6px",
+            margin: "0",
+            border: "1px solid rgb(204, 204, 204)",
+          }}
         />
 
         {/* 🎯 STATUS FILTER */}
@@ -425,6 +456,7 @@ const ProjectLead = () => {
             </tbody>
           </table>
         </div>
+
         {/* ================= PAGINATION ================= */}
         {totalPages > 1 && (
           <div className="pagination">
