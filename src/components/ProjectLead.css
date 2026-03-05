@@ -571,12 +571,14 @@
   max-width: 100%;
   border-radius: 6px;
   border: 1px solid #ccc;
+  margin: 0;
 }
 
 .status-filter {
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  margin: 0;
 }
 
 /* ================= TABLET ================= */
