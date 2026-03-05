@@ -156,3 +156,9 @@
     font-size: 14px;
   }
 }
+
+.profile-wraper1{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

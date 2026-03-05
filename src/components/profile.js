@@ -75,7 +75,7 @@ const Profile = () => {
       <div className="profile-header">
         {/* PROFILE IMAGE */}
         <div style={{ position: "relative" }}>
-          <div>
+          <div className="profile-wraper1">
             {preview || user.profileImage ? (
               <img
                 src={preview || user.profileImage}
