@@ -179,41 +179,32 @@ const Profile = () => {
 
       <hr style={{ margin: "24px 0" }} />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          columnGap: "32px",
-          rowGap: "16px",
-        }}
-      >
-        <div>
+      <div className="profile-grid">
+        <div className="profile-item">
           <strong>Name</strong>
           <p>{user.name}</p>
         </div>
 
-        <div>
+        <div className="profile-item">
           <strong>Contact Number</strong>
           <p>{user.phone || "-"}</p>
         </div>
 
-        <div>
+        <div className="profile-item">
           <strong>Email ID</strong>
           <p>{user.email}</p>
         </div>
 
-        <div>
+        <div className="profile-item">
           <strong>Role</strong>
           <p>{user.role}</p>
         </div>
 
         {!isAdmin && (
-          <>
-            <div>
-              <strong>Team</strong>
-              <p>{user.team || "-"}</p>
-            </div>
-          </>
+          <div className="profile-item">
+            <strong>Team</strong>
+            <p>{user.team || "-"}</p>
+          </div>
         )}
       </div>
 

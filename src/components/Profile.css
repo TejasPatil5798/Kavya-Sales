@@ -112,3 +112,47 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* PROFILE GRID */
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 32px;
+  row-gap: 16px;
+}
+
+/* ITEM */
+
+.profile-item strong {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.profile-item p {
+  margin: 0;
+  font-size: 15px;
+  color: #0b1f32;
+}
+
+/* TABLET */
+
+@media (max-width: 900px) {
+  .profile-grid {
+    column-gap: 20px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-item p {
+    font-size: 14px;
+  }
+}
