@@ -247,52 +247,25 @@ const MyTasks = () => {
         </div>
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "10px",
-          marginBottom: "15px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            gap: "10px",
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}
-        >
+      <div className="tasks-header">
+        <div className="tasks-filters">
           <input
             type="text"
+            className="tasks-search"
             placeholder="Search client, type, mail..."
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
               setCurrentPage(1);
             }}
-            style={{
-              padding: "8px",
-              margin: "0",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-              minWidth: "220px",
-            }}
           />
 
           <select
+            className="tasks-filter"
             value={statusFilter}
             onChange={(e) => {
               setStatusFilter(e.target.value);
               setCurrentPage(1);
-            }}
-            style={{
-              padding: "8px",
-              margin: "0",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
             }}
           >
             <option value="All">All Status</option>
@@ -303,20 +276,14 @@ const MyTasks = () => {
 
           <input
             type="date"
+            className="tasks-date-filter"
             value={dateFilter}
             onChange={(e) => {
               setDateFilter(e.target.value);
               setCurrentPage(1);
             }}
-            style={{
-              padding: "8px",
-              margin: "0",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-            }}
           />
 
-          {/* ✅ CLEAR FILTER BUTTON */}
           {(searchTerm.trim() !== "" ||
             statusFilter !== "All" ||
             dateFilter !== "") && (

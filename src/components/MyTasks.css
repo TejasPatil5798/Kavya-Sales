@@ -213,3 +213,85 @@
 .table-wrapper::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
+
+/* ================= TASK HEADER ================= */
+
+.tasks-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.tasks-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* SEARCH */
+
+.tasks-search {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-width: 220px;
+  flex: 1;
+}
+
+/* STATUS FILTER */
+
+.tasks-filter {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* DATE FILTER */
+
+.tasks-date-filter {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 900px) {
+  .tasks-search {
+    min-width: 200px;
+    flex: 1;
+  }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+  .tasks-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tasks-filters {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .tasks-search,
+  .tasks-filter,
+  .tasks-date-filter {
+    width: 100%;
+  }
+
+  .primary-btn {
+    width: 100%;
+  }
+
+  .clear-filter-btn {
+    align-self: flex-start;
+  }
+}
