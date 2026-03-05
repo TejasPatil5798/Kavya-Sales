@@ -157,8 +157,17 @@
   }
 }
 
-.profile-wraper1{
+/* container */
+.profile-image-container {
+  position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+}
+
+/* wrapper */
+.profile-wraper1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
