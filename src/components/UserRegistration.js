@@ -173,8 +173,7 @@ const UserRegistration = () => {
       <div className="reg-card">
         <div className="reg-header">New User Registration</div>
 
-        <form className="reg-form"
-        onSubmit={handleSubmit} noValidate>
+        <form className="reg-form" onSubmit={handleSubmit} noValidate>
           <div className="reg-grid">
             <Input
               label="Full Name"

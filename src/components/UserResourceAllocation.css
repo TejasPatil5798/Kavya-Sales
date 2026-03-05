@@ -75,8 +75,8 @@
 /* ================= TABLE ================= */
 .leads-table-res {
   width: 100%;
-  border-collapse: separate;   /* 🔥 CHANGE THIS */
-  border-spacing: 0;           /* 🔥 IMPORTANT */
+  border-collapse: separate; /* 🔥 CHANGE THIS */
+  border-spacing: 0; /* 🔥 IMPORTANT */
   font-size: 14px;
   min-width: 860px;
 }
@@ -234,5 +234,74 @@
 
   .ra-card h3 {
     font-size: 22px;
+  }
+}
+
+/* ================= TABLE HEADER ================= */
+
+.table-header2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.resource-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* SEARCH INPUT */
+
+.resource-search {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-width: 240px;
+  flex: 1;
+}
+
+/* STATUS FILTER */
+
+.resource-filter {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 900px) {
+  .resource-search {
+    min-width: 200px;
+    flex: 1;
+  }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+  .table-header2 {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .resource-filters {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .resource-search,
+  .resource-filter {
+    width: 100%;
+  }
+
+  .clear-filter-btn {
+    align-self: flex-start;
   }
 }

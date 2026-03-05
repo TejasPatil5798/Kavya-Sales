@@ -99,26 +99,10 @@ const UserResourceAllocation = () => {
 
       {/* TABLE */}
       <div className="filter-card">
-        <div
-          className="table-header"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "10px",
-          }}
-        >
+        <div className="table-header2">
           <h3>Resource Allocation List</h3>
 
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              flexWrap: "wrap",
-              alignItems: "center",
-            }}
-          >
+          <div className="resource-filters">
             {/* ✅ CLEAR FILTER BUTTON */}
             {(searchTerm.trim() !== "" || statusFilter !== "All") && (
               <button
@@ -132,32 +116,21 @@ const UserResourceAllocation = () => {
 
             <input
               type="text"
+              className="resource-search"
               placeholder="Search employee, project, role..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              style={{
-                padding: "8px",
-                margin: "0",
-                borderRadius: "6px",
-                border: "1px solid #ccc",
-                minWidth: "250px",
-              }}
             />
 
             <select
+              className="resource-filter"
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value);
                 setCurrentPage(1);
-              }}
-              style={{
-                padding: "8px",
-                margin: "0",
-                borderRadius: "6px",
-                border: "1px solid #ccc",
               }}
             >
               <option value="All">All Status</option>
