@@ -568,6 +568,7 @@
 .lead-search {
   padding: 8px;
   width: 250px;
+  max-width: 100%;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
