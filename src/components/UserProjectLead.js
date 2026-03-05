@@ -366,15 +366,7 @@ const UserProjectLead = () => {
           }}
         >
           <h3>Leads List</h3>
-          <div
-            className="filter-bar top-bar"
-            style={{
-              display: "flex",
-              gap: "10px",
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="filter-bar top-bar">
             {/* ✅ CLEAR FILTER BUTTON */}
             {(searchTerm.trim() !== "" || statusFilter !== "All") && (
               <button
@@ -388,32 +380,21 @@ const UserProjectLead = () => {
 
             <input
               type="text"
+              className="lead-search"
               placeholder="Search by name, company, project..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              style={{
-                padding: "9px",
-                borderRadius: "6px",
-                border: "1px solid #ccc",
-                minWidth: "250px",
-                margin: "0",
-              }}
             />
 
             <select
+              className="status-filter"
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value);
                 setCurrentPage(1);
-              }}
-              style={{
-                padding: "9px",
-                borderRadius: "6px",
-                border: "1px solid #ccc",
-                margin: "0",
               }}
             >
               <option value="All">All Status</option>

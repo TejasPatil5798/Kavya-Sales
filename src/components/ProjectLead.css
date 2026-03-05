@@ -60,6 +60,16 @@
   cursor: point;
 }
 
+.filter-bar.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: #ffffff;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
 .filter-card {
   background: #ffffff;
   padding: 18px;
@@ -156,6 +166,7 @@
   border-radius: 8px;
   border: none;
   cursor: pointer;
+  margin-left: auto;
 }
 
 .add-lead-btn:hover {
@@ -543,6 +554,7 @@
   justify-content: center;
   transition: 0.2s ease;
   background: transparent;
+  flex-shrink: 0;
 }
 
 .clear-filter-btn:hover {
@@ -572,6 +584,7 @@
   border-radius: 6px;
   border: 1px solid #ccc;
   margin: 0;
+  flex: 1;
 }
 
 .status-filter {
@@ -617,4 +630,48 @@
   .clear-filter-btn {
     align-self: flex-start;
   }
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 900px) {
+  .filter-bar.top-bar {
+    flex-wrap: wrap;
+  }
+
+  .lead-search {
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+  .filter-bar.top-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lead-search,
+  .status-filter {
+    width: 100%;
+  }
+
+  .add-lead-btn {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .clear-filter-btn {
+    align-self: flex-start;
+  }
+}
+
+.header-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
