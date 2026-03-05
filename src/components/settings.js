@@ -60,7 +60,7 @@ const Settings = () => {
       <div className="settings-card">
         <h2>Change Password</h2>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="pass-change">
           {/* CURRENT PASSWORD */}
           <div className="password-field">
             <input
