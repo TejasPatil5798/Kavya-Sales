@@ -164,3 +164,24 @@
   align-items: center;
   gap: 6px;
 }
+
+/* IMAGE PREVIEW MODAL */
+
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.image-preview {
+  max-width: 400px;
+  max-height: 400px;
+  border-radius: 10px;
+}

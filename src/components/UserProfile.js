@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./UserProfile.css";
 import API from "../api/api";
-import { FiUser, FiCamera, FiTrash2 } from "react-icons/fi";
+import { FiUser, FiTrash2, FiUpload } from "react-icons/fi";
 
 const UserProfile = () => {
   const [user, setUser] = useState({});
@@ -74,16 +74,14 @@ const UserProfile = () => {
                   src={preview || user.profileImage}
                   alt="Profile"
                   className="profile-image"
+                  onClick={() => setShowImageModal(true)}
+                  style={{ cursor: "pointer" }}
                 />
               ) : (
                 <div className="profile-placeholder">
                   <FiUser />
                 </div>
               )}
-            </label>
-
-            <label htmlFor="profileUpload" className="camera-icon">
-              <FiCamera size={14} />
             </label>
 
             <input
@@ -94,16 +92,16 @@ const UserProfile = () => {
               onChange={handleImageChange}
             />
 
-            {/* BUTTONS */}
             <div className="profile-buttons">
-              <button className="update-btn">Update</button>
+              <label htmlFor="profileUpload" className="update-btn">
+                <FiUpload /> Update
+              </label>
               <button className="remove-btn" onClick={handleRemoveImage}>
                 <FiTrash2 /> Remove
               </button>
             </div>
           </div>
 
-          {/* USER INFO */}
           <div className="profile-user-info">
             <h3>{user.name || "User"}</h3>
             <p className="user-role">System Administrator</p>
@@ -149,6 +147,17 @@ const UserProfile = () => {
           </div>
         </div>
       </div>
+
+      {/* IMAGE MODAL */}
+      {showImageModal && (
+        <div className="image-modal" onClick={() => setShowImageModal(false)}>
+          <img
+            src={preview || user.profileImage}
+            alt="Preview"
+            className="image-preview"
+          />
+        </div>
+      )}
     </div>
   );
 };
