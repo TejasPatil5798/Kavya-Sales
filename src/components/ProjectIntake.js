@@ -274,10 +274,7 @@ const ProjectIntake = () => {
 
       {/* TABLE */}
       <div className="filter-card">
-        <div
-          className="table-header"
-          style={{ display: "flex", gap: "10px", alignItems: "center" }}
-        >
+        <div className="table-header1">
           <h3 style={{ marginRight: "20px" }}>Follow Up List</h3>
 
           {/* 🔍 SEARCH */}
@@ -286,13 +283,7 @@ const ProjectIntake = () => {
             placeholder="Search client, company, email, project..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              padding: "8px",
-              borderRadius: "6px",
-              width: "220px",
-              margin: "0",
-              border: "1px solid rgb(204, 204, 204)",
-            }}
+            className="project-search"
           />
 
           {/* 📅 FOLLOW UP DATE FILTER */}
@@ -300,12 +291,7 @@ const ProjectIntake = () => {
             type="date"
             value={followUpFilter}
             onChange={(e) => setFollowUpFilter(e.target.value)}
-            style={{
-              padding: "8px",
-              margin: "0",
-              borderRadius: "6px",
-              border: "1px solid rgb(204, 204, 204)",
-            }}
+            className="followup-filter"
           />
 
           {/* ✅ CLEAR FILTER BUTTON */}
@@ -323,7 +309,6 @@ const ProjectIntake = () => {
           <button
             className="add-btn"
             onClick={() => setShowAddProject(true)}
-            style={{ marginLeft: "auto" }}
           >
             + Add Project
           </button>

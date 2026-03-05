@@ -321,3 +321,77 @@
   margin-top: 4px;
   display: block;
 }
+
+/* ================= HEADER FILTER BAR ================= */
+
+.table-header1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: #ffffff;
+  padding: 10px 12px;
+  border-radius: 10px;
+}
+
+/* SEARCH */
+
+.project-search {
+  padding: 8px;
+  width: 220px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* DATE FILTER */
+
+.followup-filter {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* ADD BUTTON ALIGN RIGHT */
+
+.table-header1 .add-btn {
+  margin-left: auto;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 900px) {
+  .table-header1 {
+    flex-wrap: wrap;
+  }
+
+  .project-search {
+    flex: 1;
+    min-width: 220px;
+  }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+  .table-header1 {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .table-header1 h3 {
+    margin-bottom: 5px;
+  }
+
+  .project-search,
+  .followup-filter {
+    width: 100%;
+  }
+
+  .add-btn {
+    width: 100%;
+  }
+
+  .clear-filter-btn {
+    align-self: flex-start;
+  }
+}

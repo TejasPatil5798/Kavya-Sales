@@ -495,6 +495,7 @@
 .filter-bar select {
   background: #f8fafc;
   transition: 0.2s;
+  margin: 0;
 }
 
 .filter-bar select:focus {
