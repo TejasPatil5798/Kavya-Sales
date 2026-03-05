@@ -134,4 +134,8 @@ button{
     .reg-grid {
         grid-template-columns: 1fr;
     }
+
+    .reg-page{
+        padding: 12px 0;
+    }
 }
