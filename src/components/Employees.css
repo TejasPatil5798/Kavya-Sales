@@ -23,8 +23,8 @@
 .filter-bar {
   display: flex;
   gap: 12px;
-
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .filter-bar select {
@@ -435,6 +435,7 @@
 
 .employee-search input {
   width: 320px;
+  max-width: 100%;
   padding: 8px 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -452,4 +453,50 @@
   flex-wrap: wrap;
   gap: 15px;
   margin: 16px 0;
+}
+
+@media (max-width: 768px) {
+  .top-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .employee-search input {
+    width: 100%;
+  }
+
+  .filter-bar {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .filter-bar select {
+    flex: 1;
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .filter-bar select {
+    width: 100%;
+  }
+
+  .clear-filter-btn {
+    width: 100%;
+  }
+}
+
+.filter-bar select {
+  background: #f8fafc;
+  transition: 0.2s;
+}
+
+.filter-bar select:focus {
+  border-color: #4f46e5;
 }
