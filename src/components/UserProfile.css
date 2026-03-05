@@ -78,13 +78,6 @@
   }
 }
 
-.profile-header {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 20px;
-}
-
 .profile-image-wrapper {
   position: relative;
   display: flex;
