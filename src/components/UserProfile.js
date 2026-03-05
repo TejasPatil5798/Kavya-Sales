@@ -68,7 +68,7 @@ const UserProfile = () => {
         <div className="profile-header">
           {/* PROFILE IMAGE */}
           <div className="profile-image-wrapper">
-            <label htmlFor="profileUpload" className="profile-image-label">
+            <div className="profile-image-label">
               {preview || user.profileImage ? (
                 <img
                   src={preview || user.profileImage}
@@ -78,11 +78,15 @@ const UserProfile = () => {
                   style={{ cursor: "pointer" }}
                 />
               ) : (
-                <div className="profile-placeholder">
+                <div
+                  className="profile-placeholder"
+                  onClick={() => setShowImageModal(true)}
+                  style={{ cursor: "pointer" }}
+                >
                   <FiUser />
                 </div>
               )}
-            </label>
+            </div>
 
             <input
               type="file"
