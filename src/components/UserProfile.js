@@ -108,7 +108,7 @@ const UserProfile = () => {
 
           <div className="profile-user-info">
             <h3>{user.name || "User"}</h3>
-            <p className="user-role">System Administrator</p>
+            <p className="user-role">System User</p>
           </div>
         </div>
 

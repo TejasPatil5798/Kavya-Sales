@@ -69,18 +69,10 @@ const Profile = () => {
   const isAdmin = user.role === "admin";
 
   return (
-    <div
-      style={{
-        width: "100%",
-        background: "#ffffff",
-        padding: "32px",
-        borderRadius: "16px",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-      }}
-    >
+    <div className="profile-container">
       <h2 style={{ marginBottom: "24px" }}>My Profile</h2>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+      <div className="profile-header">
         {/* PROFILE IMAGE */}
         <div style={{ position: "relative" }}>
           <div>
