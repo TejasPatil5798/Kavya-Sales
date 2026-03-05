@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import "./UserProfile.css";
 import API from "../api/api";
-import { FiUser, FiCamera } from "react-icons/fi";
+import { FiUser, FiCamera, FiTrash2 } from "react-icons/fi";
 
 const UserProfile = () => {
   const [user, setUser] = useState({});
   const [preview, setPreview] = useState(null);
+  const [hover, setHover] = useState(false);
+  const [showImageModal, setShowImageModal] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -42,70 +44,45 @@ const UserProfile = () => {
     }
   };
 
+  const handleRemoveImage = async () => {
+    if (!window.confirm("Remove profile picture?")) return;
+
+    try {
+      const res = await API.delete("/users/remove-profile-picture");
+
+      setUser(res.data.user);
+      setPreview(null);
+
+      alert("Profile picture removed");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to remove image");
+    }
+  };
+
   return (
     <div className="profile-page">
       <div className="profile-card">
         <h2 className="profile-title">My Profile</h2>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "16px",
-          }}
-        >
+        <div className="profile-header">
           {/* PROFILE IMAGE */}
-          <div style={{ position: "relative" }}>
-            <label htmlFor="profileUpload" style={{ cursor: "pointer" }}>
+          <div className="profile-image-wrapper">
+            <label htmlFor="profileUpload" className="profile-image-label">
               {preview || user.profileImage ? (
                 <img
                   src={preview || user.profileImage}
                   alt="Profile"
-                  style={{
-                    width: "90px",
-                    height: "90px",
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    border: "3px solid #0b1f32",
-                  }}
+                  className="profile-image"
                 />
               ) : (
-                <div
-                  style={{
-                    width: "90px",
-                    height: "90px",
-                    borderRadius: "50%",
-                    background: "#0b1f32",
-                    color: "#ffffff",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "30px",
-                  }}
-                >
+                <div className="profile-placeholder">
                   <FiUser />
                 </div>
               )}
             </label>
 
-            {/* CAMERA ICON PERFECTLY PLACED */}
-            <label
-              htmlFor="profileUpload"
-              style={{
-                position: "absolute",
-                bottom: "4px",
-                right: "4px",
-                background: "#ffffff",
-                borderRadius: "50%",
-                width: "28px",
-                height: "28px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-                cursor: "pointer",
-              }}
-            >
+            <label htmlFor="profileUpload" className="camera-icon">
               <FiCamera size={14} />
             </label>
 
@@ -116,11 +93,20 @@ const UserProfile = () => {
               style={{ display: "none" }}
               onChange={handleImageChange}
             />
+
+            {/* BUTTONS */}
+            <div className="profile-buttons">
+              <button className="update-btn">Update</button>
+              <button className="remove-btn" onClick={handleRemoveImage}>
+                <FiTrash2 /> Remove
+              </button>
+            </div>
           </div>
 
-          <div>
-            <h4 style={{ margin: 0 }}>{user.name || "User"}</h4>
-            <p style={{ margin: "4px 0", color: "#64748b" }}>Employee Access</p>
+          {/* USER INFO */}
+          <div className="profile-user-info">
+            <h3>{user.name || "User"}</h3>
+            <p className="user-role">System Administrator</p>
           </div>
         </div>
 
