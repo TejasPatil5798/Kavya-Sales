@@ -240,6 +240,7 @@
   border: 1px solid #ccc;
   min-width: 220px;
   flex: 1;
+  margin: 0;
 }
 
 /* STATUS FILTER */
@@ -248,6 +249,7 @@
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  margin: 0;
 }
 
 /* DATE FILTER */
@@ -256,6 +258,7 @@
   padding: 8px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  margin: 0;
 }
 
 /* ================= TABLET ================= */
