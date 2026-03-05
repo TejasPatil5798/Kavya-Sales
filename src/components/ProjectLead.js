@@ -348,30 +348,21 @@ const ProjectLead = () => {
         </div>
       </div>
 
-      <div
-        className="filter-bar top-bar"
-        style={{ display: "flex", gap: "10px", alignItems: "center" }}
-      >
+      <div className="filter-bar top-bar">
         {/* 🔍 SEARCH BOX */}
         <input
           type="text"
           placeholder="Search client, company, email, project..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{
-            padding: "8px",
-            width: "250px",
-            borderRadius: "6px",
-            margin: "0",
-            border: "1px solid rgb(204, 204, 204)",
-          }}
+          className="lead-search"
         />
 
         {/* 🎯 STATUS FILTER */}
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          style={{ padding: "8px", margin: "0" }}
+          className="status-filter"
         >
           <option value="">All Status</option>
           {STATUS_OPTIONS.map((status) => (
