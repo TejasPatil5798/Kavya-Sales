@@ -83,27 +83,10 @@ const UserProjectIntake = () => {
 
       {/* TABLE */}
       <div className="filter-card">
-        <div
-          className="table-header"
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            gap: "10px",
-          }}
-        >
+        <div className="project-header">
           <h3>Project List</h3>
 
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              flexWrap: "wrap",
-              alignItems: "center",
-            }}
-          >
-            {/* ✅ CLEAR FILTER BUTTON */}
+          <div className="project-filters">
             {(searchTerm.trim() !== "" || statusFilter !== "All") && (
               <button
                 className="clear-filter-btn"
@@ -116,32 +99,21 @@ const UserProjectIntake = () => {
 
             <input
               type="text"
+              className="project-search"
               placeholder="Search client, company, project..."
               value={searchTerm}
               onChange={(e) => {
                 setSearchTerm(e.target.value);
                 setCurrentPage(1);
               }}
-              style={{
-                padding: "8px",
-                margin: "0",
-                borderRadius: "6px",
-                border: "1px solid #ccc",
-                minWidth: "250px",
-              }}
             />
 
             <select
+              className="project-status-filter"
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value);
                 setCurrentPage(1);
-              }}
-              style={{
-                padding: "8px",
-                margin: "0",
-                borderRadius: "6px",
-                border: "1px solid #ccc",
               }}
             >
               <option value="All">All Status</option>

@@ -397,3 +397,71 @@
     align-self: flex-start;
   }
 }
+/* ================= PROJECT HEADER ================= */
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.project-filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* SEARCH */
+
+.project-search {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-width: 240px;
+  flex: 1;
+}
+
+/* STATUS FILTER */
+
+.project-status-filter {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* ================= TABLET ================= */
+
+@media (max-width: 900px) {
+  .project-search {
+    min-width: 200px;
+    flex: 1;
+  }
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+  .project-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .project-filters {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .project-search,
+  .project-status-filter {
+    width: 100%;
+  }
+
+  .clear-filter-btn {
+    align-self: flex-start;
+  }
+}
