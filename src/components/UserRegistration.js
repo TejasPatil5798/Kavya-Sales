@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import API from "../api/api";
 import "./UserRegistration.css";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const COMPANY_EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@kavyainfoweb\.com$/i;
 
@@ -282,7 +283,7 @@ const UserRegistration = () => {
                   className="eye-icon"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? "🙈" : "👁️"}
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
                 </span>
               </div>
               {errors.password && <span>{errors.password}</span>}

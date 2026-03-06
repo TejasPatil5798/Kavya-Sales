@@ -1,118 +1,118 @@
 /* Prevent horizontal scroll globally */
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    overflow-x: hidden;
+  margin: 0;
+  overflow-x: hidden;
 }
 
 /* Page wrapper */
 .reg-page {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-    display: flex;
-    justify-content: center;
-    padding: 24px;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  padding: 24px;
 }
 
 /* Card */
 .reg-card {
-    width: 100%;
-    max-width: 900px;
-    background: #ffffff;
-    border-radius: 10px;
-    /* padding: 0 24px 24px 24px; */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 900px;
+  background: #ffffff;
+  border-radius: 10px;
+  /* padding: 0 24px 24px 24px; */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
 /* Header */
 .reg-header {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    background: linear-gradient(135deg, rgb(45, 108, 223), rgb(79, 140, 255));
-    color: #ffffff;
-    padding: 15px;
-    border-radius: 10px 10px 0 0;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, rgb(45, 108, 223), rgb(79, 140, 255));
+  color: #ffffff;
+  padding: 15px;
+  border-radius: 10px 10px 0 0;
 }
 
-.reg-form{
-    padding: 24px;
+.reg-form {
+  padding: 24px;
 }
 
 /* Grid */
 .reg-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    /* 🔑 FIX */
-    gap: 16px;
-    width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* 🔑 FIX */
+  gap: 16px;
+  width: 100%;
 }
 
 /* Fields */
 .field {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 .field label {
-    font-size: 14px;
-    margin-bottom: 4px;
+  font-size: 14px;
+  margin-bottom: 4px;
 }
 
 .field input,
 .field select {
-    width: 100%;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
 }
 
 /* Error */
 .field input.error,
 .field select.error {
-    border-color: red;
+  border-color: red;
 }
 
 .field span {
-    color: red;
-    font-size: 12px;
+  color: red;
+  font-size: 12px;
 }
 
 /* Buttons */
 .reg-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-    gap: 12px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 12px;
 }
 
 .reg-actions button {
-    padding: 8px 16px;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
 }
 
 /* Success */
 .success-box {
-    margin-top: 16px;
-    padding: 10px;
-    background: #e6fffa;
-    color: #065f46;
-    border-radius: 6px;
+  margin-top: 16px;
+  padding: 10px;
+  background: #e6fffa;
+  color: #065f46;
+  border-radius: 6px;
 }
 
-button{
-    font-size: 16px;
+button {
+  font-size: 16px;
 }
 
-.sdd{
-    background-color: #53dc91;
+.sdd {
+  background-color: #53dc91;
 }
 .password-wrapper {
   position: relative;
@@ -128,14 +128,41 @@ button{
   font-size: 16px;
 }
 
-
 /* 🔁 Mobile fix */
 @media (max-width: 768px) {
-    .reg-grid {
-        grid-template-columns: 1fr;
-    }
+  .reg-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .reg-page{
-        padding: 12px 0;
-    }
+  .reg-page {
+    padding: 12px 0;
+  }
+}
+
+/* PASSWORD FIELD */
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* INPUT */
+
+.password-wrapper input {
+  width: 100%;
+  padding: 10px;
+  padding-right: 40px; /* space for icon */
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* EYE ICON */
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
 }
