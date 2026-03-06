@@ -280,7 +280,7 @@ const UserRegistration = () => {
                 />
                 <span
                   className="eye-icon"
-                  onClick={() => setShowPassword((p) => !p)}
+                  onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? "🙈" : "👁️"}
                 </span>
